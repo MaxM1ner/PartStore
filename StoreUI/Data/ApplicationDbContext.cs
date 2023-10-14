@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StoreUI.Models;
 
 namespace StoreUI.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Customer>
     {
         public DbSet<CartProduct> CartProducts { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
