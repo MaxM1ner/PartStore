@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using StoreUI.Data;
 using StoreUI.Models;
@@ -20,7 +24,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<Customer, IdentityRole>()
+builder.Services.AddIdentity<Customer, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders().AddDefaultUI().AddDefaultTokenProviders();
 
@@ -45,6 +49,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddControllersWithViews();
 
+<<<<<<< HEAD
 builder.Services.AddTransient<IEmailSender, SmtpEmailSender>((x) =>
 {
 
@@ -56,6 +61,9 @@ builder.Services.AddTransient<IEmailSender, SmtpEmailSender>((x) =>
     $"noreply@{builder.Environment.ApplicationName}.com");
 });
 
+=======
+
+>>>>>>> b019de4621458947c09b15a169ebf58f630a782a
 
 var app = builder.Build();
 
