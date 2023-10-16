@@ -16,7 +16,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-//builder.Services.AddDefaultIdentity<Customer>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<Customer, IdentityRole>()
@@ -43,6 +42,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>((x) =>
+{
+
+    return new SmtpEmailSender(
+    (int)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(int), "SmtpClientPort") ?? new NullReferenceException("Configuration section SmtpCredential, value SmtpClientPort returned null")),
+    (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "SmtpClientHost") ?? new NullReferenceException("Configuration section SmtpCredential, value SmtpClientHost returned null")),
+    (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "Email") ?? new NullReferenceException("Configuration section SmtpCredential, value Email returned null")),
+    (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "Password") ?? new NullReferenceException("Configuration section SmtpCredential, value Password returned null")),
+    $"noreply@{builder.Environment.ApplicationName}.com");
+});
+
 
 var app = builder.Build();
 
