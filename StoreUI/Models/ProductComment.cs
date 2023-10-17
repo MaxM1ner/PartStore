@@ -9,8 +9,8 @@ namespace StoreUI.Models
         public int ProductId { get; set; }
         public string CustomerId { get; set; } = null!;
         [ForeignKey(nameof(CustomerId))]
-        public Customer Customer { get; set; } = null!;
+        public Customer? Customer { get; set; }
         [ForeignKey(nameof(ProductId))]
-        public Product Product { get; set; } = null!;
+        public Product? Product { get; set; }
     }
 }
