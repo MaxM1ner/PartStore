@@ -1,8 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Part Store";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container text-center">
+    <div class="row row-cols-5">
+    @foreach (var product in Model)
+    {
+        <div class="col card m-2" style="width: 18rem;">
+                <img src="https://www.texet.md/images/products/intel_core_i5_8400/intel-core-i5-8400.jpg" class="card-img-top" alt="@product.Name">
+            <div class="card-body">
+                <h5 class="card-title"><a href="#">@product.Name</a></h5>
+                <p class="card-text">@product.Description</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p class="card-text text-success">@product.Price</p>
+                    </div>
+                    <a href="#" class="btn btn-outline-primary btn-sm">Сторінка товару</a>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
 </div>

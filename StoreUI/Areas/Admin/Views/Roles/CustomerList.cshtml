@@ -3,14 +3,14 @@
 }
 @model IEnumerable<StoreUI.Models.Customer>
 
-<h2>Список пользователей</h2>
+<h2>Customers List</h2>
 <table class="table">
     @foreach (var user in Model)
     {
         <tr>
             <td>@user.Email</td>
             <td>
-                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права доступа</a>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Authorization rights</a>
             </td>
         </tr>
     }
