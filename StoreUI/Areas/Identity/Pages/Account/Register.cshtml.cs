@@ -45,8 +45,7 @@ namespace StoreUI.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
-            _roleManager = 
+            _emailSender = emailSender; 
             _roleManager = roleManager;
         }
 
