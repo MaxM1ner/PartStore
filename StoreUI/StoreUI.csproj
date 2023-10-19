@@ -26,4 +26,8 @@
     <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\icons.svg" />
+  </ItemGroup>
+
 </Project>

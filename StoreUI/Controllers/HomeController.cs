@@ -17,7 +17,8 @@ namespace StoreUI.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Products.Where(x => x.IsVisible && x.Quantity > 0).ToList());
+            return View();
+            _context.Products.Where(x => x.IsVisible && x.Quantity > 0).ToList();
         }
 
         public IActionResult Privacy()
