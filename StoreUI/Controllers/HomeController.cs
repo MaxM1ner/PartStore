@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StoreUI.Data;
 using StoreUI.Models;
 using System.Diagnostics;
@@ -17,7 +18,7 @@ namespace StoreUI.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Products.Where(x => x.IsVisible && x.Quantity > 0).ToList());
+            return View(_context.Products.Where(x => x.IsVisible && x.Quantity > 0).Include(x => x.Images).ToList());
         }
 
         public IActionResult Privacy()

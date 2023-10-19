@@ -12,8 +12,8 @@ using StoreUI.Data;
 namespace StoreUI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231018142756_FixFeaturesMigration")]
-    partial class FixFeaturesMigration
+    [Migration("20231019185822_Features")]
+    partial class Features
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,13 @@ namespace StoreUI.Data.Migrations
 
             modelBuilder.Entity("FeatureProduct", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("FeaturesId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId", "ProductsId");
+                    b.HasKey("FeaturesId", "ProductsId");
 
                     b.HasIndex("ProductsId");
 
@@ -277,7 +277,7 @@ namespace StoreUI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
@@ -285,6 +285,8 @@ namespace StoreUI.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Features");
                 });
@@ -394,7 +396,7 @@ namespace StoreUI.Data.Migrations
                 {
                     b.HasOne("StoreUI.Models.Feature", null)
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("FeaturesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -475,6 +477,17 @@ namespace StoreUI.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("StoreUI.Models.Feature", b =>
+                {
+                    b.HasOne("StoreUI.Models.ProductType", "Type")
+                        .WithMany("Features")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("StoreUI.Models.Product", b =>
                 {
                     b.HasOne("StoreUI.Models.ProductType", "Type")
@@ -532,6 +545,8 @@ namespace StoreUI.Data.Migrations
 
             modelBuilder.Entity("StoreUI.Models.ProductType", b =>
                 {
+                    b.Navigation("Features");
+
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618

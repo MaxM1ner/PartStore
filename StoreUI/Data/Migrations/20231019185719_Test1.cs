@@ -5,7 +5,7 @@
 namespace StoreUI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FixFeaturesMigration : Migration
+    public partial class Test1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,19 +18,23 @@ namespace StoreUI.Data.Migrations
                 name: "IX_Features_ProductId",
                 table: "Features");
 
+            migrationBuilder.DropColumn(
+                name: "ProductId",
+                table: "Features");
+
             migrationBuilder.CreateTable(
                 name: "FeatureProduct",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    FeaturesId = table.Column<int>(type: "int", nullable: false),
                     ProductsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeatureProduct", x => new { x.ProductId, x.ProductsId });
+                    table.PrimaryKey("PK_FeatureProduct", x => new { x.FeaturesId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_FeatureProduct_Features_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_FeatureProduct_Features_FeaturesId",
+                        column: x => x.FeaturesId,
                         principalTable: "Features",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -53,6 +57,13 @@ namespace StoreUI.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "FeatureProduct");
+
+            migrationBuilder.AddColumn<int>(
+                name: "ProductId",
+                table: "Features",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Features_ProductId",

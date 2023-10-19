@@ -11,8 +11,9 @@ namespace StoreUI.Models
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Value { get; set; } = null!;
-        public int ProductId { get; set; }
-        [ForeignKey(nameof(ProductId))]
+        public int ProductTypeId { get; set; }
+        [ForeignKey(nameof(ProductTypeId))]
+        public ProductType? Type { get; set; }
         public ICollection<Product> Products { get; private set; }
     }
 }

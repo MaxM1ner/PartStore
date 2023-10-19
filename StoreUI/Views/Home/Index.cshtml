@@ -8,7 +8,10 @@
     @foreach (var product in Model)
     {
         <div class="col card m-2" style="width: 18rem;">
-                <img src="https://www.texet.md/images/products/intel_core_i5_8400/intel-core-i5-8400.jpg" class="card-img-top" alt="@product.Name">
+            @if (product.Images != null && product.Images.Count > 0)
+            {
+                <img src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)" class="card-img-top" alt="@product.Name">
+            }
             <div class="card-body">
                 <h5 class="card-title"><a href="#">@product.Name</a></h5>
                 <p class="card-text">@product.Description</p>
