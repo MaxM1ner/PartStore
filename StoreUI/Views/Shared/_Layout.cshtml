@@ -12,13 +12,13 @@
       rel="stylesheet"
     />
     <!-- styles -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/StoreUI.styles.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/StoreUI.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header class="header">
-    <div class="container">
+    <div class="containerr">
     <div class="header-inner">
         <a class="logo" asp-area="" asp-controller="Home" asp-action="Index"> <span class="logo-span">Part</span>Store</a>
         <nav class="header-nav">
@@ -40,19 +40,34 @@
         <partial name="_LoginPartial" />
     </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - PartStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main role="main" class=" main">
+        
+            @RenderBody()
+        
+        </main>
+   
+
+    <footer class="footer">
+     <div class="section ">
+        <div class="containerr">
+            <div class="footer-content">
+            <h2 class="section-title"> ПК - це наша потреба </h2>
+            <div class="footer-contacts">
+            <p>Contact us</p>
+                        <ul class="fooder-list">
+                            <li> <a href="tel:+380969999999">+380 (96) 999-99-99</a></li>
+                <li>dfdsgsfg@dfdsfdsf</li>
+            </ul>
+            </div>
+            </div>
+
+            @*&copy; 2023 - PartStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
+        </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -3,7 +3,43 @@
     ViewData["Title"] = "Part Store";
 }
 
-<div class="container text-center">
+<div class="containerr ">
+    <div class="hero">
+        <div class="slideshow-container">
+
+           
+            <div class="mySlides fade">
+                <div class="numbertext">1 / 3</div>
+                <img src="https://html5css.ru/howto/img_nature_wide.jpg" style="width:100%">
+                <div class="text">Caption Text</div>
+            </div>
+
+            <div class="mySlides fade">
+                <div class="numbertext">2 / 3</div>
+                <img src="https://html5css.ru/howto/img_snow_wide.jpg" style="width:100%">
+                <div class="text">Caption Two</div>
+            </div>
+
+            <div class="mySlides fade">
+                <div class="numbertext">3 / 3</div>
+                <img src="https://html5css.ru/howto/img_lights_wide.jpg" style="width:100%">
+                <div class="text">Caption Three</div>
+            </div>
+
+           
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <br>
+
+        
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+    </div>
    @* <div class="row row-cols-5">
     @foreach (var product in Model)
     {
@@ -22,4 +58,25 @@
         </div>
     }
     </div>*@
+    <section class="products-cards">
+         <div class="card-container">
+             <div class="card-img">
+                 <img class="hero-image" src="https://www.texet.md/images/products/intel_core_i5_8400/intel-core-i5-8400.jpg" alt="Spinning glass cube" />
+             </div>
+             
+             <div class="card-content">
+                     <h3 class="product-name"> product.Name </h3>
+                 <p class ="product-description">Our Equilibrium collection promotes balance and calm. </p>
+                 <a  href="" class="product-link">Show more..</a>
+                <div class="card-tags">
+                     <span class="product-price">Price: $123</span>
+                     <button class="add-order-btn"> Add </button>
+                 </div>
+             </div>
+         </div>
+        
+        
+
+    </section>
+   
 </div>
