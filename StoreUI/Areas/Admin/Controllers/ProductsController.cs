@@ -20,6 +20,7 @@ namespace StoreUI.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly string _projectDirectory = Environment.CurrentDirectory + "/wwwroot/productfiles/img" + Path.DirectorySeparatorChar;
         public ProductsController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
@@ -189,7 +190,7 @@ namespace StoreUI.Areas.Admin.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Type)
+                .Include(p => p.Type).Include(p => p.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -208,9 +209,17 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.Images).Where(x => x.Id == id).FirstAsync();
             if (product != null)
             {
+                foreach (var image in product.Images)
+                {
+                    string imagePath = _projectDirectory + image.Path;
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
                 _context.Products.Remove(product);
             }
 
