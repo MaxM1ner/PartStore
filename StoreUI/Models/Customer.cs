@@ -8,14 +8,14 @@ using System.Runtime.CompilerServices;
 
 namespace StoreUI.Models
 {
-    public sealed class Customer : IdentityUser
+    public class Customer : IdentityUser
     {
         public Customer() 
         {
             this.CartProducts = new HashSet<CartProduct>();
             this.Comments = new HashSet<ProductComment>();
         }
-        public ICollection<CartProduct> CartProducts { get; private set; }
-        public ICollection<ProductComment> Comments { get; private set; }
+        public virtual ICollection<CartProduct> CartProducts { get; private set; }
+        public virtual ICollection<ProductComment> Comments { get; private set; }
     }
 }
