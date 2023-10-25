@@ -27,6 +27,13 @@ namespace StoreUI.Areas.Admin.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
+        // GET: Admin/get-features/{id}
+        public async Task<IActionResult> GetFeatures([FromRoute] int id)
+        {
+            var applicationDbContext = _context.Features.Where(x => x.ProductTypeId == id);
+            return Json(await applicationDbContext.ToListAsync());
+        }
+
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
