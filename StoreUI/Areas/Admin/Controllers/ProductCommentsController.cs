@@ -52,7 +52,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // GET: Admin/ProductComments/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email");
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             return View();
         }

@@ -1,11 +1,6 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Configuration;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Net.Mail;
 using System.Net;
-using System.Security.Policy;
-using System.Net.Http;
 
 namespace StoreUI.Services
 {
