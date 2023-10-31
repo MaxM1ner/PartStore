@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using StoreUI.Data;
 using StoreUI.Models;
 using System.Diagnostics;
@@ -18,9 +19,24 @@ namespace StoreUI.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Products.Where(x => x.IsVisible && x.Quantity > 0).Include(x => x.Images).ToList());
+            return View();
         }
-
+        public IActionResult Catalog()
+        {
+            return View(_context.
+                Products.
+                Where(x => x.IsVisible && x.Quantity > 0).
+                Include(x => x.Images).
+                ToList());
+        }
+        public IActionResult Details(int id)
+        {
+            return View( _context.Products.
+                Where(x => x.Id == id && x.IsVisible).
+                Include(x => x.Images).
+                Include(x => x.Features).
+                First());
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -31,5 +47,6 @@ namespace StoreUI.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

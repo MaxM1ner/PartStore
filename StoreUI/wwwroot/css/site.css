@@ -47,7 +47,7 @@ ul {
   list-style-type: none;
 }
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 body,
 a,
@@ -60,11 +60,11 @@ h6,
 li,
 ul,
 p {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 a {
-  color: inherit;
+    color: inherit;
 }
 img {
   width: 100%;
@@ -345,13 +345,14 @@ img {
 }
 
 p.hint a {
-  color: #1a1a1a;
+    color: #1a1a1a;
 }
-p.hint a:active,
-p.hint a:focus,
-p.hint a:hover {
-  color: var(--brand);
-}
+
+    p.hint a:active,
+    p.hint a:focus,
+    p.hint a:hover {
+        color: var(--brand);
+    }
 /* ///////// */
 /* card */
 .products-cards {
