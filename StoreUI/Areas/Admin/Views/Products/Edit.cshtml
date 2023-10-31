@@ -10,12 +10,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" type="number" step=".01" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,14 +40,25 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductTypeId" class="control-label"></label>
-                <select asp-for="ProductTypeId" class="form-control" asp-items="ViewBag.ProductTypeId"></select>
-                <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+                <select asp-for="ProductTypeId" class="form-control" id="typeId" asp-items="ViewBag.ProductTypeId"></select>
             </div>
             <div class="form-group">
                 <label name="featureIds" class="control-label"></label>
-                <select name="featureIds" class="form-control" asp-items="ViewBag.Features" multiple></select>
+                <select name="featureIds" class="form-control" id="fetchedFeatures" multiple></select>
                 <span class="text-danger"></span>
             </div>
+            <div>
+                <input id="add-features" class="btn-success" type="button" value="Add">
+            </div>
+            <div class="form-group">
+                <label name="selectedFeatures" class="control-label"></label>
+                <select name="selectedFeatures" class="form-control" id="selectedFeatures" asp-items="ViewBag.Features" multiple></select>
+                <span class="text-danger"></span>
+            </div>
+            <div>
+                <input id="remove-features" class="btn-danger mb-2" type="button" value="Remove">
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -62,5 +73,7 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="~/js/fetchFeatures.js"></script>
+        <script src="~/js/addFeatures.js"></script>
     }
 }

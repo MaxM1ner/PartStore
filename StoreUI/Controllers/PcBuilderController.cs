@@ -6,7 +6,7 @@ namespace StoreUI.Controllers
     public class PcBuilderController : Controller
     {
         // GET: PcBuilderController
-        [Route("pc-builder")]
+        [Route("PcBuilder")]
         public ActionResult Index()
         {
             return View();

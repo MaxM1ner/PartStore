@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" type="number" step=".01" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,7 +49,7 @@
 
             <div class="form-group">
                 <label name="featureIds" class="control-label"></label>
-                <select name="featureIds" class="form-control" id="fetchedFeatures" items="" multiple></select>
+                <select name="featureIds" class="form-control" id="fetchedFeatures" multiple></select>
                 <span class="text-danger"></span>
             </div>
             <div>
@@ -57,7 +57,7 @@
             </div>
             <div class="form-group">
                 <label name="selectedFeatures" class="control-label"></label>
-                <select name="selectedFeatures" class="form-control" id="selectedFeatures" items="" multiple></select>
+                <select name="selectedFeatures" class="form-control" id="selectedFeatures" multiple></select>
                 <span class="text-danger"></span>
             </div>
             <div>
@@ -79,4 +79,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/fetchFeatures.js"></script>
+    <script src="~/js/addFeatures.js"></script>
 }

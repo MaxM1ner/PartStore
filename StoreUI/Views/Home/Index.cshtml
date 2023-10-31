@@ -3,26 +3,93 @@
     ViewData["Title"] = "Part Store";
 }
 
-<div class="container text-center">
-    <div class="row row-cols-5">
-    @foreach (var product in Model)
-    {
-        <div class="col card m-2" style="width: 18rem;">
-            @if (product.Images != null && product.Images.Count > 0)
-            {
-                <img src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)" class="card-img-top" alt="@product.Name">
-            }
-            <div class="card-body">
-                <h5 class="card-title"><a href="#">@product.Name</a></h5>
-                <p class="card-text">@product.Description</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <p class="card-text text-success">@product.Price</p>
+<div class="containerr ">
+    <div class="wrapper">
+        <div class="cataloge-aside">
+            <h2 class="section-title">Catalog</h2>
+            <ul class="cataloge-list">
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/cpu-icon.png" alt="" /> <span>processors</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/motherboard-icon.png" alt="" /><span>motherboards</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/video-card-icon.png" alt="" /><span>video cards</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/ram-icon.png" alt="" /><span>RAM</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""><img class="cataloge-list-img" src="img/ssd-icon.png" alt="" /><span>memory disks</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/tower-pc-icon.png" alt="" /><span>Tower</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/cooler-icon.png" alt="" /><span>Cooling systems</span></a>
+                </li>
+                <li class="cataloge-list-item">
+                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/pc-icon.png" alt="" /><span>PC</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="hero">
+                <div class="slideshow-container">
+
+
+                    <div class="mySlides fade">
+                        <div class="numbertext">1 / 3</div>
+                        <img src="https://html5css.ru/howto/img_nature_wide.jpg" style="width:100%">
+                        <div class="text">Caption Text</div>
                     </div>
-                    <a href="#" class="btn btn-outline-primary btn-sm">Сторінка товару</a>
+
+                    <div class="mySlides fade">
+                        <div class="numbertext">2 / 3</div>
+                        <img src="https://html5css.ru/howto/img_snow_wide.jpg" style="width:100%">
+                        <div class="text">Caption Two</div>
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="numbertext">3 / 3</div>
+                        <img src="https://html5css.ru/howto/img_lights_wide.jpg" style="width:100%">
+                        <div class="text">Caption Three</div>
+                    </div>
+
+
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
                 </div>
+                <br>
+
+
+                <div style="text-align:center">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+
+            </div>
+           
+
+            <div class="description-cont">
+                <h3 class="description-cont-title">Ласкаво просимо до <span class="logo-span">Past</span>Store!</h3>
+                <p>
+                      Ми раді представити вам широкий асортимент якісних комп'ютерів та комплектуючих, що допоможуть вам підняти планку вашого досвіду роботи на комп'ютері до нового рівня. Наші продукти відомих світових брендів дозволять вам насолоджуватися високою продуктивністю та бездоганною якістю.
+
+                    PastStore - ваш надійний партнер у справах технологій! Наші фахівці завжди готові допомогти вам з вибором оптимального конфігурації для ваших потреб. Ми пропонуємо широкий асортимент комплектуючих для ПК, готових систем, а також можливість збірки комп'ютера згідно з вашими індивідуальними потребами.
+
+                    Наш каталог включає в себе останні моделі процесорів, відеокарт, оперативної пам'яті, накопичувачів та багато іншого. Ми також пропонуємо швидку доставку та гарантію якості на всі наші товари.
+
+                    Зробіть ваш вибір у бік найсучасніших технологій разом з PastStore!
+                </p>
             </div>
         </div>
-    }
+
     </div>
+    
+   @* *@
+    
+   
 </div>
