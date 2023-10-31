@@ -1,0 +1,57 @@
+﻿@model Product
+@{
+    ViewData["Title"] = " Catalog - Part Store";
+}
+<div class="containerr">
+    <div class="product-page">
+        <h2 class="product-title">@Model.Name</h2>
+        <div>
+            <div class="product-nav">
+                <ul class="product-nav-list">
+                    <li><a href="#about">Про товар</a></li>
+                    <li><a href="#characteristics">Характеристики</a></li>
+                    <li><a href="#description">Опис</a></li>
+                </ul>
+            </div>
+            <div class="product-box" id="about">
+                <img class="product-img"
+                     src="@Url.Content("~/productFiles/img/" + Model.Images.First().Path)"
+                     alt="" />
+                <div class="product-main-descriprion">
+                    <div>
+                        <p class="product-main-price">Price: @Model.Price</p>
+                        <p class="">
+                            Товар має гарантію протягом <br />12 місяців з моменту
+                            купівлі.
+                        </p>
+                    </div>
+                    <button class="product-main-btn">Buy</button>
+                </div>
+            </div>
+        </div>
+        <h2 class="product-title" id="characteristics">
+            Технічні характеристики: 
+        </h2>
+        <div>
+            <table class="characteristics-table">
+                <caption>
+                    Технічні характеристики
+                </caption>
+                @foreach(var item in Model.Features)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Value</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <h2 class="product-title" id="description">Опис: </h2>
+
+        <div>
+            <p class="product-main-description">
+                @Model.Description
+            </p>
+        </div>
+    </div>
+</div>
