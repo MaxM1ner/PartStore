@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using NuGet.Packaging;
 using StoreUI.Data;
+using StoreUI.Data.Migrations;
 using StoreUI.Models;
 
 namespace StoreUI.Areas.Admin.Controllers
@@ -27,7 +28,9 @@ namespace StoreUI.Areas.Admin.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        // GET: Admin/get-features/{id}
+        // GET: Admin/GetFeatures/{id}
+        [Route("Admin/Products/GetFeatures/{id}")]
+        [Route("Admin/Products/Edit/GetFeatures/{id}")]
         public async Task<IActionResult> GetFeatures([FromRoute] int id)
         {
             var applicationDbContext = _context.Features.Where(x => x.ProductTypeId == id);
@@ -72,7 +75,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, List<IFormFile> imageFiles)
+        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, List<IFormFile> imageFiles, ICollection<int> selectedFeatures)
         {
             if (ModelState.IsValid)
             {
@@ -103,6 +106,11 @@ namespace StoreUI.Areas.Admin.Controllers
                                 Product = product,
                                 ProductId = product.Id
                             });
+
+                            foreach (var feature in selectedFeatures)
+                            {
+                                product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
+                            }
                         }
                     }
 
@@ -144,7 +152,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, ICollection<int> featureIds)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, ICollection<int> selectedFeatures)
         {
             if (id != product.Id)
             {
@@ -156,7 +164,7 @@ namespace StoreUI.Areas.Admin.Controllers
                 try
                 {
                     product.Features.Clear();
-                    foreach (var feature in featureIds)
+                    foreach (var feature in selectedFeatures)
                     {
                         product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
                     }
