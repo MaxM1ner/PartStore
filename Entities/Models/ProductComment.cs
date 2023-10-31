@@ -2,13 +2,15 @@
 
 namespace StoreUI.Models
 {
-    public sealed class Feature
+    public class ProductComment
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
         public string Value { get; set; } = null!;
         public int ProductId { get; set; }
+        public string CustomerId { get; set; } = null!;
+        [ForeignKey(nameof(CustomerId))]
+        public virtual Customer? Customer { get; set; }
         [ForeignKey(nameof(ProductId))]
-        public Product? Product { get; set; }
+        public virtual Product? Product { get; set; }
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
+using NuGet.Packaging;
 using StoreUI.Data;
 using StoreUI.Models;
 
@@ -16,10 +19,19 @@ namespace StoreUI.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ProductsController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly string _projectDirectory = Environment.CurrentDirectory + "/wwwroot/productfiles/img" + Path.DirectorySeparatorChar;
+        public ProductsController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
+        }
+
+        // GET: Admin/get-features/{id}
+        public async Task<IActionResult> GetFeatures([FromRoute] int id)
+        {
+            var applicationDbContext = _context.Features.Where(x => x.ProductTypeId == id);
+            return Json(await applicationDbContext.ToListAsync());
         }
 
         // GET: Admin/Products
@@ -38,7 +50,7 @@ namespace StoreUI.Areas.Admin.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Type)
+                .Include(p => p.Type).Include(p => p.Features)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -60,10 +72,41 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, List<IFormFile> imageFiles)
         {
             if (ModelState.IsValid)
             {
+                if (imageFiles != null && imageFiles.Count > 0)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "productFiles/img");
+                    foreach (var imageFile in imageFiles)
+                    {
+                        if (imageFile.Length > 0)
+                        {
+                            
+                            string uniqueFileName = (product.Name + "_" + Guid.NewGuid().ToString() + "_" + imageFile.FileName).Replace(' ', '_');
+                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                            if (!Directory.Exists(uploadsFolder))
+                            {
+                                Directory.CreateDirectory(uploadsFolder);
+                            }
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await imageFile.CopyToAsync(stream);
+                            }
+
+                            product.Images.Add(new ProductImage() 
+                            {
+                                Path = uniqueFileName, 
+                                Product = product,
+                                ProductId = product.Id
+                            });
+                        }
+                    }
+
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,6 +129,13 @@ namespace StoreUI.Areas.Admin.Controllers
                 return NotFound();
             }
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
+            ViewData["Features"] = new SelectList(
+            _context.Features.Where(x => x.ProductTypeId == product.ProductTypeId).Select(x => new
+            {
+                x.Id,
+                Name = x.Name + ": " + x.Value
+            })
+            , "Id", "Name", product.Features.Select(x => x.Id).ToArray());
             return View(product);
         }
 
@@ -94,7 +144,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, ICollection<int> featureIds)
         {
             if (id != product.Id)
             {
@@ -105,6 +155,12 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 try
                 {
+                    product.Features.Clear();
+                    foreach (var feature in featureIds)
+                    {
+                        product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
+                    }
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -122,6 +178,13 @@ namespace StoreUI.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
+            ViewData["Features"] = new SelectList(
+            _context.Features.Where(x => x.ProductTypeId == product.ProductTypeId).Select(x => new
+            {
+                x.Id,
+                Name = x.Name + ": " + x.Value
+            })
+            , "Id", "Name");
             return View(product);
         }
 
@@ -134,7 +197,7 @@ namespace StoreUI.Areas.Admin.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Type)
+                .Include(p => p.Type).Include(p => p.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -153,19 +216,27 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.Images).Where(x => x.Id == id).FirstAsync();
             if (product != null)
             {
+                foreach (var image in product.Images)
+                {
+                    string imagePath = _projectDirectory + image.Path;
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

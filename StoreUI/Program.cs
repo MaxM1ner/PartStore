@@ -16,7 +16,7 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("Maxim") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -24,7 +24,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<Customer, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders().AddDefaultUI().AddDefaultTokenProviders();
+            .AddDefaultTokenProviders().AddDefaultUI();
 
 builder.Services.AddAuthorization(opts =>
 {
@@ -36,13 +36,13 @@ builder.Services.AddAuthorization(opts =>
     {
         policy.RequireRole("User");
     });
-    
 });
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Identity/Account/Login";
-        options.AccessDeniedPath = "/";
+        options.AccessDeniedPath = "/Home";
+        options.Cookie.Expiration = TimeSpan.FromDays(1);
     });
 
 builder.Services.AddControllersWithViews();
@@ -76,6 +76,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

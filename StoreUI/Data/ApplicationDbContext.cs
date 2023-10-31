@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StoreUI.Models;
+using System.Reflection.Emit;
 
 namespace StoreUI.Data
 {
@@ -18,7 +19,6 @@ namespace StoreUI.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             base.OnModelCreating(builder);
         }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
