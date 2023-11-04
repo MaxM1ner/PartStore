@@ -13,7 +13,7 @@ namespace StoreUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class FeaturesController : Controller
+    public sealed class FeaturesController : Controller
     {
         private readonly ApplicationDbContext _context;
 

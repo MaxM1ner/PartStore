@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace StoreUI.Controllers
 {
-    public class PcBuilderController : Controller
+    public sealed class PcBuilderController : Controller
     {
         // GET: PcBuilderController
         [Route("PcBuilder")]

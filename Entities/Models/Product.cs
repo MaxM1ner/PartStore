@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace StoreUI.Models
 {
-    public class Product
+    public sealed class Product
     {
         public Product()
         {
@@ -19,9 +19,9 @@ namespace StoreUI.Models
         public bool IsVisible {  get; set; }
         public int ProductTypeId { get; set; }
         [ForeignKey(nameof(ProductTypeId))]
-        public virtual ProductType? Type { get; set; }
-        public virtual ICollection<Feature> Features { get; private set; }
-        public virtual ICollection<ProductComment> Comments { get; private set; }
-        public virtual ICollection<ProductImage> Images { get; private set; }
+        public ProductType? Type { get; set; }
+        public ICollection<Feature> Features { get; private set; }
+        public ICollection<ProductComment> Comments { get; private set; }
+        public ICollection<ProductImage> Images { get; private set; }
     }
 }

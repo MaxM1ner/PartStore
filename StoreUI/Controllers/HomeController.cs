@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace StoreUI.Controllers
 {
-    public class HomeController : Controller
+    public sealed class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;

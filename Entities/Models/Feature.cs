@@ -2,7 +2,7 @@
 
 namespace StoreUI.Models
 {
-    public class Feature
+    public sealed class Feature
     {
         public Feature()
         {
@@ -13,7 +13,7 @@ namespace StoreUI.Models
         public string Value { get; set; } = null!;
         public int ProductTypeId { get; set; }
         [ForeignKey(nameof(ProductTypeId))]
-        public virtual ProductType? Type { get; set; }
-        public virtual ICollection<Product> Products { get; private set; }
+        public ProductType? Type { get; set; }
+        public ICollection<Product> Products { get; private set; }
     }
 }

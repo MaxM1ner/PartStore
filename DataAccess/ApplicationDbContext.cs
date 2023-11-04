@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace StoreUI.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<Customer>
+    public sealed class ApplicationDbContext : IdentityDbContext<Customer>
     {
         public DbSet<CartProduct> CartProducts { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;

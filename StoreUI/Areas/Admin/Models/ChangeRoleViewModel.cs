@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace StoreUI.Areas.Admin.Models
 {
 
-    public class ChangeRoleViewModel
+    public sealed class ChangeRoleViewModel
     {
         public string UserId { get; set; }
         public string UserEmail { get; set; }
