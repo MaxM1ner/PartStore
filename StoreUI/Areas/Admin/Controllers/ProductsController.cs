@@ -17,7 +17,7 @@ namespace StoreUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     //[Authorize(Roles = "Admin")]
-    public class ProductsController : Controller
+    public sealed class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _hostingEnvironment;

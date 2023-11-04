@@ -4,7 +4,7 @@ using System.Net;
 
 namespace StoreUI.Services
 {
-    public class SmtpEmailSender : IEmailSender
+    public sealed class SmtpEmailSender : IEmailSender
     {
         private readonly int SmtpClientPort;
         private readonly string SmtpClientHost;

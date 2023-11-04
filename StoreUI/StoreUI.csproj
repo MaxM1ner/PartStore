@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Data\**" />
     <Compile Remove="wwwroot\productFiles\img\**" />
+    <Content Remove="Areas\Admin\Data\**" />
     <Content Remove="wwwroot\productFiles\img\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
     <EmbeddedResource Remove="wwwroot\productFiles\img\**" />
+    <None Remove="Areas\Admin\Data\**" />
     <None Remove="wwwroot\productFiles\img\**" />
   </ItemGroup>
 
@@ -30,7 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="wwwroot\productFiles\" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿namespace StoreUI.Models
 {
-    public class ProductType
+    public sealed class ProductType
     {
         public ProductType()
         {
@@ -9,7 +9,7 @@
         }
         public int Id { get; set; }
         public string Value { get; set; } = null!;
-        public virtual ICollection<Feature> Features { get; private set; }
-        public virtual ICollection<Product> Products { get; private set;} 
+        public ICollection<Feature> Features { get; private set; }
+        public ICollection<Product> Products { get; private set;} 
     }
 }

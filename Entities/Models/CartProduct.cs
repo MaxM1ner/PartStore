@@ -2,7 +2,7 @@
 
 namespace StoreUI.Models
 {
-    public class CartProduct
+    public sealed class CartProduct
     {
         public int CartProductId { get; set; }
         public int Quantity { get; set; }
@@ -11,6 +11,6 @@ namespace StoreUI.Models
         public Product? Product { get; set; }
         public string CustomerId { get; set; } = null!;
         [ForeignKey(nameof(CustomerId))]
-        public virtual Customer? Customer { get; set; }
+        public Customer? Customer { get; set; }
     }
 }
