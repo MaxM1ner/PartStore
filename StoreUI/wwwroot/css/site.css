@@ -430,14 +430,14 @@ p.hint a {
   border-radius: 2px;
 }
 
-.add-order-btn {
-  padding: 3px 10px;
-  background-color: rgb(59, 181, 59);
-  color: white;
-  font-weight: 700;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
+.btn-open-product {
+    padding: 3px 10px;
+    background-color: rgb(59, 181, 59);
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
 }
 
 /* /////////////////// */

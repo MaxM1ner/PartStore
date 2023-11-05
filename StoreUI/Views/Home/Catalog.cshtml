@@ -42,7 +42,7 @@
         <div class="products-cards">
             @foreach(var product in Model)
             {
-                <a asp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
+                
                 <div class="card-container">
                     <div class="card-img">
                         <img class="hero-image"
@@ -55,13 +55,14 @@
                             @product.Description
                         </p>
                         <div class="card-tags">
-                            <span class="product-price">Price: @product.Price</span>
-                            
+                            <span class="product-price">Price: product.Price</span>
+                             <a class="btn-open-product" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">Open</a>
                         </div>
                     </div>
                 </div>
-                </a>
-            }   
+                
+            }  
+      
         </div>
     </div>
 </div>
