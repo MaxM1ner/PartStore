@@ -1,4 +1,5 @@
-﻿using StoreUI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreUI.Data;
 using StoreUI.Models;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,17 @@ namespace Services
         private readonly ApplicationDbContext _context;
 
         public ProductManager(ApplicationDbContext context) => _context = context;
-
-        public async Task<Product> GetProduct(int id)
+        public bool IsExist(int id)
         {
-            return await _context.Products.FindAsync(id) ?? throw new ArgumentException($"Not possible to find a product by id:{id}");
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        public Product GetProduct(int id)
+        {
+            return _context.Products.Where(x => x.Id == id).Include(x => x.Comments).Include(x => x.Features).Include(x => x.Images).Include(x => x.Type).FirstOrDefault() ?? throw new ArgumentException($"Not possible to find a product by id:{id}");
         }
         public List<Product> GetProducts()
         {
-            return _context.Products.ToList();
+            return _context.Products.Include(x => x.Comments).Include(x => x.Features).Include(x => x.Images).Include(x => x.Type).ToList();
         }
         public async Task Create(Product product)
         {
@@ -39,7 +43,7 @@ namespace Services
         }
         public async Task Delete(int id)
         {
-            var product = await GetProduct(id);
+            var product = GetProduct(id);
             await Delete(product);
         }
     }
