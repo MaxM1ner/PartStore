@@ -1,101 +1,124 @@
 ﻿@{
 }
 
-<main>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">Component</th>
-                <th scope="col">Overview</th>
-                <th scope="col">Title</th>
-                <th scope="col">Price</th>
-                <th scope="col">Product page</th>
-                <th scope="col">Remove</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">Processor</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">Motherboard</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">RAM</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">Graphics Card</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">CPU Cooler</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">Case Cooler</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">Storage</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">Power Supply</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-            <tr>
-                <th scope="row">Case</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button class="btn-danger">X</button></td>
-            </tr>
-        </tbody>
-        <tfoot class="table-dark">
-            <tr>
-                <th scope="row">Total price</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Price</td>
-                <td></td>
-            </tr>
-        </tfoot>
-    </table>
-</main>
+<section class="pc-builder" id="fon-anim">
+    <div class="containerr">
+        <h2 class="pc-builder-title">pc builder</h2>
+        <table class="table-pc-builder">
+            <thead>
+                <tr>
+                    <th scope="col" width="12%">Component</th>
+                    <th scope="col" width="9%">Product</th>
+                    <th scope="col" width="47%">Title</th>
+                    <th scope="col" width="7%">Price</th>
+                    <th scope="col" width="18%">Product Link</th>
+                    <th scope="col" width="7%">Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- processor -->
+                <tr class="item" id="processor">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">processor</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="processor1">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('processor',1)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- motherboard -->
+                <tr class="item" id="motherboard">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">motherboard</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="motherboard2">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('motherboard',2)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- video card -->
+                <tr class="item" id="video_card">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">video card</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="video_card3">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('video_card',3)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- RAM -->
+                <tr class="item" id="ram">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">ram</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="ram4">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('ram',4)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- memory disks -->
+                <tr class="item" id="memory_disk">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">memory disk</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="memory_disk5">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('memory_disk',5)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- Tower -->
+                <tr class="item" id="tower">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">Tower</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="tower6">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('tower',6)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- Cooling systems -->
+                <tr class="item" id="cooling_systems">
+                    <td scope="row" class="component">
+                        <a href="" class="pc-builder-page-link">Cooling systems</a>
+                    </td>
+                    <td colspan="5" class="td-addComp" id="cooling_systems7">
+                        <button type="button"
+                                class="btn-add-comp"
+                                onclick="addComponent('cooling_systems',7)">
+                            + Add
+                        </button>
+                    </td>
+                </tr>
+                <!-- footer -->
+                <tr class="item last">
+                    <td scope="row" class="component">Grand Total</td>
+                    <td colspan="2"></td>
+                    <td>
+                        <p class="comp-price total" id="totalPrice">$0</p>
+                    </td>
+                    <td colspan="2">
+                        <button class="btn-add-pc-order" type="submit">order</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
