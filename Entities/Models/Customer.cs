@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
-namespace StoreUI.Models
+namespace Entities.Models
 {
     public sealed class Customer : IdentityUser
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using StoreUI.Data;
-using StoreUI.Models;
+using DataAccess;
+using Entities.Models;
 using System.Diagnostics;
 
 namespace StoreUI.Controllers

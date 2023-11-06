@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace StoreUI.Data.Migrations
+namespace DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class Test : Migration

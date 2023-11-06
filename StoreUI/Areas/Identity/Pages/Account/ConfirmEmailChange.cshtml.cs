@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using StoreUI.Models;
+using Entities.Models;
 
 namespace StoreUI.Areas.Identity.Pages.Account
 {

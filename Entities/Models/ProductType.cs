@@ -1,4 +1,4 @@
-﻿namespace StoreUI.Models
+﻿namespace Entities.Models
 {
     public sealed class ProductType
     {

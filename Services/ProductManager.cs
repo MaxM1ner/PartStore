@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreUI.Data;
-using StoreUI.Models;
+using DataAccess;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Services
 {

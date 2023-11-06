@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using StoreUI.Models;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

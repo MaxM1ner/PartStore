@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using StoreUI.Models;
+using Entities.Models;
 
 namespace StoreUI.Areas.Identity.Pages.Account.Manage
 {

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = " Catalog - Part Store";
+    ViewData["Title"] = "Catalog - Part Store";
 }
 
 <div class="containerr">
@@ -55,7 +55,7 @@
                             @product.Description
                         </p>
                         <div class="card-tags">
-                            <span class="product-price">Price: product.Price</span>
+                            <span class="product-price">Price: @product.Price</span>
                              <a class="btn-open-product" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">Open</a>
                         </div>
                     </div>

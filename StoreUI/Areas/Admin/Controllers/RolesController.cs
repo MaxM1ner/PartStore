@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using StoreUI.Areas.Admin.Models;
-using StoreUI.Models;
+using StoreUI.Areas.Admin.ViewModels;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
@@ -44,7 +44,7 @@ namespace StoreUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(id);
+            IdentityRole? role = await _roleManager.FindByIdAsync(id);
             if (role != null)
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
@@ -56,7 +56,7 @@ namespace StoreUI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(string userId)
         {
-            Customer user = await _userManager.FindByIdAsync(userId);
+            Customer? user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -76,7 +76,7 @@ namespace StoreUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
-            Customer user = await _userManager.FindByIdAsync(userId);
+            Customer? user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
 

@@ -1,3 +1,4 @@
+using DataAccess;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,8 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Services;
-using StoreUI.Data;
-using StoreUI.Models;
+using Entities.Models;
 using StoreUI.Services;
 using System.Net;
 using System.Security.Claims;
@@ -18,7 +18,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found."); //DefaultConnection
+var connectionString = builder.Configuration.GetConnectionString("Maxim") ?? throw new InvalidOperationException("Connection string not found."); //DefaultConnection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
