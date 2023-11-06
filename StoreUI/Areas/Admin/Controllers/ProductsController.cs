@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using NuGet.Packaging;
+using Services;
 using StoreUI.Data;
 using StoreUI.Data.Migrations;
 using StoreUI.Models;
@@ -19,13 +20,17 @@ namespace StoreUI.Areas.Admin.Controllers
     //[Authorize(Roles = "Admin")]
     public sealed class ProductsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context; //Remove
+
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly string _projectDirectory = Environment.CurrentDirectory + "/wwwroot/productfiles/img" + Path.DirectorySeparatorChar;
-        public ProductsController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
+        private readonly FormImageManager _formImageUploader;
+        private readonly ProductManager _productManager;
+        public ProductsController(IWebHostEnvironment hostingEnvironment, FormImageManager formImageUploader, ProductManager productManager, ApplicationDbContext context)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+            _formImageUploader = formImageUploader;
+            _productManager = productManager;
         }
 
         // GET: Admin/GetFeatures/{id}
@@ -33,28 +38,28 @@ namespace StoreUI.Areas.Admin.Controllers
         [Route("Admin/Products/Edit/GetFeatures/{id}")]
         public async Task<IActionResult> GetFeatures([FromRoute] int id)
         {
-            var applicationDbContext = _context.Features.Where(x => x.ProductTypeId == id);
-            return Json(await applicationDbContext.ToListAsync());
+
+            var productFeatures = _context.Features.Where(x => x.ProductTypeId == id);
+            return Json(await productFeatures.ToListAsync());
         }
 
         // GET: Admin/Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Type);
-            return View(await applicationDbContext.ToListAsync());
+            var products = _productManager.GetProducts();
+            return View(products);
         }
 
         // GET: Admin/Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Type).Include(p => p.Features)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = _productManager.GetProduct((int)id);
+
             if (product == null)
             {
                 return NotFound();
@@ -75,48 +80,31 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, List<IFormFile> imageFiles, ICollection<int> selectedFeatures)
+        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, ICollection<IFormFile> imageFiles, IEnumerable<int> selectedFeatures)
         {
             if (ModelState.IsValid)
             {
                 if (imageFiles != null && imageFiles.Count > 0)
                 {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "productFiles/img");
                     foreach (var imageFile in imageFiles)
                     {
                         if (imageFile.Length > 0)
                         {
-                            
-                            string uniqueFileName = (product.Name + "_" + Guid.NewGuid().ToString() + "_" + imageFile.FileName).Replace(' ', '_');
-                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                            if (!Directory.Exists(uploadsFolder))
-                            {
-                                Directory.CreateDirectory(uploadsFolder);
-                            }
-
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await imageFile.CopyToAsync(stream);
-                            }
-
+                            string fileName = _formImageUploader.UploadImage(imageFile).Result;
                             product.Images.Add(new ProductImage() 
                             {
-                                Path = uniqueFileName, 
+                                Path = fileName, 
                                 Product = product,
                                 ProductId = product.Id
                             });
-
-                            foreach (var feature in selectedFeatures)
-                            {
-                                product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
-                            }
                         }
                     }
-
                 }
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                foreach (var feature in selectedFeatures)
+                {
+                    product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
+                }
+                await _productManager.Create(product);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
@@ -124,18 +112,15 @@ namespace StoreUI.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null)
             {
                 return NotFound();
             }
+            if (!_productManager.IsExist((int)id)) return NotFound();
+            var product = _productManager.GetProduct((int)id);
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
             ViewData["Features"] = new SelectList(
             _context.Features.Where(x => x.ProductTypeId == product.ProductTypeId).Select(x => new
@@ -152,7 +137,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, ICollection<int> selectedFeatures)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, IEnumerable<int> selectedFeatures)
         {
             if (id != product.Id)
             {
@@ -161,28 +146,13 @@ namespace StoreUI.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                product.Features.Clear();
+                foreach (var feature in selectedFeatures)
                 {
-                    product.Features.Clear();
-                    foreach (var feature in selectedFeatures)
-                    {
-                        product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
-                    }
+                    product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
+                }
 
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _productManager.Edit(product);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
@@ -197,20 +167,14 @@ namespace StoreUI.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            var product = await _context.Products
-                .Include(p => p.Type).Include(p => p.Images)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            if(!_productManager.IsExist((int)id)) return NotFound();
+            var product = _productManager.GetProduct((int)id);
 
             return View(product);
         }
@@ -220,31 +184,8 @@ namespace StoreUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Products == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
-            }
-            var product = await _context.Products.Include(p => p.Images).Where(x => x.Id == id).FirstAsync();
-            if (product != null)
-            {
-                foreach (var image in product.Images)
-                {
-                    string imagePath = _projectDirectory + image.Path;
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                }
-                _context.Products.Remove(product);
-            }
-
-            await _context.SaveChangesAsync();
+            await _productManager.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductExists(int id)
-        {
-            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

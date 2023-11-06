@@ -7,11 +7,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Services;
 using StoreUI.Data;
 using StoreUI.Models;
 using StoreUI.Services;
 using System.Net;
 using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,20 @@ builder.Services.AddTransient<IEmailSender, SmtpEmailSender>((x) =>
     (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "Password") ?? throw new NullReferenceException("Configuration section SmtpCredential, value Password returned null")),
     $"noreply@{builder.Environment.ApplicationName}.com");
 });
+builder.Services.AddTransient<FormImageManager>((x) =>
+{
+    StringBuilder sb = new StringBuilder();
+    sb.Append(Environment.CurrentDirectory)
+        .Append(Path.DirectorySeparatorChar).
+        Append("wwwroot").
+        Append(Path.DirectorySeparatorChar).
+        Append("productFiles").
+        Append(Path.DirectorySeparatorChar).
+        Append("img").
+        Append(Path.DirectorySeparatorChar);
+    return new FormImageManager(sb.ToString());
+});
+builder.Services.AddTransient<ProductManager>();
 
 var app = builder.Build();
 
