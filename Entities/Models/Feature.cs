@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StoreUI.Models
+namespace Entities.Models
 {
     public sealed class Feature
     {

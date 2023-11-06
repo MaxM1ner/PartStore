@@ -10,14 +10,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using NuGet.Packaging;
 using Services;
-using StoreUI.Data;
-using StoreUI.Data.Migrations;
-using StoreUI.Models;
+using DataAccess;
+using DataAccess.Migrations;
+using Entities.Models;
+using StoreUI.Areas.Admin.ViewModels;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public sealed class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context; //Remove
@@ -69,9 +70,17 @@ namespace StoreUI.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value");
+
+            var defaultType = await _context.ProductTypes.Include(f => f.Features).FirstOrDefaultAsync();
+
+            ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
+            {
+                x.Id,
+                Name = x.Name + ": " + x.Value
+            }), "Id", "Name");
             return View();
         }
 
@@ -91,9 +100,9 @@ namespace StoreUI.Areas.Admin.Controllers
                         if (imageFile.Length > 0)
                         {
                             string fileName = _formImageUploader.UploadImage(imageFile).Result;
-                            product.Images.Add(new ProductImage() 
+                            product.Images.Add(new ProductImage()
                             {
-                                Path = fileName, 
+                                Path = fileName,
                                 Product = product,
                                 ProductId = product.Id
                             });
@@ -108,11 +117,18 @@ namespace StoreUI.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
+            var defaultType = await _context.ProductTypes.Where(x => x.Id == product.ProductTypeId).FirstOrDefaultAsync();
+
+            ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
+            {
+                x.Id,
+                Name = x.Name + ": " + x.Value
+            }), "Id", "Name");
             return View(product);
         }
 
         // GET: Admin/Products/Edit/5
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -122,13 +138,24 @@ namespace StoreUI.Areas.Admin.Controllers
             var product = _productManager.GetProduct((int)id);
 
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
-            ViewData["Features"] = new SelectList(
-            _context.Features.Where(x => x.ProductTypeId == product.ProductTypeId).Select(x => new
+
+            var defaultType = await _context.ProductTypes.Where(x => x.Id == product.ProductTypeId).Include(p => p.Features).FirstOrDefaultAsync();
+
+            var selectListItems = product.Features.Where(x => x.ProductTypeId == product.ProductTypeId);
+
+            ViewData["SelectedFeatures"] = new SelectList(selectListItems.Select(x => new
             {
                 x.Id,
                 Name = x.Name + ": " + x.Value
-            })
-            , "Id", "Name", product.Features.Select(x => x.Id).ToArray());
+            }), "Id", "Name", product.Features.Select(x => x.Id).ToArray());
+
+            ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Except(selectListItems).Select(x => new
+            {
+                x.Id,
+                Name = x.Name + ": " + x.Value
+            }), "Id", "Name");
+
+
             return View(product);
         }
 
@@ -137,7 +164,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, IEnumerable<int> selectedFeatures)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId,Features")] Product product, IEnumerable<int> selectedFeatures)
         {
             if (id != product.Id)
             {
@@ -151,12 +178,20 @@ namespace StoreUI.Areas.Admin.Controllers
                 {
                     product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
                 }
-
                 await _productManager.Edit(product);
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
-            ViewData["Features"] = new SelectList(
+
+            var defaultType = await _context.ProductTypes.Where(x => x.Id == product.ProductTypeId).FirstOrDefaultAsync();
+
+            ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
+            {
+                x.Id,
+                Name = x.Name + ": " + x.Value
+            }), "Id", "Name");
+            ViewData["SelectedFeatures"] = new SelectList(
             _context.Features.Where(x => x.ProductTypeId == product.ProductTypeId).Select(x => new
             {
                 x.Id,
@@ -173,7 +208,7 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            if(!_productManager.IsExist((int)id)) return NotFound();
+            if (!_productManager.IsExist((int)id)) return NotFound();
             var product = _productManager.GetProduct((int)id);
 
             return View(product);

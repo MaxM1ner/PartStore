@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 
-namespace StoreUI.Models
+namespace Entities.Models
 {
     public sealed class Product
     {

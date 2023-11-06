@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using StoreUI.Models;
+using Entities.Models;
 using System.Reflection.Emit;
 
-namespace StoreUI.Data
+namespace DataAccess
 {
     public sealed class ApplicationDbContext : IdentityDbContext<Customer>
     {

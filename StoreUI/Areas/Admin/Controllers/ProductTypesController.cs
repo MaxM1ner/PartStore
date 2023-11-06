@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using StoreUI.Data;
-using StoreUI.Models;
+using DataAccess;
+using Entities.Models;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
