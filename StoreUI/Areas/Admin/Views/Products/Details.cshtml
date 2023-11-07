@@ -1,5 +1,4 @@
-﻿@model Entities.Models.Product
-
+﻿@model StoreUI.Areas.Admin.ViewModels.ProductViewModel
 @{
     ViewData["Title"] = "Details";
 }
@@ -41,10 +40,10 @@
             @Html.DisplayFor(model => model.IsVisible)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.ProductTypeId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type.Value)
+            @Html.DisplayFor(model => model.TypeValue)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Features)

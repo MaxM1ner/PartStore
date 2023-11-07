@@ -14,6 +14,7 @@ using DataAccess;
 using DataAccess.Migrations;
 using Entities.Models;
 using StoreUI.Areas.Admin.ViewModels;
+using StoreUI.Extensions;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
@@ -47,7 +48,11 @@ namespace StoreUI.Areas.Admin.Controllers
         // GET: Admin/Products
         public IActionResult Index()
         {
-            var products = _productManager.GetProducts();
+            var products = new List<ProductViewModel>();
+            foreach (var dbProduct in _productManager.GetProducts())
+            {
+                products.Add(dbProduct.ToProductViewModel());
+            }
             return View(products);
         }
 
@@ -66,7 +71,7 @@ namespace StoreUI.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(product);
+            return View(product.ToProductViewModel());
         }
 
         // GET: Admin/Products/Create
@@ -78,9 +83,9 @@ namespace StoreUI.Areas.Admin.Controllers
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
             {
-                x.Id,
-                Name = x.Name + ": " + x.Value
-            }), "Id", "Name");
+                id = x.Id,
+                name = x.Name + ": " + x.Value
+            }), "id", "name");
             return View();
         }
 
@@ -89,42 +94,43 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId")] Product product, ICollection<IFormFile> imageFiles, IEnumerable<int> selectedFeatures)
+        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId,SelectedFeaturesIds,FormImages")] ProductViewModel product)
         {
+            var dbProduct = product.ToProduct();
             if (ModelState.IsValid)
             {
-                if (imageFiles != null && imageFiles.Count > 0)
+                if (product.FormImages != null && product.FormImages.Count > 0)
                 {
-                    foreach (var imageFile in imageFiles)
+                    foreach (var imageFile in product.FormImages)
                     {
                         if (imageFile.Length > 0)
                         {
                             string fileName = _formImageUploader.UploadImage(imageFile).Result;
-                            product.Images.Add(new ProductImage()
+                            dbProduct.Images.Add(new ProductImage()
                             {
                                 Path = fileName,
-                                Product = product,
+                                Product = dbProduct,
                                 ProductId = product.Id
                             });
                         }
                     }
                 }
-                foreach (var feature in selectedFeatures)
+                foreach (var feature in product.SelectedFeaturesIds)
                 {
-                    product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
+                    dbProduct.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
                 }
-                await _productManager.Create(product);
+                await _productManager.Create(dbProduct);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
-            var defaultType = await _context.ProductTypes.Where(x => x.Id == product.ProductTypeId).FirstOrDefaultAsync();
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", dbProduct.ProductTypeId);
+            var defaultType = await _context.ProductTypes.Where(x => x.Id == dbProduct.ProductTypeId).FirstOrDefaultAsync();
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
             {
-                x.Id,
-                Name = x.Name + ": " + x.Value
-            }), "Id", "Name");
-            return View(product);
+                id = x.Id,
+                name = x.Name + ": " + x.Value
+            }), "id", "name");
+            return View(dbProduct);
         }
 
         // GET: Admin/Products/Edit/5
@@ -145,18 +151,18 @@ namespace StoreUI.Areas.Admin.Controllers
 
             ViewData["SelectedFeatures"] = new SelectList(selectListItems.Select(x => new
             {
-                x.Id,
-                Name = x.Name + ": " + x.Value
-            }), "Id", "Name", product.Features.Select(x => x.Id).ToArray());
+                id = x.Id,
+                name = x.Name + ": " + x.Value
+            }), "id", "name", product.Features.Select(x => x.Id).ToArray());
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Except(selectListItems).Select(x => new
             {
-                x.Id,
-                Name = x.Name + ": " + x.Value
-            }), "Id", "Name");
+                id = x.Id,
+                name = x.Name + ": " + x.Value
+            }), "id", "name");
 
 
-            return View(product);
+            return View(product.ToProductViewModel());
         }
 
         // POST: Admin/Products/Edit/5
@@ -164,41 +170,42 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId,Features")] Product product, IEnumerable<int> selectedFeatures)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId,SelectedFeaturesIds")] ProductViewModel product)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
-
+            var dbProduct = _productManager.GetProduct(product.Id);
+            dbProduct.UpdateProduct(product);
             if (ModelState.IsValid)
             {
-                product.Features.Clear();
-                foreach (var feature in selectedFeatures)
+                dbProduct.Features.Clear();
+                foreach (var feature in product.SelectedFeaturesIds)
                 {
-                    product.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
+                    dbProduct.Features.Add(await _context.Features.Where(x => x.Id == feature).FirstAsync());
                 }
-                await _productManager.Edit(product);
+                await _productManager.Edit(dbProduct);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", product.ProductTypeId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Value", dbProduct.ProductTypeId);
 
-            var defaultType = await _context.ProductTypes.Where(x => x.Id == product.ProductTypeId).FirstOrDefaultAsync();
+            var defaultType = await _context.ProductTypes.Where(x => x.Id == dbProduct.ProductTypeId).FirstOrDefaultAsync();
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
             {
-                x.Id,
-                Name = x.Name + ": " + x.Value
-            }), "Id", "Name");
-            ViewData["SelectedFeatures"] = new SelectList(
-            _context.Features.Where(x => x.ProductTypeId == product.ProductTypeId).Select(x => new
+                id = x.Id,
+                name = x.Name + ": " + x.Value
+            }), "id", "name");
+
+            ViewData["SelectedFeatures"] = new SelectList(_context.Features.Where(x => x.ProductTypeId == dbProduct.ProductTypeId).Select(x => new
             {
-                x.Id,
-                Name = x.Name + ": " + x.Value
-            })
-            , "Id", "Name");
-            return View(product);
+                id = x.Id,
+                name = x.Name + ": " + x.Value
+            }), "id", "name");
+
+            return View(dbProduct.ToProductViewModel());
         }
 
         // GET: Admin/Products/Delete/5
@@ -211,7 +218,7 @@ namespace StoreUI.Areas.Admin.Controllers
             if (!_productManager.IsExist((int)id)) return NotFound();
             var product = _productManager.GetProduct((int)id);
 
-            return View(product);
+            return View(product.ToProductViewModel());
         }
 
         // POST: Admin/Products/Delete/5

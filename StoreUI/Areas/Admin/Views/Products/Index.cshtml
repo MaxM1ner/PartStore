@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entities.Models.Product>
+﻿@model IEnumerable<StoreUI.Areas.Admin.ViewModels.ProductViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.IsVisible)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.ProductTypeId)
             </th>
             <th></th>
         </tr>
@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.IsVisible)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type.Value)
+                @Html.DisplayFor(modelItem => item.TypeValue)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
