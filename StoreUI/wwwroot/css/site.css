@@ -773,7 +773,7 @@ table.characteristics-table {
 }
 
 .item td {
-    border-bottom: 1px solid #11111123;
+    border-bottom: 1px solid var(--primary);
 }
 
 .pc-builder-page-link {
