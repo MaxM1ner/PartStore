@@ -1,6 +1,7 @@
 :root {
     --brand: #228a8a;
     --brand-light: #5ca8a8;
+    --brand-secondary: #a87425;
     --primary: #ffffff;
     --background: #2a2a30;
     --red: rgb(250, 68, 68);
@@ -157,22 +158,33 @@ img {
   color: var(--brand);
 }
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--primary);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.11;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.11;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    padding: 5px 0;
 }
 .logo-span {
-  color: var(--brand);
+    color: var(--brand);
+    transition: .5s ease-in-out;
 }
-.logo:hover {
-  color: var(--primary);
+.logo-span2 {
+    color: var(--primary);
+    transition: .5s ease-in-out;
+}
+.logo:hover .logo-span {
+    color: var(--primary);
+    transform: scale(1.2);
+}
+.logo:hover .logo-span2 {
+    color: var(--brand);
+    transform: scale(1.2);
+    margin-left: 10%;
 }
 
 .icon {

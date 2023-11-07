@@ -3,6 +3,7 @@ const list = document.querySelector("#fetchedFeatures");
 const selectedList = document.querySelector("#selectedFeatures");
 const addBtn = document.querySelector("#add-features");
 const remBtn = document.querySelector("#remove-features");
+const productForm = document.querySelector("#productForm");
 
 document.addEventListener('DOMContentLoaded', function () {
     addBtn.addEventListener("click", async function () {
@@ -40,6 +41,13 @@ document.addEventListener('DOMContentLoaded', function () {
             option.value = elements[id].id;
             option.text = elements[id].name;
             list.append(option);
+        }
+    });
+    productForm.addEventListener("submit", async function () {
+        let selected = selectedList.getElementsByTagName('option')
+
+        for (let i = 0; i < selected.length; i++) {
+            selected[i].selected = 'selected';
         }
     });
 });
