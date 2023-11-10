@@ -18,7 +18,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("Maxim") ?? throw new InvalidOperationException("Connection string not found."); //DefaultConnection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found."); //DefaultConnection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -71,8 +71,9 @@ builder.Services.AddTransient<FormImageManager>((x) =>
         Append(Path.DirectorySeparatorChar);
     return new FormImageManager(sb.ToString());
 });
+builder.Services.AddTransient<FeatureManager>();
+builder.Services.AddTransient<ProductTypeManager>();
 builder.Services.AddTransient<ProductManager>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -15,37 +15,37 @@ namespace Services
         private readonly ApplicationDbContext _context;
 
         public ProductManager(ApplicationDbContext context) => _context = context;
-        public bool IsExist(int id)
+        public async Task<bool> IsExistAsync(int id)
         {
-            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return await _context.Products.AnyAsync(e => e.Id == id);
         }
-        public Product GetProduct(int id)
+        public async Task<Product> GetProductAsync(int id)
         {
-            return _context.Products.Where(x => x.Id == id).Include(x => x.Comments).Include(x => x.Features).Include(x => x.Images).Include(x => x.Type).FirstOrDefault() ?? throw new ArgumentException($"Not possible to find a product by id:{id}");
+            return await _context.Products.Where(x => x.Id == id).Include(x => x.Comments).Include(x => x.Features).Include(x => x.Images).Include(x => x.Type).FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a product by id:{id}", nameof(id));
         }
-        public List<Product> GetProducts()
+        public async Task<List<Product>> GetProductsAsync()
         {
-            return _context.Products.Include(x => x.Comments).Include(x => x.Features).Include(x => x.Images).Include(x => x.Type).ToList();
+            return await _context.Products.Include(x => x.Comments).Include(x => x.Features).Include(x => x.Images).Include(x => x.Type).ToListAsync();
         }
-        public async Task Create(Product product)
+        public async Task CreateAsync(Product product)
         {
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
         }
-        public async Task Edit(Product product)
+        public async Task UpdateAsync(Product product)
         {
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
-        public async Task Delete(Product product)
+        public async Task DeleteAsync(Product product)
         {
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var product = GetProduct(id);
-            await Delete(product);
+            var product = await GetProductAsync(id);
+            await DeleteAsync(product);
         }
     }
 }
