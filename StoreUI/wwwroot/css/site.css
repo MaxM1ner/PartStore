@@ -141,7 +141,7 @@ img {
 }
 .nav-users {
   display: flex;
-  gap: 18px;
+  gap: 24px;
   align-self: center;
 }
 .nav-link {
@@ -153,6 +153,10 @@ img {
   letter-spacing: -0.02em;
   transition: color 0.5s ease-in-out;
 }
+    .nav-link.btn-icon {
+        background-color: inherit;
+        border: none;
+    }
 .nav-link:hover,
 .nav-link:focus {
   color: var(--brand);
@@ -572,7 +576,7 @@ p.hint a {
         }
 
 .product-nav {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--primary);
     padding: 15px 10px;
 }
 
@@ -591,7 +595,7 @@ p.hint a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.23);
+    box-shadow: 0px 0px 5px 0px var(--primary);
     padding: 40px 150px;
 }
 
@@ -623,6 +627,7 @@ p.hint a {
     background-color: var(--background);
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.23);
     margin-bottom: 20px;
+   
 }
 
 .product-main-description {
@@ -630,6 +635,49 @@ p.hint a {
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.03em;
+}
+.comments-block {
+    display: flex;
+    justify-content: space-around;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+}
+
+.comment {
+    font-weight: 600;
+    max-width: 100%;
+}
+
+    .comment span {
+        font-weight: 400;
+        margin-left: 20px;
+    }
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.label-comment {
+    font-size: 20px;
+}
+
+.comment-text {
+    resize: none;
+    background-color: var(--background);
+    color: var(--primary);
+    word-wrap: break-word;
+}
+
+.comment-btn {
+    border-radius: 4px;
+    padding: 10px 0;
 }
 /* ////////////////////////////// */
 table.characteristics-table,
@@ -877,5 +925,140 @@ table.characteristics-table {
     .btn-add-comp:hover {
         background-color: var(--green-light);
     }
+/* ///////////////////////////////// */
+/* ///////////  manage  /////////// */
+.wrapper-manage-list {
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.manage-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+    .manage-list .nav-item {
+        background-color: var(--brand);
+        width: 100%;
+        text-align: center;
+        border-radius: 10px;
+        text-transform: uppercase;
+        padding: 24px 0;
+        box-sizing: border-box;
+        transition: background-color 0.1s ease-in-out;
+    }
+
+.manage-link {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.manage-list .nav-item:hover {
+    background-color: var(--brand-light);
+}
+/* ///////////////////////////////// */
+/* ////////////// Card page //////////////*/
+.card-page-content {
+    background: linear-gradient(45deg, #232526 0%, #414345 100%);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+    .product-item img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+.card-name-product {
+    margin-bottom: 10px;
+}
+
+.crad-btn-div {
+    display: flex;
+    gap: 20px;
+}
+
+.card-btn {
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+    .card-btn.add {
+        background-color: var(--green);
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .card-btn.add:hover {
+            background-color: var(--green-light);
+        }
+
+    .card-btn.remove {
+        background-color: var(--red);
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .card-btn.remove:hover {
+            background-color: var(--red-light);
+        }
+
+.card-order-title {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.card-orders-block {
+    margin-bottom: 20px;
+}
+
+.order-form {
+    background: linear-gradient(45deg, #232526 0%, #414345 100%);
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 50%;
+    padding: 30px;
+    margin: 0 auto;
+}
+
+    .card-form label {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .card-form input,
+    .card-form textarea {
+        background-color: var(--background);
+        color: var(--primary);
+        padding: 5px 10px;
+        resize: none;
+    }
+
+.continue-card {
+    margin: 5px auto;
+    text-decoration: underline;
+    display: block;
+    text-align: center;
+}
 /* ///////////////////////////////// */
 
