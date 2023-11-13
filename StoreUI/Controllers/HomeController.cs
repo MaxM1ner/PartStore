@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using DataAccess;
 using Entities.Models;
 using System.Diagnostics;
+using StoreUI.ViewModels;
 
 namespace StoreUI.Controllers
 {
@@ -21,13 +22,15 @@ namespace StoreUI.Controllers
         {
             return View();
         }
-        public IActionResult Catalog()
+        public async Task<IActionResult> Catalog()
         {
-            return View(_context.
-                Products.
-                Where(x => x.IsVisible && x.Quantity > 0).
-                Include(x => x.Images).
-                ToList());
+            var catalogProducts = new List<Product>();
+            var types = await _context.ProductTypes.Include(x => x.Products).ThenInclude(y => y.Images).ToListAsync();
+            foreach (var type in await _context.ProductTypes.Include(x => x.Products).ToListAsync())
+            {
+                catalogProducts.AddRange(type.Products.Where(x => x.Quantity > 0 && x.IsVisible).Take(5));
+            }
+            return View(new CatalogViewModel() { Products = catalogProducts, ProductTypes = types});
         }
         public IActionResult Details(int id)
         {
@@ -35,6 +38,7 @@ namespace StoreUI.Controllers
                 Where(x => x.Id == id && x.IsVisible).
                 Include(x => x.Images).
                 Include(x => x.Features).
+                Include(x => x.Type).
                 First());
         }
         public IActionResult Privacy()
