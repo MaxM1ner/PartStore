@@ -9,22 +9,22 @@
         <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
     <li>
-            <button class="nav-link icon" type="submit" class="icon">
+            <a class="nav-link icon" asp-controller="Home" asp-action="Cart" >
                 
                 <svg width="25" height="25">
                     <use href="img/icons.svg#icon-cart "></use>
                 </svg>
                 
-            </button>
+            </a>
 
     </li>
         <li class="nav-users-item">
         <form  class="form-inline " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button class="nav-link icon" type="submit" class="icon">
+                <a class="nav-link icon" type="submit" class="icon">
                     <svg width="25" height="25">
                         <use href="img/icons.svg#icon-enter "></use>
                     </svg>
-            </button>
+            </a>
         </form>
     </li>
 }
