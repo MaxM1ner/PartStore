@@ -1,69 +1,48 @@
-﻿@model IEnumerable<Product>
+﻿@model CatalogViewModel
 @{
     ViewData["Title"] = "Catalog - Part Store";
 }
 <section id="fon-anim">
-<div class="containerr">
-    <h2 class="category-main-title">Catalog</h2>
+    <div class="containerr">
+        <h2 class="category-main-title">Catalog</h2>
 
-    <div class="catalog">
-        <div class="catalog-category">
-            <a href="" class="category-title">processors</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">motherboards</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">video cards</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">RAM</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">memory disks</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">Tower</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">Cooling systems</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">PC</a>
-        </div>
-        <div class="catalog-category">
-            <a href="" class="category-title">PC builder</a>
-        </div>
-    </div>
-
-    <div class="recommendation">
-        <h2 class="catalog-recommendation">recommendation</h2>
-        <a href="" class="products-cards-title">Processors</a>
-        <div class="products-cards">
-            @foreach(var product in Model)
+        <div class="catalog">
+            @foreach (var type in Model?.ProductTypes)
             {
-                
-                <div class="card-container">
-                    <div class="card-img">
-                        <img class="hero-image"
-                             src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
-                             alt="Spinning glass cube" />
-                    </div>
-                    <div class="card-content">
-                        <h3 class="product-name">@product.Name</h3>
-                        <p class="product-description">
-                            @product.Description
-                        </p>
-                        <div class="card-tags">
-                            <span class="product-price">Price: @product.Price</span>
-                             <a class="btn-open-product" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">Open</a>
-                        </div>
-                    </div>
+                <div class="catalog-category">
+                    <a href="" class="category-title">@type.Value</a>
                 </div>
-
-                }  
-               
+            }
         </div>
-    </div>
+
+        <div class="recommendation">
+            <h2 class="catalog-recommendation">recommendation</h2>
+            @foreach (var type in Model?.ProductTypes)
+            {
+                <a href="" class="products-cards-title">@type.Value</a>
+                <div class="products-cards">
+                    @foreach (var product in type.Products)
+                    {
+                        <div class="card-container">
+                            <div class="card-img">
+                                <img class="hero-image"
+                                     src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
+                                     alt="@product.Type?.Value" />
+                            </div>
+                            <div class="card-content">
+                                <h3 class="product-name">@product.Name</h3>
+                                <p class="product-description">
+                                    @product.Description
+                                </p>
+                                <div class="card-tags">
+                                    <span class="product-price">Price: @product.Price</span>
+                                    <a class="btn-open-product" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">Open</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
     </div>
 </section>

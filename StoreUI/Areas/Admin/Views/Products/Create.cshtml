@@ -56,8 +56,8 @@
                 <input id="add-features" class="btn-success" type="button" value="Add">
             </div>
             <div class="form-group">
-                <label name="selectedFeatures" class="control-label"></label>
-                <select name="selectedFeatures" class="form-control" id="selectedFeatures" multiple></select>
+                <label asp-for="SelectedFeaturesIds" class="control-label"></label>
+                <select class="form-control" id="selectedFeatures" asp-for="SelectedFeaturesIds" multiple></select>
                 <span class="text-danger"></span>
             </div>
             <div>
