@@ -1,4 +1,7 @@
-﻿using ServiceContracts;
+﻿using DataAccess;
+using Entities.Models;
+using Microsoft.EntityFrameworkCore;
+using ServiceContracts;
 using ServiceContracts.DTO;
 using System;
 using System.Collections.Generic;
@@ -10,34 +13,91 @@ namespace Services
 {
     public class CartService : ICartService
     {
-        public CartProductResponse AddProduct(CartAddRequest? cartProduct)
+        private readonly ApplicationDbContext _context;
+
+        public CartService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public bool ClearCart(Guid? CustomerId)
+        public async Task<CartProductResponse> AddProductAsync(CartAddRequest? cartProduct)
         {
-            throw new NotImplementedException();
+            if (cartProduct == null) throw new ArgumentNullException(nameof(cartProduct));
+
+            if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
+
+            var newCartProduct = await _context.AddAsync(new CartProduct()
+            {
+                CustomerId = cartProduct.CustomerId.ToString(),
+                ProductId = cartProduct.ProductId,
+                Quantity = cartProduct.Quantity
+            });
+            await _context.SaveChangesAsync();
+
+            return newCartProduct.Entity.ToCartProductResponse();
         }
 
-        public List<CartProductResponse> GetAllProducts(Guid? CustomerId)
+        public async Task<bool> ClearCartAsync(Guid? CustomerId)
         {
-            throw new NotImplementedException();
+            if (CustomerId == null) throw new ArgumentNullException(nameof(CustomerId));
+
+            if ((await _context.Customers.FindAsync(CustomerId.ToString())) == null) throw new ArgumentException(nameof(CustomerId));
+
+            foreach (var cartProduct in _context.CartProducts.Where(x => x.CustomerId == CustomerId.ToString()))
+            {
+                await RemoveProductAsync(cartProduct.ToCartProductResponse());
+            }
+            return true;
         }
 
-        public CartProductResponse? GetCartProduct(int CartProductId)
+        public async Task<List<CartProductResponse>> GetAllProductsAsync(Guid? CustomerId)
         {
-            throw new NotImplementedException();
+            if (CustomerId == null) throw new ArgumentNullException(nameof(CustomerId));
+
+            if ((await _context.Customers.FindAsync(CustomerId.ToString())) == null) throw new ArgumentException(nameof(CustomerId));
+
+            return (await _context.CartProducts.Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToCartProductResponse()).ToList();
         }
 
-        public bool RemoveProduct(CartProductResponse? cartProduct)
+        public async Task<CartProductResponse>? GetCartProductAsync(int CartProductId)
         {
-            throw new NotImplementedException();
+            if (CartProductId < 0) throw new ArgumentException($"CartProductId {CartProductId} can't be lower than 0");
+
+            var cartProduct = await _context.CartProducts.FindAsync();
+            if (cartProduct == null) throw new ArgumentException(nameof(CartProductId));
+
+            return cartProduct.ToCartProductResponse();
         }
 
-        public CartProductResponse UpdateQuantity(CartProductResponse? cartProduct, int newQuantity)
+        public async Task<bool> RemoveProductAsync(CartProductResponse? cartProduct)
         {
-            throw new NotImplementedException();
+            if (cartProduct == null) throw new ArgumentNullException(nameof(cartProduct));
+
+            if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
+
+            var dbCartProduct = _context.CartProducts.Where(x => x.CartProductId == cartProduct.CartProductId).FirstOrDefault();
+            if (dbCartProduct == null) return false;
+
+            _context.CartProducts.Remove(dbCartProduct);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<CartProductResponse> UpdateQuantityAsync(CartProductResponse? cartProduct, int newQuantity)
+        {
+            if (cartProduct == null) throw new ArgumentNullException(nameof(cartProduct));
+
+            if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
+
+            var dbCartProduct = _context.CartProducts.Where(x => x.CartProductId == cartProduct.CartProductId).FirstOrDefault();
+            if (dbCartProduct == null) throw new NullReferenceException(nameof(cartProduct));
+
+            dbCartProduct.Quantity = newQuantity;
+
+            var newCartProduct = _context.CartProducts.Update(dbCartProduct);
+            await _context.SaveChangesAsync();
+
+            return newCartProduct.Entity.ToCartProductResponse();
         }
     }
 }
