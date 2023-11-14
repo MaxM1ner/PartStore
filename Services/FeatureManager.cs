@@ -24,7 +24,8 @@ namespace Services
         }
         public async Task<List<Feature>> GetFeaturesAsync()
         {
-            return await _context.Features.Include(x => x.Products).Include(x => x.Type).ToListAsync();
+            //Removed include methods
+            return await _context.Features.ToListAsync();
         }
         public async Task CreateAsync(Feature feature)
         {
