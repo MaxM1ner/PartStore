@@ -6,36 +6,47 @@ using ServiceContracts.DTO;
 using Services;
 using System.Text;
 using Xunit.Abstractions;
+using Moq.EntityFrameworkCore;
+using Moq;
+using ServicesUnitTests.MockData;
 
-namespace xUnitTests
+namespace ServicesUnitTests
 {
     public class CartServiceTests
     {
         private readonly ICartService _cartService;
         private readonly ITestOutputHelper _outputHelper;
+        private readonly Mock<ApplicationDbContext> _mockContext;
         private readonly ApplicationDbContext _context;
+        private readonly List<CartProduct> _cartProducts;
 
-        public CartServiceTests(ITestOutputHelper testOutputHelper, ApplicationDbContext context)
+        public CartServiceTests(ITestOutputHelper testOutputHelper)
         {
-            _cartService = new CartService();
+            _cartProducts = new List<CartProduct>();
             _outputHelper = testOutputHelper;
-            _context = context;
+            _mockContext = new Mock<ApplicationDbContext>();
+            _mockContext.Setup(x => x.Customers).ReturnsDbSet(DbContextData.GetCustomers());
+            _mockContext.Setup(x => x.Products).ReturnsDbSet(DbContextData.GetProducts());
+            _mockContext.Setup(x => x.CartProducts).ReturnsDbSet(_cartProducts);
+            _context = _mockContext.Object;
+            _cartService = new CartService(_context);
         }
 
+        #region AddProduct
         [Fact]
-        public void AddProduct_NullProduct()
+        public async void AddProduct_NullProduct()
         {
             CartAddRequest? request = null;
 
-            Assert.Throws<ArgumentNullException>(() => { _cartService.AddProduct(request); });
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => { await _cartService.AddProductAsync(request); });
         }
 
         [Fact]
-        public void AddProduct_EmptyCustomerId()
+        public async void AddProduct_EmptyCustomerId()
         {
             CartAddRequest? nullCustomerIdrequest = new CartAddRequest(Guid.Empty, 0);
 
-            Assert.Throws<ArgumentException>(() => { _cartService.AddProduct(nullCustomerIdrequest); });
+            await Assert.ThrowsAsync<ArgumentException>(async () => { await _cartService.AddProductAsync(nullCustomerIdrequest); });
         }
 
         [Fact]
@@ -45,12 +56,11 @@ namespace xUnitTests
             Product product = await _context.Products.FirstAsync();
             CartAddRequest? correctRequest = new CartAddRequest(Guid.Parse(customer.Id), product.Id);
 
-            CartProductResponse responseFromAdd = _cartService.AddProduct(correctRequest);
+            CartProductResponse responseFromAdd = await _cartService.AddProductAsync(correctRequest);
             Assert.NotNull(responseFromAdd);
             Assert.True(responseFromAdd.CartProductId >= 0);
             Assert.True((await _context.CartProducts.Where(x => x.CartProductId == responseFromAdd.CartProductId).CountAsync()) > 0);
-
-            _cartService.RemoveProduct(responseFromAdd);
         }
+        #endregion
     }
 }
