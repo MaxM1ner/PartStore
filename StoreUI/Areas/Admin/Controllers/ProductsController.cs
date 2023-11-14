@@ -46,8 +46,7 @@ namespace StoreUI.Areas.Admin.Controllers
         [Route("Admin/Products/Edit/GetFeatures/{id}")]
         public async Task<IActionResult> GetFeatures([FromRoute] int id)
         {
-            
-            var productFeatures = (await _featureManager.GetFeaturesAsync()).Where(x => x.ProductTypeId == id);
+            var productFeatures = (await _featureManager.GetFeaturesAsync()).Where(x => x.ProductTypeId == id).ToList();
             return Json(productFeatures);
         }
 
