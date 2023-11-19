@@ -56,15 +56,15 @@ namespace Services
 
             if ((await _context.Customers.FindAsync(CustomerId.ToString())) == null) throw new ArgumentException(nameof(CustomerId));
 
-            return (await _context.CartProducts.Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToCartProductResponse()).ToList();
+            return (await _context.CartProducts.Include(x => x.Product).ThenInclude(x => x.Images).Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToCartProductResponse()).ToList();
         }
 
-        public async Task<CartProductResponse>? GetCartProductAsync(int CartProductId)
+        public async Task<CartProductResponse>? GetCartProductAsync(int cartProductId)
         {
-            if (CartProductId < 0) throw new ArgumentException($"CartProductId {CartProductId} can't be lower than 0");
+            if (cartProductId < 0) throw new ArgumentException($"CartProductId {cartProductId} can't be lower than 0");
 
-            var cartProduct = await _context.CartProducts.FindAsync();
-            if (cartProduct == null) throw new ArgumentException(nameof(CartProductId));
+            var cartProduct = await _context.CartProducts.Include(x => x.Product).ThenInclude(x => x.Images).Where(x => x.CartProductId == cartProductId).FirstAsync();
+            if (cartProduct == null) throw new ArgumentException(nameof(cartProductId));
 
             return cartProduct.ToCartProductResponse();
         }

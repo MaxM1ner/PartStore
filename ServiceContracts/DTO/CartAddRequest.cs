@@ -29,7 +29,7 @@ namespace ServiceContracts.DTO
             {
                 Quantity = Quantity,
                 CustomerId = this.CustomerId.ToString(),
-                ProductId = this.ProductId
+                ProductId = this.ProductId              
             };
         }
     }
