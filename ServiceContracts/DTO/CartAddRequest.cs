@@ -23,13 +23,13 @@ namespace ServiceContracts.DTO
             ProductId = productId;
         }
 
-        public CartProduct ToCartProduct() 
+        public CartProduct ToCartProduct()
         {
             return new CartProduct()
             {
                 Quantity = Quantity,
                 CustomerId = this.CustomerId.ToString(),
-                ProductId = this.ProductId
+                ProductId = this.ProductId              
             };
         }
     }

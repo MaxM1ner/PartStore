@@ -22,6 +22,11 @@ namespace ServiceContracts.DTO
         public int ProductId { get; set; }
         public Guid CustomerId { get; set; }
 
+        public decimal ProductPrice { get; set; }
+        public string? ProductName { get; set; }
+        public int ProductQuantity { get; set; }
+        public string? ProductImagePath { get; set; }
+
         public override bool Equals(object? obj)
         {
             if (obj == null) return false;
@@ -55,7 +60,11 @@ namespace ServiceContracts.DTO
                 CartProductId = product.CartProductId,
                 Quantity = product.Quantity,
                 ProductId = product.ProductId,
-                CustomerId = Guid.Parse(product.CustomerId)
+                CustomerId = Guid.Parse(product.CustomerId),
+                ProductName = product.Product?.Name,
+                ProductPrice = product.Product.Price,
+                ProductQuantity = product.Product.Quantity,
+                ProductImagePath = product.Product.Images.FirstOrDefault()?.Path
             };
         }
     }

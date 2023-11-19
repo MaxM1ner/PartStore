@@ -1,0 +1,57 @@
+﻿@using ServiceContracts.DTO;
+@model IEnumerable<CartProductResponse>
+@{
+    ViewData["Title"] = "Cart - Part Store";
+}
+
+<section>
+    <div class="containerr">
+        <h2 class="section-title">Кошик</h2>
+        <div class="card-page-content" id="cardPageContent">
+            @foreach(var item in Model)
+            {
+            <div class="product-item">
+                    <img src="@Url.Content("~/productFiles/img/" + item.ProductImagePath)"
+                     alt="@item.ProductName" />
+                <div>
+                        <h3 class="card-name-product">@item.ProductName</h3>
+                        <p>Price: $<span>@item.ProductPrice</span></p>
+                </div>
+                <div class="crad-btn-div">
+@*                     <a class="card-btn add">
+                        Add to payment
+                    </a> *@
+                        <a class="card-btn remove" asp-action="RemoveProduct" asp-route-cartProductId="@item.CartProductId">Remove</a>
+                </div>
+            </div>
+            }
+            <a class="continue-card" href="./catalog.html">Продовжити покупки</a>
+        </div>
+        <h3 class="card-order-title">Замовлення</h3>
+        <div class="order-form" id="orderForm">
+            <div class="card-orders-block" id="cardOrdersBlock">
+            </div>
+            <h3 class="card-order-title">
+                Total price: <span id="total-price">0$</span>
+            </h3>
+            <form class="card-form" id="checkout-form">
+                <label for="name">Ім'я:</label>
+                <input type="text" id="name" name="name" required />
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+
+                <label for="address">Адреса:</label>
+                <textarea id="address"
+                          name="address"
+                          rows="3"
+                          cols="50"
+                          maxlength="60"
+                          required></textarea>
+
+                <button class="card-btn add" type="submit">Замовити</button>
+            </form>
+        </div>
+    </div>
+    <script src="./card.js"></script>
+</section>

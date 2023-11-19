@@ -26,7 +26,7 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="CustomerId"></param>
         /// <returns></returns>
-        Task<List<CartProductResponse>> GetAllProductsAsync(Guid? CustomerId);
+        Task<List<CartProductResponse>> GetAllProductsAsync(string? CustomerId);
 
         /// <summary>
         /// Change quantity of cart product
@@ -48,6 +48,6 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="CustomerId">Customer Id</param>
         /// <returns>True if success, otherwise false</returns>
-        Task<bool> ClearCartAsync(Guid? CustomerId);
+        Task<bool> ClearCartAsync(string? CustomerId);
     }
 }
