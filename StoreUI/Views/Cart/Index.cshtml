@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CartProduct>
+﻿@using ServiceContracts.DTO;
+@model IEnumerable<CartProductResponse>
 @{
     ViewData["Title"] = "Cart - Part Store";
 }
@@ -10,17 +11,17 @@
             @foreach(var item in Model)
             {
             <div class="product-item">
-                    <img src="@Url.Content("~/productFiles/img/" + item.Product?.Images.First().Path)"
-                     alt="@item.Product?.Name" />
+                    <img src="@Url.Content("~/productFiles/img/" + item.ProductImagePath)"
+                     alt="@item.ProductName" />
                 <div>
-                        <h3 class="card-name-product">@item.Product?.Name</h3>
-                        <p>Price: $<span>@item.Product?.Price</span></p>
+                        <h3 class="card-name-product">@item.ProductName</h3>
+                        <p>Price: $<span>@item.ProductPrice</span></p>
                 </div>
                 <div class="crad-btn-div">
-                    <button class="card-btn add" onclick="addToOrder(1)">
+@*                     <a class="card-btn add">
                         Add to payment
-                    </button>
-                    <button class="card-btn remove">Delete</button>
+                    </a> *@
+                        <a class="card-btn remove" asp-action="RemoveProduct" asp-route-cartProductId="@item.CartProductId">Remove</a>
                 </div>
             </div>
             }

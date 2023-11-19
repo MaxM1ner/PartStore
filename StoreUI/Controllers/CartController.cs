@@ -1,12 +1,17 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceContracts.DTO;
 using Services;
+using StoreUI.Areas.Admin.ViewModels;
+using StoreUI.ViewModels;
 using System.Security.Claims;
 
 namespace StoreUI.Controllers
 {
-    public class CartController : Controller
+    [Authorize]
+    public sealed class CartController : Controller
     {
         private readonly CartService _cartService;
 
@@ -17,9 +22,25 @@ namespace StoreUI.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return View();
+            //if (userId == null) return View();
             var result = await _cartService.GetAllProductsAsync(userId);
             return View(result);
+        }
+        public async Task<IActionResult> RemoveProduct(int cartProductId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (userId == null) return View();
+            var request = new CartProductResponse() { CustomerId = Guid.Parse(userId), CartProductId = cartProductId};
+            await _cartService.RemoveProductAsync(request);
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> AddProduct(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (userId == null) return RedirectToAction(nameof(Index)); 
+            var request = new CartAddRequest(Guid.Parse(userId), id);
+            await _cartService.AddProductAsync(request);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

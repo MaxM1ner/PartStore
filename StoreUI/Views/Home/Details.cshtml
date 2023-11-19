@@ -26,7 +26,7 @@
                             купівлі.
                         </p>
                     </div>
-                    <button class="product-main-btn">Buy</button>
+                        <a class="product-main-btn" asp-controller="Cart" asp-action="AddProduct" asp-route-id="@Model.Id">Add to Cart</a>
                 </div>
             </div>
         </div>
