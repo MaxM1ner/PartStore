@@ -37,7 +37,7 @@ namespace Services
             return newCartProduct.Entity.ToCartProductResponse();
         }
 
-        public async Task<bool> ClearCartAsync(Guid? CustomerId)
+        public async Task<bool> ClearCartAsync(string? CustomerId)
         {
             if (CustomerId == null) throw new ArgumentNullException(nameof(CustomerId));
 
@@ -50,7 +50,7 @@ namespace Services
             return true;
         }
 
-        public async Task<List<CartProductResponse>> GetAllProductsAsync(Guid? CustomerId)
+        public async Task<List<CartProductResponse>> GetAllProductsAsync(string? CustomerId)
         {
             if (CustomerId == null) throw new ArgumentNullException(nameof(CustomerId));
 

@@ -74,6 +74,7 @@ builder.Services.AddTransient<FormImageManager>((x) =>
 builder.Services.AddTransient<FeatureManager>();
 builder.Services.AddTransient<ProductTypeManager>();
 builder.Services.AddTransient<ProductManager>();
+builder.Services.AddTransient<CartService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
