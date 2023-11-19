@@ -18,14 +18,24 @@ namespace Services
         {
             return await _context.Features.AnyAsync(e => e.Id == id);
         }
-        public async Task<Feature> GetFeatureAsync(int id)
+        public async Task<Feature> GetFeatureAsync(int id, bool includeProducts = true, bool includeType = true)
         {
-            return await _context.Features.Include(x => x.Products).Include(x => x.Type).Where(x => x.Id == id).FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a feature by id:{id}", nameof(id));
+            var context = _context.Features.Where(x => x.Id == id);
+            if (includeProducts)
+                await context.Include(x => x.Products).ToListAsync();
+            if (includeType)
+                await context.Include(x => x.Type).ToListAsync();
+            return await context.FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a feature by id:{id}", nameof(id));
         }
-        public async Task<List<Feature>> GetFeaturesAsync()
+        public async Task<List<Feature>> GetFeaturesAsync(bool includeProducts = true, bool includeType = true)
         {
-            //Removed include methods
-            return await _context.Features.ToListAsync();
+            var context = _context.Features;
+            if (includeProducts)
+                await context.Include(x => x.Products).ToListAsync();
+            if (includeType)
+                await context.Include(x => x.Type).ToListAsync();
+            return await context.ToListAsync();
+
         }
         public async Task CreateAsync(Feature feature)
         {

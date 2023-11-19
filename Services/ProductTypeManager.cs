@@ -18,17 +18,23 @@ namespace Services
         {
             return await _context.ProductTypes.AnyAsync(e => e.Id == id);
         }
-        //public bool IsExist(int id)
-        //{
-        //    return _context.ProductTypes.Any(e => e.Id == id);
-        //}
-        public async Task<ProductType> GetProductTypeAsync(int id)
+        public async Task<ProductType> GetProductTypeAsync(int id, bool includeProducts = true, bool includeFeatures = true)
         {
-            return await _context.ProductTypes.Include(x => x.Products).Include(x => x.Features).Where(x => x.Id == id).FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a ProductType by id:{id}", nameof(id));
+            var context = _context.ProductTypes.Where(x => x.Id == id);
+            if (includeProducts)
+                await context.Include(x => x.Products).ToListAsync();
+            if (includeFeatures)
+                await context.Include(x => x.Features).ToListAsync();
+            return await context.FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a ProductType by id:{id}", nameof(id));
         }
-        public async Task<List<ProductType>> GetProductTypesAsync()
+        public async Task<List<ProductType>> GetProductTypesAsync(bool includeProducts = true, bool includeFeatures = true)
         {
-            return await _context.ProductTypes.Include(x => x.Products).Include(x => x.Features).ToListAsync();
+            var context = _context.ProductTypes;
+            if (includeProducts)
+                await context.Include(x => x.Products).ToListAsync();
+            if (includeFeatures)
+                await context.Include(x => x.Features).ToListAsync();
+            return await context.ToListAsync();
         }
         public async Task CreateAsync(ProductType feature)
         {
