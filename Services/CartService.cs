@@ -26,14 +26,15 @@ namespace Services
 
             if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
 
-            var newCartProduct = await _context.AddAsync(new CartProduct()
+            var newCartProduct = await _context.CartProducts.AddAsync(new CartProduct()
             {
                 CustomerId = cartProduct.CustomerId.ToString(),
                 ProductId = cartProduct.ProductId,
                 Quantity = cartProduct.Quantity
             });
             await _context.SaveChangesAsync();
-
+            await newCartProduct.Reference(x => x.Product).LoadAsync();
+            await newCartProduct.Reference(x => x.Customer).LoadAsync();
             return newCartProduct.Entity.ToCartProductResponse();
         }
 
@@ -96,7 +97,8 @@ namespace Services
 
             var newCartProduct = _context.CartProducts.Update(dbCartProduct);
             await _context.SaveChangesAsync();
-
+            await newCartProduct.Reference(x => x.Product).LoadAsync();
+            await newCartProduct.Reference(x => x.Customer).LoadAsync();
             return newCartProduct.Entity.ToCartProductResponse();
         }
     }

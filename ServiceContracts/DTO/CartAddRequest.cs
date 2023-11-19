@@ -23,7 +23,7 @@ namespace ServiceContracts.DTO
             ProductId = productId;
         }
 
-        public CartProduct ToCartProduct() 
+        public CartProduct ToCartProduct()
         {
             return new CartProduct()
             {
