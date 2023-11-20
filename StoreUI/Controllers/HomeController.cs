@@ -5,6 +5,7 @@ using DataAccess;
 using Entities.Models;
 using System.Diagnostics;
 using StoreUI.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace StoreUI.Controllers
 {
@@ -18,17 +19,21 @@ namespace StoreUI.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            
+            ViewBag.Types = new SelectList(await _context.ProductTypes.ToListAsync(), nameof(ProductType.Id), nameof(ProductType.Value));
             return View();
         }
-        public async Task<IActionResult> Catalog()
+        public async Task<IActionResult> Catalog(int? typeid)
         {
             var catalogProducts = new List<Product>();
             var types = await _context.ProductTypes.Include(x => x.Products).ThenInclude(y => y.Images).ToListAsync();
+            if(typeid != null)
             foreach (var type in await _context.ProductTypes.Include(x => x.Products).ToListAsync())
             {
-                catalogProducts.AddRange(type.Products.Where(x => x.Quantity > 0 && x.IsVisible).Take(5));
+                    if(type.Id == typeid)
+                    catalogProducts.AddRange(type.Products.Where(x => x.Quantity > 0 && x.IsVisible).Take(15));
             }
             return View(new CatalogViewModel() { Products = catalogProducts, ProductTypes = types});
         }
@@ -45,10 +50,7 @@ namespace StoreUI.Controllers
         {
             return View();
         }
-        public IActionResult Cart()
-        {
-            return View();
-        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -7,10 +7,13 @@
         <div class="cataloge-aside">
             <h2 class="section-title">Catalog</h2>
             <ul class="cataloge-list">
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/cpu-icon.png" alt="" /> <span>processors</span></a>
-                </li>
-                <li class="cataloge-list-item">
+                    @foreach (var type in ViewBag.Types)
+                     {
+                        <li class="cataloge-list-item">
+                            <a class="cataloge-list-link" asp-controller="Home" asp-action="Catalog" asp-route-typeid="@type.Value"> <img class="cataloge-list-img" src="img/@(type.Text).png" alt="" /> <span>@type.Text</span></a>
+                        </li> 
+                    }
+                @* <li class="cataloge-list-item">
                     <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/motherboard-icon.png" alt="" /><span>motherboards</span></a>
                 </li>
                 <li class="cataloge-list-item">
@@ -30,7 +33,7 @@
                 </li>
                 <li class="cataloge-list-item">
                     <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/pc-icon.png" alt="" /><span>PC</span></a>
-                </li>
+                </li> *@
             </ul>
         </div>
         <div class="main-content">
