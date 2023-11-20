@@ -3,9 +3,11 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form asp-action="Create" method="post">
+    Add new roles
     <div class="form-group">
+        
+        <input name="name" class="form-input" />
         <label for="name">New roles</label>
-        <input name="name" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="add-btn">Add</button>
 </form>

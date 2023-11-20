@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/StoreUI.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PartStore Admin</a>
+<body class="admin-body">
+    <header class="header-admin">
+        <nav class="">
+           
+                <a class="navbar-admin" asp-area="" asp-controller="Home" asp-action="Index"><span class="brand">Part</span>Store Admin</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,23 +20,23 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <partial name="_LoginPartial" />
                 </div>
-            </div>
+           
         </nav>
     </header>
     <h2 class="ms-2">Admin panel manager</h2>
     <hr />
     <div class="row">
-        <div class="col-md-3">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Overview</a></li>
-                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Roles" asp-action="Index">Roles</a></li>
-                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a></li>
-                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="ProductTypes" asp-action="Index">Product Types</a></li>
-                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Features" asp-action="Index">Features</a></li>
-                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="ProductComments" asp-action="Index">ProductComments</a></li>
+        <div class="col-md-4">
+            <ul class="manage-list">
+                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index"><div class="manage-link-div">Overview</div></a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Roles" asp-action="Index"><div class="manage-link-div">Roles</div></a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Products" asp-action="Index"><div class="manage-link-div" >Products</div></a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="ProductTypes" asp-action="Index"><div class="manage-link-div">Product Types</div></a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Features" asp-action="Index"><div class="manage-link-div">Features</div></a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="ProductComments" asp-action="Index"><div class="manage-link-div">ProductComments</div></a></li>
             </ul>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8 ">
             @RenderBody()
         </div>
     </div>

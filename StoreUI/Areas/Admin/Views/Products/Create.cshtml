@@ -8,28 +8,28 @@
 
 <h4>Product</h4>
 <hr />
-<div class="row">
+<div class="row admin">
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data" id="productForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <input asp-for="Price" type="number" step=".01" class="form-input" />
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" type="number" step=".01" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input asp-for="Name" class="form-input" />
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input asp-for="Description" class="form-input" />
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input asp-for="Quantity" class="form-input" />
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -38,43 +38,44 @@
                 </label>
             </div>
             <div class="form-group">
+                <select asp-for="ProductTypeId" class ="form-input" id="typeId" asp-items="ViewBag.ProductTypeId"></select>
                 <label asp-for="ProductTypeId" class="control-label"></label>
-                <select asp-for="ProductTypeId" class ="form-control" id="typeId" asp-items="ViewBag.ProductTypeId"></select>
             </div>
             <div class="form-group">
+                <input type="file" class="form-input" asp-for="FormImages" accept=".jpg, .png, .jpeg, .webp, .gif, .bmp, .tif, .tiff, image/*" multiple />
                 <label asp-for="FormImages" class="control-label">Images</label>
-                <input type="file" class="form-control" asp-for="FormImages" accept=".jpg, .png, .jpeg, .webp, .gif, .bmp, .tif, .tiff, image/*" multiple />
                 <span class="text-danger"></span>
             </div>
 
             <div class="form-group">
+                <select name="featureIds" class="form-input" id="fetchedFeatures" asp-items="ViewBag.TypeFeatures" multiple></select>
                 <label name="featureIds" class="control-label"></label>
-                <select name="featureIds" class="form-control" id="fetchedFeatures" asp-items="ViewBag.TypeFeatures" multiple></select>
                 <span class="text-danger"></span>
             </div>
             <div>
-                <input id="add-features" class="btn-success" type="button" value="Add">
+                <input id="add-features" class="add-btn" type="button" value="Add">
             </div>
             <div class="form-group">
                 <label asp-for="SelectedFeaturesIds" class="control-label"></label>
-                <select class="form-control" id="selectedFeatures" asp-for="SelectedFeaturesIds" multiple></select>
+                <select class="form-input" id="selectedFeatures" asp-for="SelectedFeaturesIds" multiple></select>
                 <span class="text-danger"></span>
             </div>
             <div>
-                <input id="remove-features" class="btn-danger mb-2" type="button" value="Remove">
+                <input id="remove-features" class="add-btn red" type="button" value="Remove">
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" id="btnSubmit" class="btn btn-primary" />
+                <input type="submit" value="Create" id="btnSubmit" class="add-btn create" />
             </div>
 
         </form>
+        <div>
+            <a class="add-btn  back" asp-action="Index">Back to List</a>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
