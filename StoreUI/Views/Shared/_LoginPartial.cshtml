@@ -14,7 +14,7 @@
 
                 
                 <svg width="25" height="25">
-                    <use href="img/icons.svg#icon-cart "></use>
+                    <use href=@Url.Content("~/img/icons.svg#icon-cart")></use>
                 </svg>
                 
             </a>
@@ -23,7 +23,7 @@
         <li class="nav-users-item">
             <a class="nav-link icon btn-icon " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <svg width="25" height="25">
-                        <use href="img/icons.svg#icon-enter "></use>
+                         <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
                     </svg>
         </a>
     </li>
@@ -33,14 +33,14 @@ else
     <li class="nav-item">
             <a class="nav-link icon" asp-area="Identity" asp-page="/Account/Register">
                 <svg width="25" height="25">
-              <use href="img/icons.svg#icon-user-reg "></use>
+               <use href=@Url.Content("~/img/icons.svg#icon-user-reg")></use>
             </svg>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link icon" asp-area="Identity" asp-page="/Account/Login">
                 <svg width="25" height="25">
-                    <use href="img/icons.svg#icon-enter "></use>
+                     <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
                 </svg>
             </a>
     </li>
