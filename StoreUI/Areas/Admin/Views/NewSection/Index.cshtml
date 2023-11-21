@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Entities.Models.//////////вказати>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Title</h1>
+/// було взяти як приклад з PartStore\StoreUI\Areas\Admin\Views\Products\Index.cshtml
+<div class="admin-flex-div">
+    <a class="add-btn" asp-action="Create">Create New</a>
+    <div>
+        <div class="input-icons-admin">
+            <span class="input-span-icon">
+                <svg width="25" height="25">
+                    <use href=@Url.Content("~/img/icons.svg#icon-search")></use>
+                </svg>
+            </span>
+            <input class=" input-field form-input"
+                   type="text"
+                   placeholder="Username">
+        </div>
+        <button type="button" class="add-btn back">Search</button>
+    </div>
+    
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            @*
+            Вставити вигрузку парамантів
+            
+
+            Приклад з продуктів
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsVisible)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductTypeId)
+            </th>*@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            @*<tr>
+            вигрузка даних
+            приклад з продукт
+            останій тд <td> такий як і в прикладі має бути
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Id)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><div class="admin-editor-btn">Edit</div></a> 
+                    <a asp-action="Details" asp-route-id="@item.Id"><div class="admin-editor-btn">Details</div></a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id"><div class="admin-editor-btn btn-danger">Delete</div></a>
+            </td>
+            </tr>*@
+}
+    </tbody>
+</table>
