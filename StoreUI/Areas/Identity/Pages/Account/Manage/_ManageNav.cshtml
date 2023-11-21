@@ -5,17 +5,17 @@
 
 }
 <ul class="manage-list">
-    <li class="nav-item"><a class="manage-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="manage-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="manage-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+    <li class="nav-item"><a class="manage-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"><div class="manage-link-div">Profile</div></a></li>
+    <li class="nav-item"><a class="manage-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email"><div class="manage-link-div">Email</div></a></li>
+    <li class="nav-item"><a class="manage-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"><div class="manage-link-div">Password</div></a></li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="manage-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li id="external-logins" class="nav-item"><a id="external-login" class="manage-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins"><div class="manage-link-div">External logins</div></a></li>
     }
-    <li class="nav-item"><a class="manage-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="manage-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+    <li class="nav-item"><a class="manage-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication"><div class="manage-link-div">Two-factor authentication</div></a></li>
+    <li class="nav-item"><a class="manage-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData"><div class="manage-link-div">Personal data</div></a></li>
     @if (User.IsInRole("Admin"))
     {
-        <li class="nav-item"><a class="manage-link" id="two-factor" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin</a></li>
+        <li class="nav-item"><a class="manage-link" id="two-factor" asp-area="Admin" asp-controller="Admin" asp-action="Index"><div class="manage-link-div">Admin</div></a></li>
     }
 </ul>
