@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.Cart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +76,7 @@ namespace Services
 
             if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
 
-            var dbCartProduct = _context.CartProducts.Where(x => x.CartProductId == cartProduct.CartProductId).FirstOrDefault();
+            var dbCartProduct = await _context.CartProducts.Where(x => x.CartProductId == cartProduct.CartProductId).FirstOrDefaultAsync();
             if (dbCartProduct == null) return false;
 
             _context.CartProducts.Remove(dbCartProduct);

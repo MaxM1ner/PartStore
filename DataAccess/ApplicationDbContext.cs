@@ -16,7 +16,7 @@ namespace DataAccess
         public DbSet<ProductComment> ProductComments { get; set; } = null!;
         public DbSet<ProductImage> ProductImages { get; set; } = null!;
         public DbSet<ProductType> ProductTypes { get; set; } = null!;
-
+        public DbSet<CustomerOrder> CustomerOrders { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
