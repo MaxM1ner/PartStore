@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ICollection<ProductType>
+@{
     ViewData["Title"] = "Part Store";
 }
 <section id="fon-anim">
@@ -7,33 +8,12 @@
         <div class="cataloge-aside">
             <h2 class="section-title">Catalog</h2>
             <ul class="cataloge-list">
-                    @foreach (var type in ViewBag.Types)
+                    @foreach (var type in Model)
                      {
                         <li class="cataloge-list-item">
-                            <a class="cataloge-list-link" asp-controller="Home" asp-action="Catalog" asp-route-typeid="@type.Value"> <img class="cataloge-list-img" src="img/@(type.Text).png" alt="" /> <span>@type.Text</span></a>
+                            <a class="cataloge-list-link" asp-controller="Home" asp-action="Catalog" asp-route-typeid="@type.Id"> <img class="cataloge-list-img" src="@Url.Content("~/productFiles/img/" + type.TypeImagepath)" alt="@type.Value" /> <span>@type.Value</span></a>
                         </li> 
                     }
-                @* <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/motherboard-icon.png" alt="" /><span>motherboards</span></a>
-                </li>
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/video-card-icon.png" alt="" /><span>video cards</span></a>
-                </li>
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/ram-icon.png" alt="" /><span>RAM</span></a>
-                </li>
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""><img class="cataloge-list-img" src="img/ssd-icon.png" alt="" /><span>memory disks</span></a>
-                </li>
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/tower-pc-icon.png" alt="" /><span>Tower</span></a>
-                </li>
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/cooler-icon.png" alt="" /><span>Cooling systems</span></a>
-                </li>
-                <li class="cataloge-list-item">
-                    <a class="cataloge-list-link" href=""> <img class="cataloge-list-img" src="img/pc-icon.png" alt="" /><span>PC</span></a>
-                </li> *@
             </ul>
         </div>
         <div class="main-content">
