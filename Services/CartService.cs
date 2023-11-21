@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.Cart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +20,17 @@ namespace Services
             _context = context;
         }
 
-        public async Task<CartProductResponse> AddProductAsync(CartAddRequest? cartProduct)
+        public async Task<CartProductResponse?> AddProductAsync(CartAddRequest? cartProduct)
         {
             if (cartProduct == null) throw new ArgumentNullException(nameof(cartProduct));
 
             if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
 
+            if ((await _context.Customers.Include(x => x.CartProducts).Where(x => x.Id == cartProduct.CustomerId.ToString()).FirstAsync())
+                .CartProducts.Where(x => x.ProductId == cartProduct.ProductId).Count() > 0)
+            {
+                return null;
+            }
             var newCartProduct = await _context.CartProducts.AddAsync(new CartProduct()
             {
                 CustomerId = cartProduct.CustomerId.ToString(),
@@ -76,7 +81,7 @@ namespace Services
 
             if (cartProduct.CustomerId == Guid.Empty) throw new ArgumentException(nameof(cartProduct.CustomerId));
 
-            var dbCartProduct = _context.CartProducts.Where(x => x.CartProductId == cartProduct.CartProductId).FirstOrDefault();
+            var dbCartProduct = await _context.CartProducts.Where(x => x.CartProductId == cartProduct.CartProductId).FirstOrDefaultAsync();
             if (dbCartProduct == null) return false;
 
             _context.CartProducts.Remove(dbCartProduct);

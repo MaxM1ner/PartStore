@@ -3,46 +3,48 @@
 @inject UserManager<Customer> UserManager
 
 <ul class="nav-users">
-@if (SignInManager.IsSignedIn(User))
-{
+    @if (SignInManager.IsSignedIn(User))
+    {
         <li class="nav-users-item">
-        <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        </li>
+        <li>
 
-            <a class="nav-link icon btn-icon" asp-controller="Cart" asp-action="Index" >
+            <a class="nav-link icon btn-icon" asp-area="" asp-controller="Cart" asp-action="Index">
 
-                
+
                 <svg width="25" height="25">
                     <use href=@Url.Content("~/img/icons.svg#icon-cart")></use>
                 </svg>
-                
+
             </a>
 
-    </li>
+        </li>
         <li class="nav-users-item">
-            <a class="nav-link icon btn-icon " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <svg width="25" height="25">
-                         <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
-                    </svg>
-        </a>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-            <a class="nav-link icon" asp-area="Identity" asp-page="/Account/Register">
+            <a class="form-inline nav-link icon btn-icon icon" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <svg width="25" height="25">
-               <use href=@Url.Content("~/img/icons.svg#icon-user-reg")></use>
-            </svg>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link icon" asp-area="Identity" asp-page="/Account/Login">
-                <svg width="25" height="25">
-                     <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
+                    <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
                 </svg>
             </a>
-    </li>
-}
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link icon" asp-area="Identity" asp-page="/Account/Register">
+                <svg width="25" height="25">
+                    <use href=@Url.Content("~/img/icons.svg#icon-user-reg")></use>
+
+            </svg>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link icon" asp-area="Identity" asp-page="/Account/Login">
+                <svg width="25" height="25">
+                    <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
+
+                </svg>
+            </a>
+        </li>
+    }
 </ul>

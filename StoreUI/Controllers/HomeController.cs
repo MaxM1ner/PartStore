@@ -21,9 +21,8 @@ namespace StoreUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
-            ViewBag.Types = new SelectList(await _context.ProductTypes.ToListAsync(), nameof(ProductType.Id), nameof(ProductType.Value));
-            return View();
+            var types = await _context.ProductTypes.ToListAsync();
+            return View(types);
         }
         public async Task<IActionResult> Catalog(int? typeid)
         {

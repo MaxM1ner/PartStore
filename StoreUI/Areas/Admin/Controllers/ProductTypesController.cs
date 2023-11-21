@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Entities.Models;
+using StoreUI.Areas.Admin.ViewModels;
+using Services;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
@@ -16,10 +18,12 @@ namespace StoreUI.Areas.Admin.Controllers
     public sealed class ProductTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly FormImageManager _formImageUploader;
 
-        public ProductTypesController(ApplicationDbContext context)
+        public ProductTypesController(ApplicationDbContext context, FormImageManager formImageManager)
         {
             _context = context;
+            _formImageUploader = formImageManager;
         }
 
         // GET: Admin/ProductTypes
@@ -59,11 +63,13 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Value")] ProductType productType)
+        public async Task<IActionResult> Create([Bind("Id,Value,TypeImage")] ProductTypeViewModel productType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productType);
+                var dbProductType = productType.ToProduct();
+                dbProductType.TypeImagepath = await _formImageUploader.UploadImage(productType.TypeImage);
+                await _context.AddAsync(dbProductType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
