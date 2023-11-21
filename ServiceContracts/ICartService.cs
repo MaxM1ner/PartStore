@@ -1,4 +1,4 @@
-﻿using ServiceContracts.DTO;
+﻿using ServiceContracts.DTO.Cart;
 
 namespace ServiceContracts
 {

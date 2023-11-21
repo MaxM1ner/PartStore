@@ -11,8 +11,10 @@ namespace Entities.Models
         {
             this.CartProducts = new HashSet<CartProduct>();
             this.Comments = new HashSet<ProductComment>();
+            this.Orders = new HashSet<CustomerOrder>();
         }
         public ICollection<CartProduct> CartProducts { get; private set; }
+        public ICollection<CustomerOrder> Orders { get; private set; }
         public ICollection<ProductComment> Comments { get; private set; }
     }
 }

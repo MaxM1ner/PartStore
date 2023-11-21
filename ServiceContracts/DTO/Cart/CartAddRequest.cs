@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO
+namespace ServiceContracts.DTO.Cart
 {
     /// <summary>
     /// DTO class to add a new cart product
@@ -16,7 +16,7 @@ namespace ServiceContracts.DTO
         public int Quantity { get; set; }
         public int ProductId { get; set; }
         public Guid CustomerId { get; set; }
-        public CartAddRequest(Guid customerId, int productId, int quantity = 1) 
+        public CartAddRequest(Guid customerId, int productId, int quantity = 1)
         {
             Quantity = quantity;
             CustomerId = customerId;
@@ -28,8 +28,8 @@ namespace ServiceContracts.DTO
             return new CartProduct()
             {
                 Quantity = Quantity,
-                CustomerId = this.CustomerId.ToString(),
-                ProductId = this.ProductId              
+                CustomerId = CustomerId.ToString(),
+                ProductId = ProductId
             };
         }
     }

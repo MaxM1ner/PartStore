@@ -2,13 +2,13 @@ using DataAccess;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
-using ServiceContracts.DTO;
 using Services;
 using System.Text;
 using Xunit.Abstractions;
 using Moq.EntityFrameworkCore;
 using Moq;
 using ServicesUnitTests.MockData;
+using ServiceContracts.DTO.Cart;
 
 namespace ServicesUnitTests
 {
