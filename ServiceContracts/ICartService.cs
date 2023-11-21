@@ -1,4 +1,4 @@
-﻿using ServiceContracts.DTO;
+﻿using ServiceContracts.DTO.Cart;
 
 namespace ServiceContracts
 {
@@ -12,7 +12,7 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="cartProduct">Cart product to add</param>
         /// <returns>Added cart product response</returns>
-        Task<CartProductResponse> AddProductAsync(CartAddRequest? cartProduct);
+        Task<CartProductResponse?> AddProductAsync(CartAddRequest? cartProduct);
 
         /// <summary>
         /// Find cart product by id

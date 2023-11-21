@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.Cart;
 using Services;
 using StoreUI.Areas.Admin.ViewModels;
 using StoreUI.ViewModels;

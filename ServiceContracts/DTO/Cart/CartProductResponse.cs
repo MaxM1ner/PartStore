@@ -10,7 +10,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ServiceContracts.DTO
+namespace ServiceContracts.DTO.Cart
 {
     /// <summary>
     /// DTO class used as return type of CartService methods

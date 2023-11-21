@@ -19,6 +19,9 @@ html {
     font-size: 16px;
   }
 }
+body::-webkit-scrollbar {
+    width: 0px;
+}
 
 .btn:focus,
 .btn:active:focus,
@@ -311,10 +314,7 @@ img {
   transition: background-color 0.6s ease;
 }
 
-.active,
-.dot:hover {
-  background-color: #717171;
-}
+
 
 .fade {
   -webkit-animation-name: fade;
@@ -361,6 +361,7 @@ img {
   transition: border-color 250ms;
   margin-right: 40px;
   color:var(--primary);
+  margin-bottom:5px;
 }
 .form-input:active,
 .form-input:focus {
@@ -382,7 +383,7 @@ img {
 }
 
 p.hint a {
-    color: #1a1a1a;
+    color: var(--primary);
 }
 
     p.hint a:active,
@@ -390,16 +391,19 @@ p.hint a {
     p.hint a:hover {
         color: var(--brand);
     }
+.text-danger{
+    color:var(--red);
+}
 /* ///////// */
 /* card */
 .products-cards {
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-bottom: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 40px;
 }
 
 .card-container {
@@ -931,6 +935,7 @@ table.characteristics-table {
     border: 1px solid var(--primary);
     border-radius: 10px;
     padding: 30px;
+    margin-top:15px;
 }
 
 .manage-list {
@@ -956,9 +961,41 @@ table.characteristics-table {
     font-weight: 500;
     font-size: 18px;
 }
+.manage-link-div {
+  width:100%;
+}
+
 
 .manage-list .nav-item:hover {
     background-color: var(--brand-light);
+}
+
+.manage-active-section{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:10px;
+}
+.manage-btn{
+    width:100%;
+    padding:5px;
+    text-align:center;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    text-transform:uppercase;
+}
+.manage-btn-a {
+    display:block;
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    text-transform: uppercase;
+    background-color:var(--red);
 }
 /* ///////////////////////////////// */
 /* ////////////// Card page //////////////*/
@@ -1061,4 +1098,144 @@ table.characteristics-table {
     text-align: center;
 }
 /* ///////////////////////////////// */
+/* ////////////// ADMIN ////////////// */
+.admin-body {
+    background-color: var(--background);
+    padding: 20px;
+    color: var(--primary)!important;
+}
+.header-admin {
+    background-color: var(--background);
+    padding: 20px;
+    text-wrap: nowrap;
+    width:100%;
+    
+}
+.header-admin nav {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
+}
+
+
+.admin-hr {
+    margin: 1rem 0;
+    color: inherit;
+    background-color: var(--primary);
+    opacity: 0.25;
+}
+
+.navbar-admin {
+    text-transform: uppercase;
+    font-size: 24px;
+    margin-right: 60%;
+}
+.navbar-admin:hover{
+    color:inherit;
+}
+.navbar-admin span.brand {
+    color: var(--brand);
+}
+.admin-body .manage-btn{
+    margin:0;
+}
+.admin-btn-back {
+    width: 400px;
+    display: block;
+    background-color: var(--red);
+    padding: 40px 70px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: background-color .4s ease-in-out;
+    border-radius: 10px;
+    color: var(--primary);
+    font-size: 20px;
+}
+.admin-btn-back:hover{
+    background-color:var(--red-light);
+    color:var(--primary);
+}
+.admin-body .manage-list .nav-item:hover a{
+    color:var(--primary)
+}
+.admin-body .manage-list .nav-item a {
+   display:block;
+}
+.admin-body .table{
+    color:var(--primary);
+}
+.admin-body .table td, .admin-body .table th {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+
+.admin-editor-btn{
+    display:inline-block;
+    background-color:var(--brand);
+    padding:5px 10px;
+    text-transform:uppercase;
+    border-radius:3px;
+    transition: color .3s ease-in-out;
+}
+.admin-editor-btn:hover{
+    color:var(--body);
+}
+    .admin-editor-btn.btn-danger {
+        background-color: var(--red);
+    }
+    .admin-editor-btn.btn-danger:hover {
+        background-color: var(--red-light);
+    }
+.add-btn {
+    display: block;
+    width: 300px;
+    margin-top: 10px;
+    background-color: var(--green);
+    padding: 5px 10px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    text-align: center;
+    transition: color .3s ease-in-out,background-color .3s ease-in-out;
+}
+.add-btn:hover{
+    color:inherit;
+    background-color: var(--green-light);
+}
+.add-btn.red {
+    background-color: var(--red);
+}
+.add-btn.create {
+    background-color: var(--brand);
+}
+.add-btn.back {
+    background-color: transparent;
+    border: solid 1px var(--primary);
+    text-align: center;
+    transition: color .3s ease-in-out,background-color .3s ease-in-out;
+}
+.add-btn.back:hover {
+    color: var(--background);
+    background-color:var(--primary);
+}
+.table .add-btn.back{
+    margin:0;
+}
+.control-label{
+    text-transform:uppercase;
+    font-size:14px;
+}
+.row.admin{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.td-description-admin{
+    max-width: 400px;
+    text-wrap:wrap;
+}
+
+/* ////////////////////////////////////////// */
