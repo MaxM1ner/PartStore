@@ -12,6 +12,10 @@ namespace Services
 {
     public class FormImageManager
     {
+        //enum Directories{
+        //    ProductImageDirectory,
+        //    ProductTypeDirectory
+        //}
         private readonly string _filesDirectory;
         public FormImageManager(string filesDirectory)
         {
