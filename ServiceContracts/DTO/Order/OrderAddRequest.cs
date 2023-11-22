@@ -1,6 +1,7 @@
 ﻿using Entities.Enums;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using ServiceContracts.DTO.Cart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +15,11 @@ namespace ServiceContracts.DTO.Order
     /// </summary>
     public class OrderAddRequest
     {
-        public OrderAddRequest(Guid customerId, ICollection<Product> products, string address) 
+        public OrderAddRequest(Guid customerId, string address) 
         {
-            OrderProducts = products;
+            OrderProducts = new HashSet<CartProductResponse>();
             CustomerId = customerId;
             Address = address;
-            foreach (Product product in products) 
-            {
-                TotalPrice += product.Price;
-            }
             CreatedDate = DateTime.Now;
         }
         public Guid CustomerId { get; private set; }
@@ -30,7 +27,7 @@ namespace ServiceContracts.DTO.Order
         public DateTime CreatedDate { get; private set; }
         public decimal TotalPrice { get; private set; }
         public OrderStatus Status { get; set; } = OrderStatus.Created;
-        public ICollection<Product> OrderProducts { get; private set; }
+        public ICollection<CartProductResponse> OrderProducts { get; set; }
 
         public CustomerOrder ToCustomerOrder()
         {
@@ -38,10 +35,18 @@ namespace ServiceContracts.DTO.Order
             {
                 CustomerId = this.CustomerId.ToString(),
                 CreatedTimestamp = CreatedDate,
-                OrderProducts = this.OrderProducts,
+                OrderProducts = this.OrderProducts.Select(x => x.ToCartProduct()).ToHashSet(),
                 TotalPrice = this.TotalPrice,
                 Address = this.Address                
             };
+        }
+        public decimal UpdateOrderPrice()
+        {
+            foreach(var cartProduct in OrderProducts)
+            {
+                this.TotalPrice += cartProduct.ProductPrice * cartProduct.Quantity;
+            }
+            return this.TotalPrice;
         }
     }
 }

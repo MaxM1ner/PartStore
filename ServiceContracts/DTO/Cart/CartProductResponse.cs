@@ -49,6 +49,17 @@ namespace ServiceContracts.DTO.Cart
         {
             return JsonSerializer.Serialize(this);
         }
+
+        public CartProduct ToCartProduct()
+        {
+            return new CartProduct()
+            {
+                CartProductId = CartProductId,
+                Quantity = Quantity,
+                CustomerId = CustomerId.ToString(),
+                ProductId = ProductId
+            };
+        }
     }
 
     public static class CartProductExtensions

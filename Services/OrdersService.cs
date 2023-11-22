@@ -3,6 +3,7 @@ using Entities.Enums;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
+using ServiceContracts.DTO.Cart;
 using ServiceContracts.DTO.Order;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,12 @@ namespace Services
     public class OrdersService : IOrdersService
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICartService _cartService;
 
-        public OrdersService(ApplicationDbContext context)
+        public OrdersService(ApplicationDbContext context, ICartService cartService)
         {
             _context = context;
+            _cartService = cartService;
         }
 
         public async Task<OrderResponse?> AddOrderAsync(OrderAddRequest? CustomerOrder)
@@ -26,18 +29,21 @@ namespace Services
             if (CustomerOrder == null) throw new ArgumentNullException(nameof(CustomerOrder));
             if (CustomerOrder.CustomerId == Guid.Empty) throw new ArgumentException(nameof(CustomerOrder.CustomerId));
 
+            CustomerOrder.OrderProducts = await _cartService.GetAllProductsAsync(CustomerOrder.CustomerId.ToString());
+            CustomerOrder.UpdateOrderPrice();
             var newOrder = await _context.CustomerOrders.AddAsync(new CustomerOrder()
             {
                 CustomerId = CustomerOrder.CustomerId.ToString(),
                 CreatedTimestamp = DateTime.Now,
                 Address = CustomerOrder.Address,
-                OrderProducts = CustomerOrder.OrderProducts,
+                OrderProducts = CustomerOrder.OrderProducts.Select(x => x.ToCartProduct()).ToHashSet(),
                 Status = OrderStatus.Created.ToString(),
                 TotalPrice = CustomerOrder.TotalPrice
             });
             await _context.SaveChangesAsync();
             await newOrder.Collection(x => x.OrderProducts).LoadAsync();
             await newOrder.Reference(x => x.Customer).LoadAsync();
+            await _cartService.ClearCartAsync(newOrder.Entity.CustomerId);
             return newOrder.Entity.ToOrderResponse();
         }
 
@@ -47,14 +53,14 @@ namespace Services
 
             if ((await _context.Customers.FindAsync(CustomerId.ToString())) == null) throw new ArgumentException(nameof(CustomerId));
 
-            return (await _context.CustomerOrders.Include(x => x.OrderProducts).ThenInclude(x => x.Images).Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToOrderResponse()).ToList();
+            return (await _context.CustomerOrders.Include(x => x.OrderProducts).Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToOrderResponse()).ToList();
         }
 
         public async Task<OrderResponse>? GetOrderAsync(int OrderId)
         {
             if (OrderId < 0) throw new ArgumentException($"CartProductId {OrderId} can't be lower than 0");
 
-            var order = await _context.CustomerOrders.Include(x => x.OrderProducts).ThenInclude(x => x.Images).Where(x => x.Id == OrderId).FirstAsync();
+            var order = await _context.CustomerOrders.Include(x => x.OrderProducts).Where(x => x.Id == OrderId).FirstAsync();
             if (order == null) throw new ArgumentException(nameof(OrderId));
 
             return order.ToOrderResponse();

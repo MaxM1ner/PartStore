@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231121140630_OrderFixes")]
-    partial class OrderFixes
+    [Migration("20231122162547_OrderMigration")]
+    partial class OrderMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("CustomerOrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -46,6 +49,8 @@ namespace DataAccess.Migrations
                     b.HasKey("CartProductId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductId");
 
@@ -125,6 +130,10 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedTimestamp")
                         .HasColumnType("datetime2");
 
@@ -180,9 +189,6 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CustomerOrderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -203,8 +209,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -438,6 +442,10 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Models.CustomerOrder", null)
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("CustomerOrderId");
+
                     b.HasOne("Entities.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -452,7 +460,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.CustomerOrder", b =>
                 {
                     b.HasOne("Entities.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -473,10 +481,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
-                    b.HasOne("Entities.Models.CustomerOrder", null)
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("CustomerOrderId");
-
                     b.HasOne("Entities.Models.ProductType", "Type")
                         .WithMany("Products")
                         .HasForeignKey("ProductTypeId")
@@ -587,6 +591,8 @@ namespace DataAccess.Migrations
                     b.Navigation("CartProducts");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Entities.Models.CustomerOrder", b =>

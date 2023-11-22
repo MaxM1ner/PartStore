@@ -13,7 +13,7 @@ namespace DataAccess.Migrations
         {
             migrationBuilder.AddColumn<int>(
                 name: "CustomerOrderId",
-                table: "Products",
+                table: "CartProducts",
                 type: "int",
                 nullable: true);
 
@@ -25,6 +25,8 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -39,8 +41,8 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CustomerOrderId",
-                table: "Products",
+                name: "IX_CartProducts_CustomerOrderId",
+                table: "CartProducts",
                 column: "CustomerOrderId");
 
             migrationBuilder.CreateIndex(
@@ -49,8 +51,8 @@ namespace DataAccess.Migrations
                 column: "CustomerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Products_CustomerOrders_CustomerOrderId",
-                table: "Products",
+                name: "FK_CartProducts_CustomerOrders_CustomerOrderId",
+                table: "CartProducts",
                 column: "CustomerOrderId",
                 principalTable: "CustomerOrders",
                 principalColumn: "Id");
@@ -60,19 +62,19 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Products_CustomerOrders_CustomerOrderId",
-                table: "Products");
+                name: "FK_CartProducts_CustomerOrders_CustomerOrderId",
+                table: "CartProducts");
 
             migrationBuilder.DropTable(
                 name: "CustomerOrders");
 
             migrationBuilder.DropIndex(
-                name: "IX_Products_CustomerOrderId",
-                table: "Products");
+                name: "IX_CartProducts_CustomerOrderId",
+                table: "CartProducts");
 
             migrationBuilder.DropColumn(
                 name: "CustomerOrderId",
-                table: "Products");
+                table: "CartProducts");
         }
     }
 }

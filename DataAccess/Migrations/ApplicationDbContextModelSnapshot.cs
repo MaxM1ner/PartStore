@@ -34,6 +34,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("CustomerOrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -43,6 +46,8 @@ namespace DataAccess.Migrations
                     b.HasKey("CartProductId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductId");
 
@@ -112,6 +117,39 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Models.CustomerOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("CustomerOrders");
                 });
 
             modelBuilder.Entity("Entities.Models.Feature", b =>
@@ -401,6 +439,10 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Models.CustomerOrder", null)
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("CustomerOrderId");
+
                     b.HasOne("Entities.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -410,6 +452,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Entities.Models.CustomerOrder", b =>
+                {
+                    b.HasOne("Entities.Models.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Entities.Models.Feature", b =>
@@ -535,6 +588,13 @@ namespace DataAccess.Migrations
                     b.Navigation("CartProducts");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Entities.Models.CustomerOrder", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("Entities.Models.Product", b =>
