@@ -7,11 +7,11 @@
         <h2 class="category-main-title">Catalog</h2>
 
         <div class="catalog">
-            @foreach (var type in Model?.ProductTypes)
+            @foreach (var type in Model.ProductTypes)
             {
-                <div class="catalog-category">
-                    <a class="category-title" asp-action="Catalog" asp-route-typeid="@type.Id">@type.Value</a>
-                </div>
+
+                <a class="category-title stretched-link d-block catalog-category" asp-action="Catalog" asp-route-typeid="@type.Id">@type.Value</a>
+
             }
         </div>
 
@@ -22,7 +22,8 @@
                 <div class="products-cards">
                     @foreach (var product in @Model.Products)
                     {
-                        <div class="card-container">
+                        <a class="card-container" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
+
                             <div class="card-img">
                                 <img class="hero-image"
                                      src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
@@ -33,12 +34,11 @@
                                 <p class="product-description">
                                     @product.Description
                                 </p>
-                                <div class="card-tags">
+                                <div class="card-tags ">
                                     <span class="product-price">Price: @product.Price</span>
-                                    <a class="btn-open-product" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">Open</a>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     }
                 </div>
             }
@@ -47,30 +47,29 @@
                 @foreach (var type in @Model.ProductTypes)
                 {
                     <a href="" class="products-cards-title">@type.Value</a>
-                <div class="products-cards">
-                            @foreach(var product in type.Products.Take(5))
-                            {
-                            <div class="card-container">
-                            <div class="card-img">
-                                <img class="hero-image"
-                                     src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
-                                     alt="@product.Type?.Value" />
-                            </div>
-                            <div class="card-content">
-                                <h3 class="product-name">@product.Name</h3>
-                                <p class="product-description">
-                                    @product.Description
-                                </p>
-                                <div class="card-tags">
-                                    <span class="product-price">Price: @product.Price</span>
-                                    <a class="btn-open-product" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">Open</a>
+                    <div class="products-cards">
+                        @foreach (var product in type.Products.Take(5))
+                        {
+                            <a class="card-container" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
+                                <div class="card-img">
+                                    <img class="hero-image"
+                                         src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
+                                         alt="@product.Type?.Value" />
                                 </div>
-                            </div>
-                            </div>
-                            }
+                                <div class="card-content">
+                                    <h3 class="product-name">@product.Name</h3>
+                                    <p class="product-description">
+                                        @product.Description
+                                    </p>
+                                    <div class="card-tags">
+                                        <span class="product-price">Price: @product.Price</span>
+                                    </div>
+                                </div>
+                            </a>
+                        }
 
-                    
-                </div>
+
+                    </div>
                 }
             }
         </div>
