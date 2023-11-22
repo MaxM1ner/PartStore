@@ -420,7 +420,7 @@ p.hint a {
     transition: transform 0.4s ease-in-out;
 }
     .card-container:hover {
-        transform: scale(1.2);
+        transform: scale(1.05);
     }
 .card-img {
   max-width: 60%;
@@ -462,7 +462,7 @@ p.hint a {
 
 .card-tags {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .product-price {
@@ -471,6 +471,7 @@ p.hint a {
   color: var(--primary);
   font-weight: 700;
   border-radius: 2px;
+  margin-top: 2vh;
 }
 
 .btn-open-product {
