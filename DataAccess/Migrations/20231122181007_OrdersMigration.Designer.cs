@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231122162547_OrderMigration")]
-    partial class OrderMigration
+    [Migration("20231122181007_OrdersMigration")]
+    partial class OrdersMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("CustomerOrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -49,8 +46,6 @@ namespace DataAccess.Migrations
                     b.HasKey("CartProductId");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductId");
 
@@ -189,6 +184,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CustomerOrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -209,6 +207,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -442,10 +442,6 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.CustomerOrder", null)
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("CustomerOrderId");
-
                     b.HasOne("Entities.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -481,6 +477,10 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
+                    b.HasOne("Entities.Models.CustomerOrder", null)
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("CustomerOrderId");
+
                     b.HasOne("Entities.Models.ProductType", "Type")
                         .WithMany("Products")
                         .HasForeignKey("ProductTypeId")

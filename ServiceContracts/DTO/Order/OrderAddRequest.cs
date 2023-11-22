@@ -35,7 +35,7 @@ namespace ServiceContracts.DTO.Order
             {
                 CustomerId = this.CustomerId.ToString(),
                 CreatedTimestamp = CreatedDate,
-                OrderProducts = this.OrderProducts.Select(x => x.ToCartProduct()).ToHashSet(),
+                OrderProducts = this.OrderProducts.Select(x => x.ToProduct()).ToHashSet(),
                 TotalPrice = this.TotalPrice,
                 Address = this.Address                
             };

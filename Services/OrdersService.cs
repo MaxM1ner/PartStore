@@ -31,12 +31,13 @@ namespace Services
 
             CustomerOrder.OrderProducts = await _cartService.GetAllProductsAsync(CustomerOrder.CustomerId.ToString());
             CustomerOrder.UpdateOrderPrice();
+
             var newOrder = await _context.CustomerOrders.AddAsync(new CustomerOrder()
             {
                 CustomerId = CustomerOrder.CustomerId.ToString(),
                 CreatedTimestamp = DateTime.Now,
                 Address = CustomerOrder.Address,
-                OrderProducts = CustomerOrder.OrderProducts.Select(x => x.ToCartProduct()).ToHashSet(),
+                OrderProducts = CustomerOrder.OrderProducts.Select(x => x.ToProduct()).ToHashSet(),
                 Status = OrderStatus.Created.ToString(),
                 TotalPrice = CustomerOrder.TotalPrice
             });

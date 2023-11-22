@@ -60,6 +60,14 @@ namespace ServiceContracts.DTO.Cart
                 ProductId = ProductId
             };
         }
+
+        public Product ToProduct()
+        {
+            return new Product()
+            {
+                Id = ProductId
+            };
+        }
     }
 
     public static class CartProductExtensions

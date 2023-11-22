@@ -61,7 +61,7 @@ namespace ServiceContracts.DTO.Order
                 OrderId = order.Id,
                 Status = Enum.Parse<OrderStatus>(order.Status),
                 TotalPrice = order.TotalPrice,
-                OrderedProductIds = order.OrderProducts.Select(x => x.ProductId),
+                OrderedProductIds = order.OrderProducts.Select(x => x.Id),
                 Address = order.Address
             };
         }

@@ -12,7 +12,7 @@ namespace Entities.Models
     {
         public CustomerOrder() 
         {
-            OrderProducts = new HashSet<CartProduct>();
+            OrderProducts = new HashSet<Product>();
         }
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
@@ -22,6 +22,6 @@ namespace Entities.Models
         public string CustomerId { get; set; } = null!;
         [ForeignKey(nameof(CustomerId))]
         public Customer? Customer { get; set; }
-        public ICollection<CartProduct> OrderProducts { get; set; }
+        public ICollection<Product> OrderProducts { get; set; }
     }
 }

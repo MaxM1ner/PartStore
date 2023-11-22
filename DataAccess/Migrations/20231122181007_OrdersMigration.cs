@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class OrderMigration : Migration
+    public partial class OrdersMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
                 name: "CustomerOrderId",
-                table: "CartProducts",
+                table: "Products",
                 type: "int",
                 nullable: true);
 
@@ -41,8 +41,8 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartProducts_CustomerOrderId",
-                table: "CartProducts",
+                name: "IX_Products_CustomerOrderId",
+                table: "Products",
                 column: "CustomerOrderId");
 
             migrationBuilder.CreateIndex(
@@ -51,8 +51,8 @@ namespace DataAccess.Migrations
                 column: "CustomerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CartProducts_CustomerOrders_CustomerOrderId",
-                table: "CartProducts",
+                name: "FK_Products_CustomerOrders_CustomerOrderId",
+                table: "Products",
                 column: "CustomerOrderId",
                 principalTable: "CustomerOrders",
                 principalColumn: "Id");
@@ -62,19 +62,19 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CartProducts_CustomerOrders_CustomerOrderId",
-                table: "CartProducts");
+                name: "FK_Products_CustomerOrders_CustomerOrderId",
+                table: "Products");
 
             migrationBuilder.DropTable(
                 name: "CustomerOrders");
 
             migrationBuilder.DropIndex(
-                name: "IX_CartProducts_CustomerOrderId",
-                table: "CartProducts");
+                name: "IX_Products_CustomerOrderId",
+                table: "Products");
 
             migrationBuilder.DropColumn(
                 name: "CustomerOrderId",
-                table: "CartProducts");
+                table: "Products");
         }
     }
 }
