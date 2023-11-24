@@ -37,10 +37,16 @@ namespace Services
                 CustomerId = CustomerOrder.CustomerId.ToString(),
                 CreatedTimestamp = DateTime.Now,
                 Address = CustomerOrder.Address,
-                OrderProducts = CustomerOrder.OrderProducts.Select(x => x.ToProduct()).ToHashSet(),
                 Status = OrderStatus.Created.ToString(),
                 TotalPrice = CustomerOrder.TotalPrice
             });
+            foreach (var orderedProduct in CustomerOrder.OrderProducts)
+            {
+
+                Product? dbProduct = await _context.Products.FindAsync(orderedProduct.ProductId);
+                if (dbProduct == null) continue;
+                newOrder.Entity.OrderProducts.Add(dbProduct);
+            }
             await _context.SaveChangesAsync();
             await newOrder.Collection(x => x.OrderProducts).LoadAsync();
             await newOrder.Reference(x => x.Customer).LoadAsync();
