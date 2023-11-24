@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceContracts;
 using ServiceContracts.DTO.Cart;
 using Services;
 using StoreUI.Areas.Admin.ViewModels;
@@ -13,9 +14,9 @@ namespace StoreUI.Controllers
     [Authorize]
     public sealed class CartController : Controller
     {
-        private readonly CartService _cartService;
+        private readonly ICartService _cartService;
 
-        public CartController(CartService cartService) 
+        public CartController(ICartService cartService) 
         {
             _cartService = cartService;
         }

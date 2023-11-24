@@ -1,19 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ServiceContracts;
 using ServiceContracts.DTO.Order;
 using Services;
 using System.Security.Claims;
 
 namespace StoreUI.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
-        private readonly OrdersService _orderService;
-        private readonly CartService _cartService;
-        public OrderController(OrdersService orderService, CartService cartService)
+        private readonly IOrdersService _orderService;
+        public OrderController(IOrdersService orderService)
         {
             _orderService = orderService;
-            _cartService = cartService;
 
         }
         public IActionResult Index()

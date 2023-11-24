@@ -14,6 +14,7 @@ using StoreUI.Services;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using ServiceContracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +75,8 @@ builder.Services.AddTransient<FormImageManager>((x) =>
 builder.Services.AddTransient<FeatureManager>();
 builder.Services.AddTransient<ProductTypeManager>();
 builder.Services.AddTransient<ProductManager>();
-builder.Services.AddTransient<CartService>();
+builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddTransient<IOrdersService, OrdersService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
