@@ -4,24 +4,24 @@
 @{
     ViewData["Title"] = "Cart - Part Store";
 }
-
+@{
+    decimal sum = 0;
+}
 <section>
     <div class="containerr">
         <h2 class="section-title">Кошик</h2>
         <div class="card-page-content" id="cardPageContent">
             @foreach(var item in Model)
             {
+                sum += item.ProductPrice;
                 <div class="product-item">
                     <img src="@Url.Content("~/productFiles/img/" + item.ProductImagePath)"
                      alt="@item.ProductName" />
                 <div>
                         <h3 class="card-name-product">@item.ProductName</h3>
-                        <p>Price: $<span>@item.ProductPrice</span></p>
+                        <p>Price: <span>@item.ProductPrice</span></p>
                 </div>
                 <div class="crad-btn-div">
-@*                     <a class="card-btn add">
-                        Add to payment
-                    </a> *@
                         <a class="card-btn remove" asp-action="RemoveProduct" asp-route-cartProductId="@item.CartProductId">Remove</a>
                 </div>
             </div>
@@ -33,7 +33,7 @@
             <div class="card-orders-block" id="cardOrdersBlock">
             </div>
             <h3 class="card-order-title">
-                Total price: <span id="total-price">0$</span>
+                Total price: <span id="total-price">@sum</span>
             </h3>
             <form asp-controller="Order" asp-action="Create" class="card-form" id="checkout-form">
                 <label for="name">Ім'я:</label>
