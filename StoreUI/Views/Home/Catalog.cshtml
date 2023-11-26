@@ -22,11 +22,12 @@
                 <div class="products-cards">
                     @foreach (var product in @Model.Products)
                     {
+                        @if (product.Images?.Count < 1) continue;
                         <a class="card-container" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
 
                             <div class="card-img">
                                 <img class="hero-image"
-                                     src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
+                                     src="@Url.Content("~/productFiles/img/" + product.Images?.First().Path)"
                                      alt="@product.Type?.Value" />
                             </div>
                             <div class="card-content">
@@ -50,22 +51,23 @@
                     <div class="products-cards">
                         @foreach (var product in type.Products.Take(5))
                         {
+                            @if (product.Images?.Count < 1) continue;
                             <a class="card-container" sp-area="" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
-                                <div class="card-img">
-                                    <img class="hero-image"
-                                         src="@Url.Content("~/productFiles/img/" + product.Images.First().Path)"
-                                         alt="@product.Type?.Value" />
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="product-name">@product.Name</h3>
-                                    <p class="product-description">
-                                        @product.Description
-                                    </p>
-                                    <div class="card-tags">
-                                        <span class="product-price">Price: @product.Price</span>
+                                    <div class="card-img">
+                                        <img class="hero-image"
+                                        src="@Url.Content("~/productFiles/img/" + product.Images?.First().Path)"
+                                        alt="@product.Type?.Value" />
                                     </div>
-                                </div>
-                            </a>
+                                    <div class="card-content">
+                                        <h3 class="product-name">@product.Name</h3>
+                                        <p class="product-description">
+                                            @product.Description
+                                        </p>
+                                        <div class="card-tags">
+                                            <span class="product-price">Price: @product.Price</span>
+                                        </div>
+                                    </div>
+                                </a>
                         }
 
 

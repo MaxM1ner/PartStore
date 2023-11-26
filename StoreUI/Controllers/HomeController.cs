@@ -21,7 +21,7 @@ namespace StoreUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var types = await _context.ProductTypes.ToListAsync();
+            var types = await _context.ProductTypes.Where(x => x.Visible).ToListAsync();
             return View(types);
         }
         public async Task<IActionResult> Catalog(int? typeid)
@@ -29,7 +29,7 @@ namespace StoreUI.Controllers
             var catalogProducts = new List<Product>();
             var types = await _context.ProductTypes.Include(x => x.Products).ThenInclude(y => y.Images).ToListAsync();
             if(typeid != null)
-            foreach (var type in await _context.ProductTypes.Include(x => x.Products).ToListAsync())
+            foreach (var type in await _context.ProductTypes.Include(x => x.Products).Where(x => x.Visible).ToListAsync())
             {
                     if(type.Id == typeid)
                     catalogProducts.AddRange(type.Products.Where(x => x.Quantity > 0 && x.IsVisible).Take(15));

@@ -10,6 +10,7 @@ namespace Entities.Models
             this.Features = new HashSet<Feature>();
             this.Comments = new HashSet<ProductComment>();
             this.Images = new HashSet<ProductImage>();
+            this.Builds = new HashSet<PcBuild>();
         }
         public int Id { get; set; }
         public decimal Price { get; set; }
@@ -23,5 +24,7 @@ namespace Entities.Models
         public ICollection<Feature> Features { get; private set; }
         public ICollection<ProductComment> Comments { get; private set; }
         public ICollection<ProductImage> Images { get; private set; }
+        public ICollection<CustomerOrder> Orders { get; private set; }
+        public ICollection<PcBuild> Builds { get; private set; }
     }
 }

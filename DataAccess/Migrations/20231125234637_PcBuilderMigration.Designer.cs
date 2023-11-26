@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125234637_PcBuilderMigration")]
+    partial class PcBuilderMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CustomerOrderProduct", b =>
-                {
-                    b.Property<int>("OrderProductsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderProductsId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("CustomerOrderProduct");
-                });
 
             modelBuilder.Entity("Entities.Models.CartProduct", b =>
                 {
@@ -218,6 +206,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CustomerOrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -238,6 +229,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -502,21 +495,6 @@ namespace DataAccess.Migrations
                     b.ToTable("PcBuildProduct");
                 });
 
-            modelBuilder.Entity("CustomerOrderProduct", b =>
-                {
-                    b.HasOne("Entities.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("OrderProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.CustomerOrder", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Entities.Models.CartProduct", b =>
                 {
                     b.HasOne("Entities.Models.Customer", "Customer")
@@ -571,6 +549,10 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
+                    b.HasOne("Entities.Models.CustomerOrder", null)
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("CustomerOrderId");
+
                     b.HasOne("Entities.Models.ProductType", "Type")
                         .WithMany("Products")
                         .HasForeignKey("ProductTypeId")
@@ -698,6 +680,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Entities.Models.CustomerOrder", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("Entities.Models.Product", b =>
