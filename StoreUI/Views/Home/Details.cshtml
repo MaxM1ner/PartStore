@@ -58,30 +58,23 @@
 
             <div class="comments-block">
                 <ul class="comments-list">
-                    <li class="comment">
-                        Name:<span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                    </li>
-                    <li class="comment">
-                        Name:<span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                    </li>
-                    <li class="comment">
-                        Name:<span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                    </li>
-                    <li class="comment">
-                        Name:<span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                    </li>
-                    <li class="comment">
-                        Name:<span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                    </li>
+                    @foreach(var comment in Model.Comments)
+                    {
+                        <li class="comment">
+                            @comment.Customer?.UserName <span>@comment.Value</span>
+                        </li>
+                    }
                 </ul>
                 <div class="create-comment-block">
-                    <form class="comment-form" id="comment-form">
+                    <form asp-action="AddComment" class="comment-form" id="comment-form">
+                        <input type="hidden" name="productId" value="@Model.Id">
                         <label class="label-comment" for="comment-text">New Comment:</label>
                         <textarea class="comment-text"
                                   id="comment-text"
                                   rows="3"
                                   cols="50"
                                   maxlength="60"
+                                  name="commentValue"
                                   required></textarea>
                         <button class="comment-btn" type="submit">Add Comment</button>
                     </form>
@@ -89,5 +82,4 @@
             </div>
     </div>
     </div>
-     <script src="~/js/comment.js"></script>
 </section>

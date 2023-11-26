@@ -6,6 +6,9 @@ using Entities.Models;
 using System.Diagnostics;
 using StoreUI.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ServiceContracts.DTO.Order;
+using System.Security.Claims;
+using Services;
 
 namespace StoreUI.Controllers
 {
@@ -13,10 +16,12 @@ namespace StoreUI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
-        public HomeController(ILogger<HomeController> logger,  ApplicationDbContext context)
+        private readonly ProductCommentManager _productCommentManager;
+        public HomeController(ILogger<HomeController> logger,  ApplicationDbContext context, ProductCommentManager productCommentManager)
         {
             _logger = logger;
             _context = context;
+            _productCommentManager = productCommentManager;
         }
 
         public async Task<IActionResult> Index()
@@ -36,15 +41,25 @@ namespace StoreUI.Controllers
             }
             return View(new CatalogViewModel() { Products = catalogProducts, ProductTypes = types});
         }
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View( _context.Products.
+            return View(await _context.Products.
                 Where(x => x.Id == id && x.IsVisible).
                 Include(x => x.Images).
                 Include(x => x.Features).
                 Include(x => x.Type).
-                First());
+                Include(x => x.Comments).
+                ThenInclude(x => x.Customer).FirstAsync());
         }
+
+        public async Task<IActionResult> AddComment(string commentValue, int productId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var newAddRequest = new CommentAddRequest(userId, productId, commentValue);
+            await _productCommentManager.AddCommentAsync(newAddRequest);
+            return RedirectToAction("Details", new { id = productId});
+        }
+
         public IActionResult Privacy()
         {
             return View();

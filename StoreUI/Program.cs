@@ -75,6 +75,7 @@ builder.Services.AddTransient<FormImageManager>((x) =>
 builder.Services.AddTransient<FeatureManager>();
 builder.Services.AddTransient<ProductTypeManager>();
 builder.Services.AddTransient<ProductManager>();
+builder.Services.AddTransient<ProductCommentManager>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<IOrdersService, OrdersService>();
 var app = builder.Build();
