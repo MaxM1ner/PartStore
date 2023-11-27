@@ -1253,10 +1253,13 @@ table.characteristics-table {
     text-transform:uppercase;
     font-size:14px;
 }
-.row.admin{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+.form-input option {
+    background-color:var(--background);
+}
+.row.admin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .td-description-admin{
     max-width: 450px;
