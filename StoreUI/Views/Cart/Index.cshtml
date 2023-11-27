@@ -15,11 +15,16 @@
             {
                 sum += item.ProductPrice;
                 <div class="product-item">
-                    <img src="@Url.Content("~/productFiles/img/" + item.ProductImagePath)"
+                    <img class="card-product-img" src="@Url.Content("~/productFiles/img/" + item.ProductImagePath)"
                      alt="@item.ProductName" />
                 <div>
                         <h3 class="card-name-product">@item.ProductName</h3>
                         <p>Price: <span>@item.ProductPrice</span></p>
+                </div>
+                <div class="card-counter">
+                    <button>-</button>
+                    <span>1</span>
+                    <button>+</button>
                 </div>
                 <div class="crad-btn-div">
                         <a class="card-btn remove" asp-action="RemoveProduct" asp-route-cartProductId="@item.CartProductId">Remove</a>
