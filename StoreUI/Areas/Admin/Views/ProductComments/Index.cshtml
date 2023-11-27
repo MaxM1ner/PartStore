@@ -22,7 +22,19 @@
                 @Html.DisplayNameFor(model => model.Product)
             </th>
             <th>
-                <input />
+                <div class="admin-search-block">
+                    <div class="input-icons-admin">
+                        <span class="input-span-icon">
+                            <svg width="25" height="25">
+                                <use href=@Url.Content("~/img/icons.svg#icon-search")></use>
+                            </svg>
+                        </span>
+                        <input class="input-field form-input"
+                               type="text"
+                               placeholder="Username">
+                    </div>
+                    <button type="button" class="add-btn back">Search</button>
+                </div>
             </th>
         </tr>
     </thead>
