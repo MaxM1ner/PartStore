@@ -433,6 +433,7 @@ p.hint a {
   flex: 1;
 }
 
+
 .product-name {
     text-align: center;
     text-transform: uppercase;
@@ -1027,6 +1028,7 @@ table.characteristics-table {
 .crad-btn-div {
     display: flex;
     gap: 20px;
+    align-items:center;
 }
 
 .card-btn {
@@ -1100,6 +1102,25 @@ table.characteristics-table {
     display: block;
     text-align: center;
 }
+.card-counter {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+    .card-counter button {
+        background-color: inherit;
+        border: solid 1px var(--primary);
+        width: 20px;
+        height: 20px;
+        color: var(--primary);
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+        .card-counter button:hover {
+            background-color: var(--primary);
+            color: var(--background);
+        }
 /* ///////////////////////////////// */
 /* ////////////// ADMIN ////////////// */
 .admin-body {
@@ -1218,6 +1239,7 @@ table.characteristics-table {
     background-color: transparent;
     border: solid 1px var(--primary);
     text-align: center;
+    color:var(--primary);
     transition: color .3s ease-in-out,background-color .3s ease-in-out;
 }
 .add-btn.back:hover {
@@ -1244,24 +1266,26 @@ table.characteristics-table {
 .input-icons-admin {
     position:relative;
 }
-.input-span-icon {
-    
-    width:25px;
-    height:25px;
-    position: absolute;
-    top:50%;
-    left:5px;
-    transform:translateY(-60%);
-    border: solid 1px white;
-    padding:0;
+.admin-search-block{
     display:flex;
-    justify-content:center;
-    align-items:center;
-    fill:var(--primary);
+    justify-content:space-around;
+}
+.input-span-icon {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-60%);
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    fill: var(--primary);
 }
 .input-field.form-input {
     flex:1;
-    padding-left: 30px; 
+    padding-left: 35px; 
 }
 .admin-flex-div{
     display:flex;
