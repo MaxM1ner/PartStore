@@ -63,7 +63,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Value,TypeImage")] ProductTypeViewModel productType)
+        public async Task<IActionResult> Create([Bind("Id,Value,TypeImage,IsVisible")] ProductTypeViewModel productType)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Value")] ProductType productType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Value,Visible,TypeImagepath")] ProductType productType)
         {
             if (id != productType.Id)
             {

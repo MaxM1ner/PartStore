@@ -242,18 +242,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("ProductTypeId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2147483647,
-                            Description = "Our engineers will build your PC, so you can not worry about doing that by yourself",
-                            IsVisible = false,
-                            Name = "Pre-built PC",
-                            Price = 0m,
-                            ProductTypeId = 2147483647,
-                            Quantity = 2147483647
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.ProductComment", b =>
@@ -328,15 +316,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2147483647,
-                            TypeImagepath = "",
-                            Value = "Services",
-                            Visible = false
-                        });
                 });
 
             modelBuilder.Entity("FeatureProduct", b =>

@@ -45,6 +45,8 @@ namespace Services
 
                 Product? dbProduct = await _context.Products.FindAsync(orderedProduct.ProductId);
                 if (dbProduct == null) continue;
+                if (dbProduct.Quantity < 1) continue;
+                dbProduct.Quantity--;
                 newOrder.Entity.OrderProducts.Add(dbProduct);
             }
             await _context.SaveChangesAsync();

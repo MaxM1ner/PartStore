@@ -12,6 +12,7 @@ namespace StoreUI.Areas.Admin.ViewModels
         }
         public int Id { get; set; }
         public string Value { get; set; } = null!;
+        public bool IsVisible { get; set; }
         public IFormFile TypeImage { get; set; } = null!;
         public ICollection<Feature> Features { get; private set; }
         public ICollection<Product> Products { get; private set; }
@@ -21,7 +22,8 @@ namespace StoreUI.Areas.Admin.ViewModels
             return new ProductType()
             {
                 Id = Id,
-                Value = Value
+                Value = Value,
+                Visible = IsVisible
             };
         }
     }

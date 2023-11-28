@@ -26,7 +26,7 @@ namespace StoreUI.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             OrderAddRequest orderAddRequest = new(Guid.Parse(userId), address);
             await _orderService.AddOrderAsync(orderAddRequest);
-            return Ok("Order Created");
+            return View();
         }
     }
 }

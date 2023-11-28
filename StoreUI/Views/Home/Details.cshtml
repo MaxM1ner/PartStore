@@ -3,62 +3,67 @@
     ViewData["Title"] = " Catalog - Part Store";
 }
 <section id="fon-anim">
-<div class="containerr">
-    <div class="product-page">
-        <h2 class="product-title">@Model.Name</h2>
-        <div>
-            <div class="product-nav">
-                <ul class="product-nav-list">
-                    <li><a href="#about">Про товар</a></li>
-                    <li><a href="#characteristics">Характеристики</a></li>
-                    <li><a href="#description">Опис</a></li>
-                </ul>
-            </div>
-            <div class="product-box" id="about">
-                <img class="product-img"
-                     src="@Url.Content("~/productFiles/img/" + Model.Images.First().Path)"
-                     alt="" />
-                <div class="product-main-descriprion">
-                    <div>
-                        <p class="product-main-price">Price: @Model.Price</p>
-                        <p class="">
-                            Товар має гарантію протягом <br />12 місяців з моменту
-                            купівлі.
-                        </p>
+    <div class="containerr">
+        <div class="product-page">
+            <h2 class="product-title">@Model.Name</h2>
+            <div>
+                <div class="product-nav">
+                    <ul class="product-nav-list">
+                        <li><a href="#about">Про товар</a></li>
+                        <li><a href="#characteristics">Характеристики</a></li>
+                        <li><a href="#description">Опис</a></li>
+                    </ul>
+                </div>
+                <div class="product-box" id="about">
+                    <img class="product-img"
+                         src="@Url.Content("~/productFiles/img/" + Model.Images.First().Path)"
+                         alt="" />
+                    <div class="product-main-descriprion">
+                        <div>
+                            <p class="product-main-price">Price: @Model.Price</p>
+                            <p class="">
+                                Товар має гарантію протягом <br />12 місяців з моменту
+                                купівлі.
+                            </p>
+                        </div>
+                        @if (Model.Quantity > 0) {
+                            <a class="product-main-btn" asp-controller="Cart" asp-action="AddProduct" asp-route-id="@Model.Id">Add to Cart</a>
+                        }
+                        else {
+                            <a class="product-main-btn">Product sold</a>
+                        }
                     </div>
-                        <a class="product-main-btn" asp-controller="Cart" asp-action="AddProduct" asp-route-id="@Model.Id">Add to Cart</a>
                 </div>
             </div>
-        </div>
-        <h2 class="product-title" id="characteristics">
-            Технічні характеристики: 
-        </h2>
-        <div>
-            <table class="characteristics-table">
-                <caption>
-                    Технічні характеристики
-                </caption>
-                @foreach(var item in Model.Features)
-                {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>@item.Value</td>
-                    </tr>
-                }
-            </table>
-        </div>
-        <h2 class="product-title" id="description">Опис: </h2>
+            <h2 class="product-title" id="characteristics">
+                Технічні характеристики:
+            </h2>
+            <div>
+                <table class="characteristics-table">
+                    <caption>
+                        Технічні характеристики
+                    </caption>
+                    @foreach (var item in Model.Features)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Value</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <h2 class="product-title" id="description">Опис: </h2>
 
-        <div>
-            <p class="product-main-description">
-                @Model.Description
-            </p>
-        </div>
+            <div>
+                <p class="product-main-description">
+                    @Model.Description
+                </p>
+            </div>
             <h2 class="product-title" id="comment">Коментарі: Product name</h2>
 
             <div class="comments-block">
                 <ul class="comments-list">
-                    @foreach(var comment in Model.Comments)
+                    @foreach (var comment in Model.Comments)
                     {
                         <li class="comment">
                             @comment.Customer?.UserName <span>@comment.Value</span>
@@ -80,6 +85,6 @@
                     </form>
                 </div>
             </div>
-    </div>
+        </div>
     </div>
 </section>

@@ -10,12 +10,48 @@ namespace DataAccess.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Products_CustomerOrders_CustomerOrderId",
+                table: "Products");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Products_CustomerOrderId",
+                table: "Products");
+
+            migrationBuilder.DropColumn(
+                name: "CustomerOrderId",
+                table: "Products");
+
             migrationBuilder.AddColumn<bool>(
                 name: "Visible",
                 table: "ProductTypes",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
+
+            migrationBuilder.CreateTable(
+                name: "CustomerOrderProduct",
+                columns: table => new
+                {
+                    OrderProductsId = table.Column<int>(type: "int", nullable: false),
+                    OrdersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerOrderProduct", x => new { x.OrderProductsId, x.OrdersId });
+                    table.ForeignKey(
+                        name: "FK_CustomerOrderProduct_CustomerOrders_OrdersId",
+                        column: x => x.OrdersId,
+                        principalTable: "CustomerOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomerOrderProduct_Products_OrderProductsId",
+                        column: x => x.OrderProductsId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 name: "PcBuilds",
@@ -61,15 +97,10 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "ProductTypes",
-                columns: new[] { "Id", "TypeImagepath", "Value", "Visible" },
-                values: new object[] { 2147483647, "", "Services", false });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "CustomerOrderId", "Description", "IsVisible", "Name", "Price", "ProductTypeId", "Quantity" },
-                values: new object[] { 2147483647, null, "Our engineers will build your PC, so you can not worry about doing that by yourself", false, "Pre-built PC", 0m, 2147483647, 2147483647 });
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerOrderProduct_OrdersId",
+                table: "CustomerOrderProduct",
+                column: "OrdersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PcBuildProduct_BuildsId",
@@ -86,24 +117,35 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CustomerOrderProduct");
+
+            migrationBuilder.DropTable(
                 name: "PcBuildProduct");
 
             migrationBuilder.DropTable(
                 name: "PcBuilds");
 
-            migrationBuilder.DeleteData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: 2147483647);
-
-            migrationBuilder.DeleteData(
-                table: "ProductTypes",
-                keyColumn: "Id",
-                keyValue: 2147483647);
-
             migrationBuilder.DropColumn(
                 name: "Visible",
                 table: "ProductTypes");
+
+            migrationBuilder.AddColumn<int>(
+                name: "CustomerOrderId",
+                table: "Products",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CustomerOrderId",
+                table: "Products",
+                column: "CustomerOrderId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Products_CustomerOrders_CustomerOrderId",
+                table: "Products",
+                column: "CustomerOrderId",
+                principalTable: "CustomerOrders",
+                principalColumn: "Id");
         }
     }
 }
