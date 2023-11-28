@@ -20,26 +20,26 @@ namespace DataAccess
         public DbSet<PcBuild> PcBuilds { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            ProductType servicesType = new ProductType()
-            {
-                Id = int.MaxValue,
-                Visible = false,
-                Value = "Services",
-                TypeImagepath = string.Empty
-            };
-            Product preBuildEntity = new Product()
-            {
-                Id = int.MaxValue,
-                Name = "Pre-built PC",
-                Description = "Our engineers will build your PC, so you can not worry about doing that by yourself",
-                IsVisible = false,
-                Quantity = int.MaxValue,
-                Price = 0,
-                ProductTypeId = servicesType.Id
-            };
+            //ProductType servicesType = new ProductType()
+            //{
+            //    Id = int.MaxValue,
+            //    Visible = false,
+            //    Value = "Services",
+            //    TypeImagepath = string.Empty
+            //};
+            //Product preBuildEntity = new Product()
+            //{
+            //    Id = int.MaxValue,
+            //    Name = "Pre-built PC",
+            //    Description = "Our engineers will build your PC, so you can not worry about doing that by yourself",
+            //    IsVisible = false,
+            //    Quantity = int.MaxValue,
+            //    Price = 0,
+            //    ProductTypeId = servicesType.Id
+            //};
             base.OnModelCreating(builder);
-            builder.Entity<ProductType>().HasData(servicesType);
-            builder.Entity<Product>().HasData(preBuildEntity);
+            //builder.Entity<ProductType>().HasData(servicesType);
+            //builder.Entity<Product>().HasData(preBuildEntity);
         }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
