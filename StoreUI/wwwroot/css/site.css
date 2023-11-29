@@ -405,6 +405,16 @@ p.hint a {
     gap: 25px;
     margin-bottom: 40px;
 }
+    .products-cards .card-img .hero-img {
+        width: 125px;
+        height: 125px;
+        object-fit: cover;
+    }
+.card-img {
+    max-width: 125px;
+    height:50%;
+    margin-bottom:5px;
+}
 
 .card-container {
     flex-basis: calc((100% - 100px) / 5);
@@ -422,10 +432,7 @@ p.hint a {
     .card-container:hover {
         transform: scale(1.05);
     }
-.card-img {
-  max-width: 60%;
-  height:50%;
-}
+
 .card-content {
   display: flex;
   flex-direction: column;
@@ -595,6 +602,9 @@ p.hint a {
 .product-img {
     max-width: 30%;
     border: 2px solid var(--primary);
+    width:300px;
+    height:300px;
+    object-fit:cover;
 }
 
 .product-main-descriprion {
@@ -1255,15 +1265,18 @@ table.characteristics-table {
 }
 .form-input option {
     background-color:var(--background);
+    color:var(--primary);
 }
 .row.admin {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.td-description-admin{
-    max-width: 450px;
-    text-wrap:wrap;
+.td-description-admin {
+    max-width: 370px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .input-icons-admin {
