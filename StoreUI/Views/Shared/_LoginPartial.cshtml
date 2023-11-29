@@ -10,8 +10,7 @@
         </li>
         <li>
 
-            <a class="nav-link icon btn-icon" asp-area="" asp-controller="Cart" asp-action="Index">
-
+            <a class="nav-link icon btn-icon" asp-area=""  asp-controller="Cart" asp-action="Index">
 
                 <svg width="25" height="25">
                     <use href=@Url.Content("~/img/icons.svg#icon-cart")></use>
@@ -21,7 +20,7 @@
 
         </li>
         <li class="nav-users-item">
-            <a class="form-inline nav-link icon btn-icon icon" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <a class="form-inline nav-link icon btn-icon icon" asp-area="" asp-controller="SignOut" asp-action="Index">
                 <svg width="25" height="25">
                     <use href=@Url.Content("~/img/icons.svg#icon-enter")></use>
                 </svg>

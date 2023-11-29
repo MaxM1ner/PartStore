@@ -10,6 +10,7 @@ namespace StoreUI.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public sealed class RolesController : Controller
     {
+        
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<Customer> _userManager;
         public RolesController(RoleManager<IdentityRole> roleManager, UserManager<Customer> userManager)

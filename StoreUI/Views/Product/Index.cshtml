@@ -27,7 +27,7 @@
                             </p>
                         </div>
                         @if (Model.Quantity > 0) {
-                            <a class="product-main-btn" asp-controller="Cart" asp-action="AddProduct" asp-route-id="@Model.Id">Add to Cart</a>
+                            <a class="product-main-btn" asp-area="" asp-controller="Cart" asp-action="AddProduct" asp-route-id="@Model.Id">Add to Cart</a>
                         }
                         else {
                             <a class="product-main-btn">Product sold</a>
