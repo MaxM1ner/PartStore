@@ -8,16 +8,12 @@ namespace StoreUI.Services
     {
         private readonly int SmtpClientPort;
         private readonly string SmtpClientHost;
-        private readonly string SmtpClientCredentialsUserName;
-        private readonly string SmtpClientCredentialsPassword;
         private readonly NetworkCredential NetworkCredentials;
         private readonly string MailAddressFrom;
         public SmtpEmailSender(int smtpClientPort, string smtpClientHost, string smtpClientCredentialsUserName, string smtpClientCredentialsPassword, string mailAddressFrom)
         {
             SmtpClientPort = smtpClientPort;
             SmtpClientHost = smtpClientHost;
-            SmtpClientCredentialsUserName = smtpClientCredentialsUserName;
-            SmtpClientCredentialsPassword = smtpClientCredentialsPassword;
             NetworkCredentials = new NetworkCredential(smtpClientCredentialsUserName, smtpClientCredentialsPassword);
             MailAddressFrom = mailAddressFrom;
         }
