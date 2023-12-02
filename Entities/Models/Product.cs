@@ -11,6 +11,7 @@ namespace Entities.Models
             this.Comments = new HashSet<ProductComment>();
             this.Images = new HashSet<ProductImage>();
             this.Builds = new HashSet<PcBuild>();
+            this.Orders = new HashSet<CustomerOrder>();
         }
         public int Id { get; set; }
         public decimal Price { get; set; }
