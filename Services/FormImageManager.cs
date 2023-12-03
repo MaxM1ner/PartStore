@@ -7,10 +7,11 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using ServiceContracts;
 
 namespace Services
 {
-    public class FormImageManager
+    public class FormImageManager : IFormImageService
     {
         //enum Directories{
         //    ProductImageDirectory,
@@ -28,6 +29,7 @@ namespace Services
         }
         public async Task<string> UploadImage(IFormFile imageFile)
         {      
+            
             if (imageFile is null || imageFile.Length < 0) throw new ArgumentNullException(nameof(imageFile), "You can not upload an empty image.");
             string uniqueFileName = (Guid.NewGuid().ToString() + "_" + imageFile.FileName).Replace(' ', '_');
             using (var stream = new FileStream(_filesDirectory + uniqueFileName, FileMode.Create))
