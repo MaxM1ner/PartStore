@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
-    public sealed class ProductCommentManager
+    public sealed class ProductCommentManager : IProductCommentService
     {
         private readonly ApplicationDbContext _context;
 
@@ -21,7 +21,7 @@ namespace Services
             _context = context;
         }
 
-        public async Task<CommentResponse> AddCommentAsync(CommentAddRequest productComment)
+        public async Task<FeatureResponse> AddCommentAsync(FeatureAddRequest productComment)
         {
             if (productComment == null) throw new ArgumentNullException(nameof(productComment));
             if (productComment.CustomerId == string.Empty || productComment.CustomerId == null) throw new ArgumentException(nameof(productComment.CustomerId));
@@ -34,13 +34,13 @@ namespace Services
             return newComment.ToCommentResponse();
         }
 
-        public async Task<List<CommentResponse>> GetAllCommentsAsync(int productId)
+        public async Task<List<FeatureResponse>> GetAllCommentsAsync(int productId)
         {
 
             return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.ProductId == productId).Select(x => x.ToCommentResponse()).ToListAsync();
         }
 
-        public async Task<CommentResponse> GetCommentAsync(int commentId)
+        public async Task<FeatureResponse> GetCommentAsync(int commentId)
         {
 
             var comment = await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.Id == commentId).FirstAsync();
@@ -49,10 +49,9 @@ namespace Services
             return comment.ToCommentResponse();
         }
 
-        public async Task<bool> RemoveCommentAsync(CommentResponse productComment)
+        public async Task<bool> RemoveCommentAsync(FeatureResponse productComment)
         {
             if (productComment == null) throw new ArgumentNullException(nameof(productComment));
-
 
             var dbProductComment = await _context.CustomerOrders.Where(x => x.Id == productComment.CommentId).FirstOrDefaultAsync();
             if (dbProductComment == null) return false;
@@ -62,11 +61,23 @@ namespace Services
             return true;
         }
 
-        public async Task<CommentResponse> UpdateCommentAsync(CommentUpdateRequest commentUpdateRequest)
+        public async Task<bool> RemoveCommentByIdAsync(int productCommentId)
+        {
+            if (productCommentId < 0) throw new ArgumentException(nameof(productCommentId));
+
+            var dbProductComment = await _context.CustomerOrders.Where(x => x.Id == productCommentId).FirstOrDefaultAsync();
+            if (dbProductComment == null) return false;
+
+            _context.CustomerOrders.Remove(dbProductComment);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<FeatureResponse> UpdateCommentAsync(FeatureUpdateRequest commentUpdateRequest)
         {
             if (commentUpdateRequest == null) throw new ArgumentNullException(nameof(commentUpdateRequest));
 
-            CommentResponse comment = await GetCommentAsync(commentUpdateRequest.CommentId);
+            FeatureResponse comment = await GetCommentAsync(commentUpdateRequest.CommentId);
             if (comment == null) throw new ArgumentException(nameof(commentUpdateRequest));
 
             var commentToUpdate = (await GetCommentAsync(commentUpdateRequest.CommentId));
