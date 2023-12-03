@@ -70,14 +70,14 @@ sb.Append(Environment.CurrentDirectory)
     Append("img").
     Append(Path.DirectorySeparatorChar);
 
-builder.Services.AddTransient<FormImageManager>((x) =>
+builder.Services.AddTransient<IFormImageService, FormImageManager>((x) =>
 {
     return new FormImageManager(sb.ToString());
 });
-builder.Services.AddTransient<FeatureManager>();
-builder.Services.AddTransient<ProductTypeManager>();
-builder.Services.AddTransient<ProductManager>();
-builder.Services.AddTransient<ProductCommentManager>();
+builder.Services.AddTransient<IFeatureService, FeatureManager>();
+builder.Services.AddTransient<IProductTypeService, ProductTypeManager>();
+builder.Services.AddTransient<IProductService, ProductManager>();
+builder.Services.AddTransient<IProductCommentService, ProductCommentManager>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<IOrdersService, OrdersService>();
 var app = builder.Build();
