@@ -19,13 +19,13 @@ namespace ServiceContracts.DTO.Order
         public ProductTypeResponse()
         {
             this.Products = new HashSet<ProductResponse>();
-            this.Features = new HashSet<Feature>();
+            this.Features = new HashSet<FeatureResponse>();
         }
         public int Id { get; set; }
         public string Value { get; set; } = null!;
         public string TypeImagepath { get; set; } = null!;
         public bool Visible { get; set; } = true;
-        public ICollection<Feature> Features { get; set; }
+        public ICollection<FeatureResponse> Features { get; set; }
         public ICollection<ProductResponse> Products { get; set; }
 
         public override bool Equals(object? obj)
@@ -60,7 +60,7 @@ namespace ServiceContracts.DTO.Order
                 Value = productType.Value,
                 TypeImagepath = productType.TypeImagepath,
                 Visible = productType.Visible,
-                Features = productType.Features,
+                Features = productType.Features.Select(x => x.ToFeatureResponse()).ToHashSet(),
                 Products = productType.Products.Select(x => x.ToProductResponse()).ToHashSet(),
             };
         }
