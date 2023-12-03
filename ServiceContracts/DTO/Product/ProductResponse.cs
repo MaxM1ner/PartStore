@@ -18,9 +18,9 @@ namespace ServiceContracts.DTO.Order
     {
         public ProductResponse()
         {
-            this.Features = new HashSet<Feature>();
-            this.Comments = new HashSet<ProductComment>();
-            this.Images = new HashSet<ProductImage>();
+            this.Features = new HashSet<FeatureResponse>();
+            this.Comments = new HashSet<CommentResponse>();
+            this.Images = new HashSet<ImageResponse>();
             this.Orders = new HashSet<OrderResponse>();
         }
         public int Id { get; set; }
@@ -30,9 +30,9 @@ namespace ServiceContracts.DTO.Order
         public int Quantity { get; set; }
         public bool IsVisible { get; set; }
         public int ProductTypeId { get; set; }
-        public ICollection<Feature> Features { get; set; }
-        public ICollection<ProductComment> Comments { get; set; }
-        public ICollection<ProductImage> Images { get; set; }
+        public ICollection<FeatureResponse> Features { get; set; }
+        public ICollection<CommentResponse> Comments { get; set; }
+        public ICollection<ImageResponse> Images { get; set; }
         public ICollection<OrderResponse> Orders { get; set; }
 
         public override bool Equals(object? obj)
@@ -70,9 +70,9 @@ namespace ServiceContracts.DTO.Order
                 Name = product.Name,
                 Price = product.Price,
                 Quantity = product.Quantity,
-                Comments = product.Comments,
-                Features = product.Features,
-                Images = product.Images,
+                Comments = product.Comments.Select(x => x.ToCommentResponse()).ToHashSet(),
+                Features = product.Features.Select(x => x.ToFeatureResponse()).ToHashSet(),
+                Images = product.Images.Select(x => x.ToImageResponse()).ToHashSet(),
                 Orders = product.Orders.Select(x => x.ToOrderResponse()).ToHashSet()
             };
         }
