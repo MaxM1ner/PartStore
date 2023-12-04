@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.ProductType
 {
     /// <summary>
     /// DTO class to add a new product type
@@ -24,9 +24,9 @@ namespace ServiceContracts.DTO.Order
         public string TypeImagepath { get; set; } = null!;
         public bool Visible { get; set; } = true;
 
-        public ProductType ToProductType()
+        public Entities.Models.ProductType ToProductType()
         {
-            return new ProductType()
+            return new Entities.Models.ProductType()
             {
                 Value = this.Value,
                 TypeImagepath = this.TypeImagepath,

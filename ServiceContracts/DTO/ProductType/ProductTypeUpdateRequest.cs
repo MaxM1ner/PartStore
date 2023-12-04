@@ -6,20 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.ProductType
 {
     public class ProductTypeUpdateRequest
     {
-        public ProductTypeUpdateRequest()
+        public ProductTypeUpdateRequest(int id)
         {
+            Id = id;
         }
+        public int Id { get; private set; }
         public string Value { get; set; } = null!;
         public string TypeImagepath { get; set; } = null!;
         public bool Visible { get; set; } = true;
 
-        public ProductType ToProduct()
+        public Entities.Models.ProductType ToProduct()
         {
-            return new ProductType()
+            return new Entities.Models.ProductType()
             {
                 Value = Value,
                 TypeImagepath = TypeImagepath,

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts.DTO.Cart;
 using ServiceContracts.DTO.Order;
+using ServiceContracts.DTO.ProductType;
 
 namespace ServiceContracts
 {

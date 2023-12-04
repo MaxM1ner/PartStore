@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Feature
 {
     public class FeatureResponse
     {
@@ -52,7 +52,7 @@ namespace ServiceContracts.DTO.Order
 
     public static class FeatureExtensions
     {
-        public static FeatureResponse ToFeatureResponse(this Feature feature)
+        public static FeatureResponse ToFeatureResponse(this Entities.Models.Feature feature)
         {
             var productIds = feature.Products.Select(x => x.Id);
             return new FeatureResponse

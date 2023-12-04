@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Feature
 {
     /// <summary>
     /// DTO class to add a new customer order
@@ -33,9 +33,9 @@ namespace ServiceContracts.DTO.Order
         public string Value { get; set; } = null!;
         public int ProductTypeId { get; set; }
         public IEnumerable<int> ProductIds { get; private set; }
-        public Feature ToFeature()
+        public Entities.Models.Feature ToFeature()
         {
-            var newFeature = new Feature()
+            var newFeature = new Entities.Models.Feature()
             {
                 Name = this.Name,
                 ProductTypeId = this.ProductTypeId,

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceContracts.DTO.Comment;
+using ServiceContracts.DTO.Comment;
 using ServiceContracts.DTO.Order;
 using System;
 using System.Collections.Generic;
@@ -15,25 +17,25 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="productComment">Product comment to add</param>
         /// <returns>Added product comment response</returns>
-        public Task<FeatureResponse> AddCommentAsync(FeatureAddRequest productComment);
+        public Task<CommentResponse> AddCommentAsync(CommentAddRequest productComment);
         /// <summary>
         /// Get all comments by product Id
         /// </summary>
         /// <param name="productId">Product Id</param>
         /// <returns>Added product comment response</returns>
-        public Task<List<FeatureResponse>> GetAllCommentsAsync(int productId);
+        public Task<List<CommentResponse>> GetAllCommentsAsync(int productId);
         /// <summary>
         /// Get comment by Id
         /// </summary>
         /// <param name="commentId">Comment Id</param>
         /// <returns>List of all comments</returns>
-        public Task<FeatureResponse> GetCommentAsync(int commentId);
+        public Task<CommentResponse> GetCommentAsync(int commentId);
         /// <summary>
         /// Remove comment by CommentResponse
         /// </summary>
         /// <param name="productComment">Comment Responce to Remove</param>
         /// <returns>true, if removed</returns>
-        public Task<bool> RemoveCommentAsync(FeatureResponse productComment);
+        public Task<bool> RemoveCommentAsync(CommentResponse productComment);
         /// <summary>
         /// Remove comment by Id
         /// </summary>
@@ -45,7 +47,7 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="commentUpdateRequest">Comment Update Request</param>
         /// <returns>Updated comment responce</returns>
-        public Task<FeatureResponse> UpdateCommentAsync(FeatureUpdateRequest commentUpdateRequest);
+        public Task<CommentResponse> UpdateCommentAsync(CommentUpdateRequest commentUpdateRequest);
 
     }
 }
