@@ -1,4 +1,7 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Order;
+using ServiceContracts.DTO.Product;
 using Services;
 
 namespace StoreUI.Areas.Admin.ViewModels
@@ -7,15 +10,15 @@ namespace StoreUI.Areas.Admin.ViewModels
     {
         public ProductTypeViewModel()
         {
-            this.Products = new HashSet<Product>();
-            this.Features = new HashSet<Feature>();
+            this.Products = new HashSet<ProductResponse>();
+            this.Features = new HashSet<FeatureResponse>();
         }
         public int Id { get; set; }
         public string Value { get; set; } = null!;
         public bool IsVisible { get; set; }
         public IFormFile TypeImage { get; set; } = null!;
-        public ICollection<Feature> Features { get; private set; }
-        public ICollection<Product> Products { get; private set; }
+        public ICollection<FeatureResponse> Features { get; private set; }
+        public ICollection<ProductResponse> Products { get; private set; }
 
         public ProductType ToProduct()
         {

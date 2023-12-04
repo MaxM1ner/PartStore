@@ -19,9 +19,14 @@ namespace StoreUI.Controllers
             var catalogProducts = new List<Product>();
             var types = await _productTypeManager.GetProductTypesAsync(false, false);
             var products = await _productManager.GetProductsAsync(default, false, default, false);
+
             products = products.Where(x => x.Quantity > 0 && x.IsVisible).ToList();
-            if (typeid != null)
-                catalogProducts.AddRange(products.Where(x => x.Id == typeid).ToList());
+            if (typeid != null) { catalogProducts.AddRange(products.Where(x => x.ProductTypeId == typeid).ToList()); }
+            else
+            {
+                catalogProducts.AddRange(products);
+            }
+
             return View(new CatalogViewModel() { Products = catalogProducts, ProductTypes = types });
         }
     }

@@ -9,10 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Comment;
 
 namespace Services
 {
-    public sealed class ProductCommentManager
+    public sealed class ProductCommentManager : IProductCommentService
     {
         private readonly ApplicationDbContext _context;
 
@@ -53,8 +55,19 @@ namespace Services
         {
             if (productComment == null) throw new ArgumentNullException(nameof(productComment));
 
-
             var dbProductComment = await _context.CustomerOrders.Where(x => x.Id == productComment.CommentId).FirstOrDefaultAsync();
+            if (dbProductComment == null) return false;
+
+            _context.CustomerOrders.Remove(dbProductComment);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveCommentByIdAsync(int productCommentId)
+        {
+            if (productCommentId < 0) throw new ArgumentException(nameof(productCommentId));
+
+            var dbProductComment = await _context.CustomerOrders.Where(x => x.Id == productCommentId).FirstOrDefaultAsync();
             if (dbProductComment == null) return false;
 
             _context.CustomerOrders.Remove(dbProductComment);

@@ -7,10 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using ServiceContracts.DTO.Product;
+using ServiceContracts.DTO.Image;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts;
 
 namespace Services
 {
-    public sealed class ProductManager
+    public sealed class ProductManager : IProductService
     {
         private readonly ApplicationDbContext _context;
 
@@ -19,7 +23,7 @@ namespace Services
         {
             return await _context.Products.AnyAsync(e => e.Id == id);
         }
-        public async Task<Product> GetProductAsync(int id, bool includeType = true, bool includeFeatures = true, bool includeImages = true, bool includeComments = true)
+        public async Task<ProductResponse> GetProductAsync(int id, bool includeType = true, bool includeFeatures = true, bool includeImages = true, bool includeComments = true)
         {
             var context = _context.Products.Where(x => x.Id == id);
             if (includeType)
@@ -30,9 +34,10 @@ namespace Services
                 await context.Include(x => x.Images).ToListAsync();
             if (includeComments)
                 await context.Include(x => x.Comments).ToListAsync();
-            return await context.FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a product by id:{id}", nameof(id));
+            var product = await context.FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a product by id:{id}", nameof(id));
+            return product.ToProductResponse();
         }
-        public async Task<List<Product>> GetProductsAsync(bool includeType = true, bool includeFeatures = true, bool includeImages = true, bool includeComments = true)
+        public async Task<List<ProductResponse>> GetProductsAsync(bool includeType = true, bool includeFeatures = true, bool includeImages = true, bool includeComments = true)
         {
             var context = _context.Products;
             if (includeType)
@@ -43,24 +48,33 @@ namespace Services
                 await context.Include(x => x.Images).ToListAsync();
             if (includeComments)
                 await context.Include(x => x.Comments).ToListAsync();
-            return await context.ToListAsync();
+            return (await context.ToListAsync()).Select(x => x.ToProductResponse()).ToList();
         }
-        public async Task CreateAsync(Product product)
+        public async Task CreateAsync(ProductAddRequest product)
         {
-            await _context.Products.AddAsync(product);
+            await _context.Products.AddAsync(product.ToProduct());
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateAsync(Product product)
+        public async Task UpdateAsync(ProductUpdateRequest product)
         {
-            _context.Products.Update(product);
+            var dbProduct = product.ToProduct();
+            foreach (var item in product.Images)
+            {
+                dbProduct.Images.Add(await _context.ProductImages.FindAsync(item.Id));
+            }
+            foreach (var item in product.Features)
+            {
+                dbProduct.Features.Add(await _context.Features.FindAsync(item.FeatureId));
+            }
+            _context.Products.Update(dbProduct);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(Product product)
+        public async Task DeleteAsync(ProductResponse product)
         {
-            _context.Products.Remove(product);
+            _context.Products.Remove(await _context.Products.FindAsync(product.Id) ?? throw new ArgumentException("Invalid product response"));
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var product = await GetProductAsync(id);
             await DeleteAsync(product);

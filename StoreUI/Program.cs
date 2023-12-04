@@ -19,7 +19,7 @@ using ServiceContracts;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found."); //DefaultConnection
+var connectionString = builder.Configuration["DefaultConnection"] ?? throw new InvalidOperationException("Connection string not found."); //DefaultConnection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -53,12 +53,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IEmailSender, SmtpEmailSender>((x) =>
 {
     return new SmtpEmailSender(
-    (int)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(int), "SmtpClientPort") ?? throw new NullReferenceException("Configuration section SmtpCredential, value SmtpClientPort returned null")),
-    (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "SmtpClientHost") ?? throw new NullReferenceException("Configuration section SmtpCredential, value SmtpClientHost returned null")),
+    (int)(builder.Configuration.GetSection("SmtpHost")?.GetValue(typeof(int), "SmtpClientPort") ?? throw new NullReferenceException("Configuration section SmtpCredential, value SmtpClientPort returned null")),
+    (string)(builder.Configuration.GetSection("SmtpHost")?.GetValue(typeof(string), "SmtpClientHost") ?? throw new NullReferenceException("Configuration section SmtpCredential, value SmtpClientHost returned null")),
     (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "Email") ?? throw new NullReferenceException("Configuration section SmtpCredential, value Email returned null")),
     (string)(builder.Configuration.GetSection("SmtpCredential")?.GetValue(typeof(string), "Password") ?? throw new NullReferenceException("Configuration section SmtpCredential, value Password returned null")),
     $"noreply@{builder.Environment.ApplicationName}.com");
 });
+
 StringBuilder sb = new StringBuilder();
 sb.Append(Environment.CurrentDirectory)
     .Append(Path.DirectorySeparatorChar).
@@ -68,14 +69,15 @@ sb.Append(Environment.CurrentDirectory)
     Append(Path.DirectorySeparatorChar).
     Append("img").
     Append(Path.DirectorySeparatorChar);
-builder.Services.AddTransient<FormImageManager>((x) =>
+
+builder.Services.AddTransient<IFormImageService, FormImageManager>((x) =>
 {
     return new FormImageManager(sb.ToString());
 });
-builder.Services.AddTransient<FeatureManager>();
-builder.Services.AddTransient<ProductTypeManager>();
-builder.Services.AddTransient<ProductManager>();
-builder.Services.AddTransient<ProductCommentManager>();
+builder.Services.AddTransient<IFeatureService, FeatureManager>();
+builder.Services.AddTransient<IProductTypeService, ProductTypeManager>();
+builder.Services.AddTransient<IProductService, ProductManager>();
+builder.Services.AddTransient<IProductCommentService, ProductCommentManager>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<IOrdersService, OrdersService>();
 var app = builder.Build();

@@ -42,7 +42,6 @@ namespace Services
             });
             foreach (var orderedProduct in CustomerOrder.OrderProducts)
             {
-
                 Product? dbProduct = await _context.Products.FindAsync(orderedProduct.ProductId);
                 if (dbProduct == null) continue;
                 if (dbProduct.Quantity < 1) continue;
