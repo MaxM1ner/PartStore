@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using ServiceContracts.DTO.Product;
 using Services;
 using StoreUI.ViewModels;
 
@@ -16,7 +17,7 @@ namespace StoreUI.Controllers
         }
         public async Task<IActionResult> Index(int? typeid)
         {
-            var catalogProducts = new List<Product>();
+            var catalogProducts = new List<ProductResponse>();
             var types = await _productTypeManager.GetProductTypesAsync(false, false);
             var products = await _productManager.GetProductsAsync(default, false, default, false);
 

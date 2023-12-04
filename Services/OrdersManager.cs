@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class OrdersService : IOrdersService
+    public class OrdersManager : IOrdersService
     {
         private readonly ApplicationDbContext _context;
         private readonly ICartService _cartService;
 
-        public OrdersService(ApplicationDbContext context, ICartService cartService)
+        public OrdersManager(ApplicationDbContext context, ICartService cartService)
         {
             _context = context;
             _cartService = cartService;

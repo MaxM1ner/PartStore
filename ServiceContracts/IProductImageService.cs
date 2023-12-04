@@ -1,4 +1,5 @@
-﻿using ServiceContracts.DTO.Order;
+﻿using ServiceContracts.DTO.Image;
+using ServiceContracts.DTO.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;

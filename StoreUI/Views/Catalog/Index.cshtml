@@ -1,4 +1,5 @@
 ﻿@model CatalogViewModel
+
 @{
     ViewData["Title"] = "Catalog - Part Store";
 }
@@ -27,7 +28,7 @@
                             <div class="card-img">
                                 <img class="hero-image"
                                      src="@Url.Content("~/productFiles/img/" + product.Images?.First().Path)"
-                                     alt="@product.Type?.Value" />
+                                     alt="@product.Name" />
                             </div>
                             <div class="card-content">
                                 <h3 class="product-name">@product.Name</h3>
