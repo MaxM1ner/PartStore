@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ServiceContracts.DTO.Feature
 {
-    public class FeatureUpdateRequest
+    public sealed class FeatureUpdateRequest
     {
         public FeatureUpdateRequest(int featureId, string name, string value, int productTypeId, IEnumerable<int> productIds)
         {

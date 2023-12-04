@@ -14,7 +14,7 @@ namespace ServiceContracts.DTO.Image
     /// <summary>
     /// DTO class to add a new image
     /// </summary>
-    public class ImageAddRequest
+    public sealed class ImageAddRequest
     {
         public ImageAddRequest(string path, int productId)
         {

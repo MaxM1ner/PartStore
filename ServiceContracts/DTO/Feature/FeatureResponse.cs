@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ServiceContracts.DTO.Feature
 {
-    public class FeatureResponse
+    public sealed class FeatureResponse
     {
         public FeatureResponse() 
         {
