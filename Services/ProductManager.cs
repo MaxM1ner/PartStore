@@ -23,32 +23,16 @@ namespace Services
         {
             return await _context.Products.AnyAsync(e => e.Id == id);
         }
-        public async Task<ProductResponse> GetProductAsync(int id, bool includeType = true, bool includeFeatures = true, bool includeImages = true, bool includeComments = true)
+        public async Task<ProductResponse> GetProductAsync(int id)
         {
-            var context = _context.Products.Where(x => x.Id == id);
-            if (includeType)
-                await context.Include(x => x.Type).ToListAsync();
-            if (includeFeatures)
-                await context.Include(x => x.Features).ToListAsync();
-            if (includeImages)
-                await context.Include(x => x.Images).ToListAsync();
-            if (includeComments)
-                await context.Include(x => x.Comments).ToListAsync();
+            var context = _context.Products.Include(x => x.Comments).Include(x => x.Images).Include(x => x.Features).Include(x => x.Type).Where(x => x.Id == id);
             var product = await context.FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a product by id:{id}", nameof(id));
             return product.ToProductResponse();
         }
-        public async Task<List<ProductResponse>> GetProductsAsync(bool includeType = true, bool includeFeatures = true, bool includeImages = true, bool includeComments = true)
+        public async Task<List<ProductResponse>> GetProductsAsync()
         {
-            var context = _context.Products;
-            if (includeType)
-                await context.Include(x => x.Type).ToListAsync();
-            if (includeFeatures)
-                await context.Include(x => x.Features).ToListAsync();
-            if (includeImages)
-                await context.Include(x => x.Images).ToListAsync();
-            if (includeComments)
-                await context.Include(x => x.Comments).ToListAsync();
-            return (await context.ToListAsync()).Select(x => x.ToProductResponse()).ToList();
+            var context = _context.Products.Include(x => x.Type).Include(x => x.Features).Include(x => x.Images).Include(x => x.Comments);
+            return await context.Select(x => x.ToProductResponse()).ToListAsync();
         }
         public async Task CreateAsync(ProductAddRequest product)
         {

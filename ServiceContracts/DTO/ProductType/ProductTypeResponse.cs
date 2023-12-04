@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -62,8 +64,7 @@ namespace ServiceContracts.DTO.ProductType
                 Value = productType.Value,
                 TypeImagepath = productType.TypeImagepath,
                 Visible = productType.Visible,
-                Features = productType.Features.Select(x => x.ToFeatureResponse()).ToHashSet(),
-                Products = productType.Products.Select(x => x.ToProductResponse()).ToHashSet(),
+                Features = productType.Features.Select(x => x.ToFeatureResponse()).ToHashSet()
             };
         }
     }

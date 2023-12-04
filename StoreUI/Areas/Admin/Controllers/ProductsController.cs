@@ -15,6 +15,9 @@ using DataAccess.Migrations;
 using Entities.Models;
 using StoreUI.Areas.Admin.ViewModels;
 using StoreUI.Extensions;
+using ServiceContracts.DTO.Product;
+using ServiceContracts.DTO.Image;
+using ServiceContracts;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
@@ -23,16 +26,16 @@ namespace StoreUI.Areas.Admin.Controllers
     public sealed class ProductsController : Controller
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly FormImageManager _formImageUploader;
-        private readonly ProductManager _productManager;
-        private readonly FeatureManager _featureManager;
-        private readonly ProductTypeManager _productTypeManager;
+        private readonly IFormImageService _formImageUploader;
+        private readonly IProductService _productManager;
+        private readonly IFeatureService _featureManager;
+        private readonly IProductTypeService _productTypeManager;
         public ProductsController
-            (IWebHostEnvironment hostingEnvironment, 
-            FormImageManager formImageUploader, 
-            ProductManager productManager, 
-            FeatureManager featureManager, 
-            ProductTypeManager productTypeManager)
+            (IWebHostEnvironment hostingEnvironment,
+            IFormImageService formImageUploader,
+            IProductService productManager,
+            IFeatureService featureManager,
+            IProductTypeService productTypeManager)
         {
             _hostingEnvironment = hostingEnvironment;
             _formImageUploader = formImageUploader;
@@ -46,19 +49,13 @@ namespace StoreUI.Areas.Admin.Controllers
         [Route("Admin/Products/Edit/GetFeatures/{id}")]
         public async Task<IActionResult> GetFeatures([FromRoute] int id)
         {
-            var productFeatures = (await _featureManager.GetFeaturesAsync(false, false)).Where(x => x.ProductTypeId == id).ToList();
-            return Json(productFeatures);
+            return Json((await _featureManager.GetFeaturesAsync()).Where(x => x.ProductTypeId == id));
         }
 
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            var products = new List<ProductViewModel>();
-            foreach (var dbProduct in await _productManager.GetProductsAsync())
-            {
-                products.Add(dbProduct.ToProductViewModel());
-            }
-            return View(products);
+            return View((await _productManager.GetProductsAsync()).Select(x => x.ToProductViewModel()));
         }
 
         // GET: Admin/Products/Details/5
@@ -69,7 +66,7 @@ namespace StoreUI.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _productManager.GetProductAsync((int)id);
+            var product = await _productManager.GetProductAsync(id.Value);
 
             if (product == null)
             {
@@ -88,22 +85,20 @@ namespace StoreUI.Areas.Admin.Controllers
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
             {
-                id = x.Id,
+                id = x.FeatureId,
                 name = x.Name + ": " + x.Value
             }), "id", "name");
             return View();
         }
 
         // POST: Admin/Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId,SelectedFeaturesIds,FormImages")] ProductViewModel product)
         {
-            var dbProduct = product.ToProduct();
             if (ModelState.IsValid)
             {
+                var dbProduct = product.ToProductAddRequest();
                 if (product.FormImages != null && product.FormImages.Count > 0)
                 {
                     foreach (var imageFile in product.FormImages)
@@ -111,31 +106,26 @@ namespace StoreUI.Areas.Admin.Controllers
                         if (imageFile.Length > 0)
                         {
                             string fileName = _formImageUploader.UploadImage(imageFile).Result;
-                            dbProduct.Images.Add(new ProductImage()
-                            {
-                                Path = fileName,
-                                Product = dbProduct,
-                                ProductId = product.Id
-                            });
+                            dbProduct.Images.Add(new ImageAddRequest(fileName, product.Id));
                         }
                     }
                 }
                 foreach (var feature in product.SelectedFeaturesIds)
                 {
-                    dbProduct.Features.Add((await _featureManager.GetFeaturesAsync()).Where(x => x.Id == feature).First());
+                    dbProduct.Features.Add((await _featureManager.GetFeatureAsync(feature)).ToAddRequest());
                 }
                 await _productManager.CreateAsync(dbProduct);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), dbProduct.ProductTypeId);
-            var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == dbProduct.ProductTypeId).FirstOrDefault();
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), product.ProductTypeId);
+            var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == product.ProductTypeId).FirstOrDefault();
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
             {
-                id = x.Id,
+                id = x.FeatureId,
                 name = x.Name + ": " + x.Value
             }), "id", "name");
-            return View(dbProduct);
+            return View(product);
         }
 
         // GET: Admin/Products/Edit/5
@@ -148,21 +138,21 @@ namespace StoreUI.Areas.Admin.Controllers
             if (!await _productManager.IsExistAsync((int)id)) return NotFound();
             var product = await _productManager.GetProductAsync((int)id);
 
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), product.ProductTypeId);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), product.TypeResponse.Id);
 
-            var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == product.ProductTypeId).FirstOrDefault();
+            var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == product.TypeResponse.Id).FirstOrDefault();
 
-            var selectListItems = product.Features.Where(x => x.ProductTypeId == product.ProductTypeId);
+            var selectListItems = product.Features.Where(x => x.ProductTypeId == product.TypeResponse.Id);
 
             ViewData["SelectedFeatures"] = new SelectList(selectListItems.Select(x => new
             {
-                id = x.Id,
+                id = x.FeatureId,
                 name = x.Name + ": " + x.Value
-            }), "id", "name", product.Features.Select(x => x.Id).ToArray());
+            }), "id", "name", product.Features.Select(x => x.FeatureId).ToArray());
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Except(selectListItems).Select(x => new
             {
-                id = x.Id,
+                id = x.FeatureId,
                 name = x.Name + ": " + x.Value
             }), "id", "name");
 
@@ -171,8 +161,6 @@ namespace StoreUI.Areas.Admin.Controllers
         }
 
         // POST: Admin/Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,Quantity,IsVisible,ProductTypeId,SelectedFeaturesIds")] ProductViewModel product)
@@ -181,32 +169,34 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var dbProduct = await _productManager.GetProductAsync(product.Id);
-            dbProduct.UpdateProduct(product);
+
             if (ModelState.IsValid)
             {
-                dbProduct.Features.Clear();
+                ProductUpdateRequest updatedProduct = product.ToProductUpdateRequest();
+                updatedProduct.Features.Clear();
                 foreach (var feature in product.SelectedFeaturesIds)
                 {
-                    dbProduct.Features.Add((await _featureManager.GetFeaturesAsync()).Where(x => x.Id == feature).First());
+                    updatedProduct.Features.Add(await _featureManager.GetFeatureAsync(feature));
                 }
-                await _productManager.UpdateAsync(dbProduct);
+                await _productManager.UpdateAsync(updatedProduct);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), dbProduct.ProductTypeId);
+            ProductResponse dbProduct = await _productManager.GetProductAsync(product.Id);
 
-            var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == dbProduct.ProductTypeId).FirstOrDefault();
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), dbProduct.TypeResponse.Id);
+
+            var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == dbProduct.TypeResponse.Id).FirstOrDefault();
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
             {
-                id = x.Id,
+                id = x.FeatureId,
                 name = x.Name + ": " + x.Value
             }), "id", "name");
 
-            ViewData["SelectedFeatures"] = new SelectList((await _featureManager.GetFeaturesAsync()).Where(x => x.ProductTypeId == dbProduct.ProductTypeId).Select(x => new
+            ViewData["SelectedFeatures"] = new SelectList((await _featureManager.GetFeaturesAsync()).Where(x => x.ProductTypeId == dbProduct.TypeResponse.Id).Select(x => new
             {
-                id = x.Id,
+                id = x.FeatureId,
                 name = x.Name + ": " + x.Value
             }), "id", "name");
 
@@ -231,7 +221,7 @@ namespace StoreUI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _productManager.DeleteAsync(id);
+            await _productManager.DeleteByIdAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

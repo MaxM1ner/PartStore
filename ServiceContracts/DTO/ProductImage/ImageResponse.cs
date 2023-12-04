@@ -41,6 +41,11 @@ namespace ServiceContracts.DTO.Image
         {
             return JsonSerializer.Serialize(this);
         }
+
+        public ImageAddRequest ToAddRequest()
+        {
+            return new ImageAddRequest(Path, ProductId);
+        }
     }
 
     public static class ProductImageExtensions

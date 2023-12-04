@@ -5,6 +5,7 @@ using ServiceContracts.DTO.Comment;
 using ServiceContracts.DTO.Feature;
 using ServiceContracts.DTO.Image;
 using ServiceContracts.DTO.Order;
+using ServiceContracts.DTO.ProductType;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,7 +34,7 @@ namespace ServiceContracts.DTO.Product
         public string? Description { get; set; }
         public int Quantity { get; set; }
         public bool IsVisible { get; set; }
-        public int ProductTypeId { get; set; }
+        public ProductTypeResponse? TypeResponse { get; set; }
         public ICollection<FeatureResponse> Features { get; set; }
         public ICollection<CommentResponse> Comments { get; set; }
         public ICollection<ImageResponse> Images { get; set; }
@@ -49,7 +50,7 @@ namespace ServiceContracts.DTO.Product
             if (toCompare == null) return false;
 
             return toCompare.Id == Id &&
-                toCompare.ProductTypeId == ProductTypeId;
+                toCompare.TypeResponse?.Id == TypeResponse?.Id;
         }
         public override int GetHashCode()
         {
@@ -68,7 +69,7 @@ namespace ServiceContracts.DTO.Product
             return new ProductResponse
             {
                 Id = product.Id,
-                ProductTypeId = product.ProductTypeId,
+                TypeResponse = product.Type?.ToProductTypeResponse(),
                 IsVisible = product.IsVisible,
                 Description = product.Description,
                 Name = product.Name,
