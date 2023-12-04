@@ -1,6 +1,10 @@
 ﻿using Entities.Enums;
 using Entities.Models;
 using ServiceContracts.DTO.Cart;
+using ServiceContracts.DTO.Comment;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Image;
+using ServiceContracts.DTO.Order;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +13,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Product
 {
     /// <summary>
     /// DTO class used as return type of ProductManager methods
@@ -59,7 +63,7 @@ namespace ServiceContracts.DTO.Order
 
     public static class ProductExtensions
     {
-        public static ProductResponse ToProductResponse(this Product product)
+        public static ProductResponse ToProductResponse(this Entities.Models.Product product)
         {
             return new ProductResponse
             {

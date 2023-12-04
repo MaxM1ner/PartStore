@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Feature
 {
     public class FeatureUpdateRequest
     {

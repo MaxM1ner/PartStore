@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Comment;
 
 namespace Services
 {
@@ -21,7 +23,7 @@ namespace Services
             _context = context;
         }
 
-        public async Task<FeatureResponse> AddCommentAsync(FeatureAddRequest productComment)
+        public async Task<CommentResponse> AddCommentAsync(CommentAddRequest productComment)
         {
             if (productComment == null) throw new ArgumentNullException(nameof(productComment));
             if (productComment.CustomerId == string.Empty || productComment.CustomerId == null) throw new ArgumentException(nameof(productComment.CustomerId));
@@ -34,13 +36,13 @@ namespace Services
             return newComment.ToCommentResponse();
         }
 
-        public async Task<List<FeatureResponse>> GetAllCommentsAsync(int productId)
+        public async Task<List<CommentResponse>> GetAllCommentsAsync(int productId)
         {
 
             return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.ProductId == productId).Select(x => x.ToCommentResponse()).ToListAsync();
         }
 
-        public async Task<FeatureResponse> GetCommentAsync(int commentId)
+        public async Task<CommentResponse> GetCommentAsync(int commentId)
         {
 
             var comment = await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.Id == commentId).FirstAsync();
@@ -49,7 +51,7 @@ namespace Services
             return comment.ToCommentResponse();
         }
 
-        public async Task<bool> RemoveCommentAsync(FeatureResponse productComment)
+        public async Task<bool> RemoveCommentAsync(CommentResponse productComment)
         {
             if (productComment == null) throw new ArgumentNullException(nameof(productComment));
 
@@ -73,11 +75,11 @@ namespace Services
             return true;
         }
 
-        public async Task<FeatureResponse> UpdateCommentAsync(FeatureUpdateRequest commentUpdateRequest)
+        public async Task<CommentResponse> UpdateCommentAsync(CommentUpdateRequest commentUpdateRequest)
         {
             if (commentUpdateRequest == null) throw new ArgumentNullException(nameof(commentUpdateRequest));
 
-            FeatureResponse comment = await GetCommentAsync(commentUpdateRequest.CommentId);
+            CommentResponse comment = await GetCommentAsync(commentUpdateRequest.CommentId);
             if (comment == null) throw new ArgumentException(nameof(commentUpdateRequest));
 
             var commentToUpdate = (await GetCommentAsync(commentUpdateRequest.CommentId));

@@ -22,6 +22,6 @@ namespace Entities.Models
         public string CustomerId { get; set; } = null!;
         [ForeignKey(nameof(CustomerId))]
         public Customer? Customer { get; set; }
-        public ICollection<Product> OrderProducts { get; set; }
+        public ICollection<Product> OrderProducts { get; private set; }
     }
 }

@@ -2,6 +2,8 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using ServiceContracts.DTO.Cart;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Image;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Product
 {
     /// <summary>
     /// DTO class to add a new product
@@ -18,8 +20,8 @@ namespace ServiceContracts.DTO.Order
     {
         public ProductAddRequest()
         {
-            this.Features = new HashSet<Feature>();
-            this.Images = new HashSet<ProductImage>();
+            this.Features = new HashSet<FeatureResponse>();
+            this.Images = new HashSet<ImageResponse>();
         }
         public decimal Price { get; set; }
         public string Name { get; set; } = null!;
@@ -27,12 +29,12 @@ namespace ServiceContracts.DTO.Order
         public int Quantity { get; set; }
         public bool IsVisible { get; set; }
         public int ProductTypeId { get; set; }
-        public ICollection<Feature> Features { get; set; }
-        public ICollection<ProductImage> Images { get; set; }
+        public ICollection<FeatureResponse> Features { get; set; }
+        public ICollection<ImageResponse> Images { get; set; }
 
-        public Product ToProduct()
+        public Entities.Models.Product ToProduct()
         {
-            return new Product()
+            return new Entities.Models.Product()
             {
                 Price = this.Price,
                 Name = this.Name,

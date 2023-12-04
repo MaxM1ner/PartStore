@@ -1,5 +1,8 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ServiceContracts.DTO.Comment;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Image;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreUI.Areas.Admin.ViewModels
@@ -8,9 +11,9 @@ namespace StoreUI.Areas.Admin.ViewModels
     {
         public ProductViewModel()
         {
-            this.Features = new HashSet<Feature>();
-            this.Comments = new HashSet<ProductComment>();
-            this.Images = new HashSet<ProductImage>();
+            this.Features = new HashSet<FeatureResponse>();
+            this.Comments = new HashSet<CommentResponse>();
+            this.Images = new HashSet<ImageResponse>();
             this.SelectedFeaturesIds = new HashSet<int>();
             this.FormImages = new HashSet<IFormFile>();
         }
@@ -23,9 +26,9 @@ namespace StoreUI.Areas.Admin.ViewModels
         public bool IsVisible { get; set; }
         public int ProductTypeId { get; set; }
         public string? TypeValue { get; set; }
-        public ICollection<Feature> Features { get; set; }
-        public ICollection<ProductComment> Comments { get; set; }
-        public ICollection<ProductImage> Images { get; set; }
+        public ICollection<FeatureResponse> Features { get; set; }
+        public ICollection<CommentResponse> Comments { get; set; }
+        public ICollection<ImageResponse> Images { get; set; }
         public IEnumerable<int> SelectedFeaturesIds { get; set; }
         public ICollection<IFormFile> FormImages { get; set; }
         public Product ToProduct()
