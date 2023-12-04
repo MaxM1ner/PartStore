@@ -1,15 +1,13 @@
-﻿using Entities.Models;
-using Microsoft.EntityFrameworkCore;
-using ServiceContracts.DTO.Order;
+﻿using ServiceContracts.DTO.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts
+namespace ServiceContracts.DTO
 {
-    public interface IFeatureService
+    public interface IProductImageService
     {
         /// <summary>
         ///
@@ -22,30 +20,30 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<FeatureResponse> GetFeatureAsync(int id);
+        public Task<ImageResponse> GetImageAsync(int id);
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public Task<List<FeatureResponse>> GetFeaturesAsync();
+        public Task<List<ImageResponse>> GetImagesAsync();
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="feature"></param>
+        /// <param name="image"></param>
         /// <returns></returns>
-        public Task<FeatureResponse> CreateAsync(FeatureAddRequest feature);
+        public Task<ImageResponse> CreateAsync(ImageAddRequest image);
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="feature"></param>
+        /// <param name="image"></param>
         /// <returns></returns>
-        public Task<FeatureResponse> EditAsync(FeatureUpdateRequest feature);
+        public Task<ImageResponse> EditAsync(ImageUpdateRequest image);
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="feature"></param>
+        /// <param name="image "></param>
         /// <returns></returns>
-        public Task DeleteAsync(FeatureResponse feature);
+        public Task DeleteAsync(ImageResponse image);
         /// <summary>
         /// 
         /// </summary>

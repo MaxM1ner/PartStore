@@ -14,7 +14,7 @@ namespace ServiceContracts.DTO.Order
     /// <summary>
     /// DTO class to add a new customer order
     /// </summary>
-    public class FeatureAddRequest
+    public sealed class FeatureAddRequest
     {
         public FeatureAddRequest(string featureName, string value, int productTypeId, IEnumerable<int> productIds) 
         {
