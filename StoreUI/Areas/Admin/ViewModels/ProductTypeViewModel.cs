@@ -7,7 +7,7 @@ using Services;
 
 namespace StoreUI.Areas.Admin.ViewModels
 {
-    public class ProductTypeViewModel
+    public sealed class ProductTypeViewModel
     {
         public ProductTypeViewModel()
         {

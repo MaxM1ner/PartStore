@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entities.Models.Feature>
+﻿@model IEnumerable<StoreUI.Areas.Admin.ViewModels.FeatureViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Value)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.ProductTypeId)
             </th>
             <th></th>
         </tr>
@@ -34,12 +34,12 @@
                 @Html.DisplayFor(modelItem => item.Value)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type.Value)
+                @Html.DisplayFor(modelItem => item.ProductTypeValue)
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id"><div class="admin-editor-btn">Edit</div></a> 
-                    <a asp-action="Details" asp-route-id="@item.Id"><div class="admin-editor-btn">Details</div></a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id"><div class="admin-editor-btn btn-danger">Delete</div></a>
+                    <a asp-action="Edit" asp-route-id="@item.FeatureId"><div class="admin-editor-btn">Edit</div></a>
+                    <a asp-action="Details" asp-route-id="@item.FeatureId"><div class="admin-editor-btn">Details</div></a>
+                    <a asp-action="Delete" asp-route-id="@item.FeatureId"><div class="admin-editor-btn btn-danger">Delete</div></a>
             </td>
         </tr>
 }

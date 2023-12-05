@@ -18,6 +18,7 @@ using StoreUI.Extensions;
 using ServiceContracts.DTO.Product;
 using ServiceContracts.DTO.Image;
 using ServiceContracts;
+using ServiceContracts.DTO.ProductType;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
@@ -79,7 +80,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value));
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductTypeResponse.Id), nameof(ProductTypeResponse.Value));
 
             var defaultType = (await _productTypeManager.GetProductTypesAsync()).FirstOrDefault();
 
@@ -117,7 +118,7 @@ namespace StoreUI.Areas.Admin.Controllers
                 await _productManager.CreateAsync(dbProduct);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), product.ProductTypeId);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductTypeResponse.Id), nameof(ProductTypeResponse.Value), product.ProductTypeId);
             var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == product.ProductTypeId).FirstOrDefault();
 
             ViewData["TypeFeatures"] = new SelectList(defaultType?.Features.Select(x => new
@@ -138,7 +139,7 @@ namespace StoreUI.Areas.Admin.Controllers
             if (!await _productManager.IsExistAsync((int)id)) return NotFound();
             var product = await _productManager.GetProductAsync((int)id);
 
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), product.TypeResponse.Id);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductTypeResponse.Id), nameof(ProductTypeResponse.Value), product.TypeResponse.Id);
 
             var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == product.TypeResponse.Id).FirstOrDefault();
 
@@ -184,7 +185,7 @@ namespace StoreUI.Areas.Admin.Controllers
 
             ProductResponse dbProduct = await _productManager.GetProductAsync(product.Id);
 
-            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductType.Id), nameof(ProductType.Value), dbProduct.TypeResponse.Id);
+            ViewData["ProductTypeId"] = new SelectList(await _productTypeManager.GetProductTypesAsync(), nameof(ProductTypeResponse.Id), nameof(ProductTypeResponse.Value), dbProduct.TypeResponse.Id);
 
             var defaultType = (await _productTypeManager.GetProductTypesAsync()).Where(x => x.Id == dbProduct.TypeResponse.Id).FirstOrDefault();
 
