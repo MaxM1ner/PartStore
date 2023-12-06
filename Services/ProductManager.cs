@@ -25,7 +25,7 @@ namespace Services
         }
         public async Task<ProductResponse> GetProductAsync(int id)
         {
-            var context = _context.Products.Include(x => x.Comments).Include(x => x.Images).Include(x => x.Features).Include(x => x.Type).Where(x => x.Id == id);
+            var context = _context.Products.Include(x => x.Comments).Include(x => x.Images).Include(x => x.Features).Include(x => x.Type).Where(x => x.Id == id).Include(x => x.Comments).ThenInclude(x => x.Customer);
             var product = await context.FirstOrDefaultAsync() ?? throw new ArgumentException($"Not possible to find a product by id:{id}", nameof(id));
             return product.ToProductResponse();
         }

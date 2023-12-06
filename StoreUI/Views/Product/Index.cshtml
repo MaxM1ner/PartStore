@@ -59,14 +59,14 @@
                     @Model.Description
                 </p>
             </div>
-            <h2 class="product-title" id="comment">Коментарі: Product name</h2>
+            <h2 class="product-title" id="comment">Коментарі до <span class="color-brand">@Model.Name:</span></h2>
 
             <div class="comments-block">
                 <ul class="comments-list">
                     @foreach (var comment in Model.Comments)
                     {
-                        <li class="comment">
-                            @comment.CustomerName <span>@comment.Value</span>
+                        <li class="comment color-brand">
+                            @comment.CustomerName <span class="color-primary">@comment.Value</span>
                         </li>
                     }
                 </ul>
@@ -81,7 +81,7 @@
                                   maxlength="60"
                                   name="commentValue"
                                   required></textarea>
-                        <button class="comment-btn" type="submit">Add Comment</button>
+                        <button class="comment-btn color-primary" type="submit">Add Comment</button>
                     </form>
                 </div>
             </div>
