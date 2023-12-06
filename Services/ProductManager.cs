@@ -36,7 +36,19 @@ namespace Services
         }
         public async Task CreateAsync(ProductAddRequest product)
         {
-            await _context.Products.AddAsync(product.ToProduct());
+            var dbProduct = product.ToProduct();
+            var features = new List<Feature>();
+            features.AddRange(dbProduct.Features.ToList());
+            dbProduct.Features.Clear();
+
+            foreach (var i in features) 
+            {
+                dbProduct.Features.Add(_context.Features.Where(x => x.Name == i.Name && x.Value == i.Value).First());
+            }
+            //Cringe
+
+
+            await _context.Products.AddAsync(dbProduct);
             await _context.SaveChangesAsync();
         }
         public async Task UpdateAsync(ProductUpdateRequest product)
