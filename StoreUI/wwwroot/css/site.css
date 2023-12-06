@@ -180,6 +180,12 @@ img {
     color: var(--brand);
     transition: .5s ease-in-out;
 }
+.color-brand {
+    color: var(--brand);
+}
+.color-primary {
+    color: var(--primary);
+}
 .logo-span2 {
     color: var(--primary);
     transition: .5s ease-in-out;
@@ -246,10 +252,11 @@ img {
 .slideshow-container {
     position: relative;
     margin: auto;
+    box-shadow: 0px 0px 60px -10px #2EB2A0;
 }
 
 .hero {
-  padding: 32px 20px;
+    padding: 32px 20px;
 }
 
 /* /////////////////// */
@@ -624,6 +631,12 @@ p.hint a {
     margin-bottom: 10px;
 }
 
+.comment-btn {
+    background-color: var(--brand);
+    padding: 14px 24px;
+    font-size: 24px;
+    border-radius: 50px;
+}
 .product-main-btn {
     background-color: var(--brand);
     padding: 15px 45px;

@@ -24,6 +24,13 @@ namespace ServiceContracts
         /// <param name="productId">Product Id</param>
         /// <returns>Added product comment response</returns>
         public Task<List<CommentResponse>> GetAllCommentsAsync(int productId);
+
+        /// <summary>
+        /// Get all comments by product Id
+        /// </summary>
+        /// <returns>All comment responses</returns>
+        public Task<List<CommentResponse>> GetAllCommentsAsync();
+
         /// <summary>
         /// Get comment by Id
         /// </summary>

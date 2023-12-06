@@ -23,13 +23,15 @@ namespace StoreUI.Controllers
             var products = await _productManager.GetProductsAsync();
 
             products = products.Where(x => x.Quantity > 0 && x.IsVisible).ToList();
-            if (typeid != null) { catalogProducts.AddRange(products.Where(x => x.Id == typeid).ToList()); }
+            if (typeid != null) { catalogProducts.AddRange(products.Where(x => x.TypeResponse.Id == typeid).ToList()); }
             else
             {
                 catalogProducts.AddRange(products);
             }
 
-            return View(new CatalogViewModel() { Products = catalogProducts, ProductTypes = types });
+            var viewModel = new CatalogViewModel() { Products = catalogProducts, ProductTypes = types };
+            if (typeid.HasValue) { viewModel.IsRecommended = false; }
+            return View(viewModel);
         }
     }
 }

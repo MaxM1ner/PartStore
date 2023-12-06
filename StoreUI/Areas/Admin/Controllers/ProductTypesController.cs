@@ -96,7 +96,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // POST: Admin/ProductTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Value,IsVisible,TypeImagePath")] ProductTypeViewModel productType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Value,IsVisible,TypeImage")] ProductTypeViewModel productType)
         {
             if (id != productType.Id)
             {
@@ -106,6 +106,7 @@ namespace StoreUI.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var dbProductType = productType.ToProductTypeUpdateRequest();
+                dbProductType.TypeImagepath = await _formImageUploader.UploadImage(productType.TypeImage);
                 await _productTypeService.UpdateAsync(dbProductType);
                 return RedirectToAction(nameof(Index));
             }

@@ -29,7 +29,7 @@ namespace StoreUI.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var newAddRequest = new CommentAddRequest(userId, productId, commentValue);
             await _productCommentManager.AddCommentAsync(newAddRequest);
-            return RedirectToAction("Details", new { id = productId });
+            return RedirectToAction("Index", new { id = productId });
         }
     }
 }

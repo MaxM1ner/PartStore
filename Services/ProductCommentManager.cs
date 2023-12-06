@@ -42,6 +42,12 @@ namespace Services
             return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.ProductId == productId).Select(x => x.ToCommentResponse()).ToListAsync();
         }
 
+        public async Task<List<CommentResponse>> GetAllCommentsAsync()
+        {
+
+            return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Select(x => x.ToCommentResponse()).ToListAsync();
+        }
+
         public async Task<CommentResponse> GetCommentAsync(int commentId)
         {
 

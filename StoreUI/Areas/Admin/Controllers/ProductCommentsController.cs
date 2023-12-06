@@ -34,7 +34,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // GET: Admin/ProductComments
         public async Task<IActionResult> Index()
         {
-            var comments = await _productCommentService.GetAllCommentsAsync((await _productService.GetProductsAsync()).First().Id);
+            var comments = await _productCommentService.GetAllCommentsAsync();
             return View(comments.Select(x => x.ToCommentViewModel()));
         }
 
