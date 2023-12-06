@@ -62,13 +62,13 @@ namespace Services
 
         public async Task<FeatureResponse> GetFeatureAsync(int id)
         {
-            var dbFeature = await _context.Features.Where(x => x.Id == id).FirstAsync();
+            var dbFeature = await _context.Features.Include(x => x.Products).Include(x => x.Type).Where(x => x.Id == id).FirstAsync();
             return dbFeature.ToFeatureResponse();
         }
 
         public async Task<List<FeatureResponse>> GetFeaturesAsync()
         {
-            var dbFeatures = _context.Features;
+            var dbFeatures = _context.Features.Include(x => x.Products).Include(x => x.Type);
             var featuresResponse = await dbFeatures.Select(x => x.ToFeatureResponse()).ToListAsync();
             return featuresResponse;
         }

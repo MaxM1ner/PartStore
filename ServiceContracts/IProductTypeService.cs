@@ -12,8 +12,8 @@ namespace ServiceContracts
     public interface IProductTypeService
     {
         public Task<bool> IsExistAsync(int id);
-        public Task<ProductTypeResponse> GetProductTypeAsync(int id, bool includeProducts = true, bool includeFeatures = true);
-        public Task<List<ProductTypeResponse>> GetProductTypesAsync(bool includeProducts = true, bool includeFeatures = true);
+        public Task<ProductTypeResponse> GetProductTypeAsync(int id);
+        public Task<List<ProductTypeResponse>> GetProductTypesAsync();
         public Task CreateAsync(ProductTypeAddRequest feature);
         public Task UpdateAsync(ProductTypeUpdateRequest feature);
         public Task DeleteAsync(ProductTypeResponse feature);

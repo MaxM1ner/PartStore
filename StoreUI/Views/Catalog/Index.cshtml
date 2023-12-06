@@ -1,4 +1,5 @@
 ﻿@model CatalogViewModel
+
 @{
     ViewData["Title"] = "Catalog - Part Store";
 }
@@ -18,7 +19,10 @@
         <div class="recommendation">
             @if (Model.Products?.Count() > 0)
             {
-                <h2 class="catalog-recommendation">recommendation</h2>
+                @if (Model.IsRecommended)
+                {
+                    <h2 class="catalog-recommendation">recommendation</h2>
+                }
                 <div class="products-cards">
                     @foreach (var product in @Model.Products)
                     {
@@ -27,7 +31,7 @@
                             <div class="card-img">
                                 <img class="hero-image"
                                      src="@Url.Content("~/productFiles/img/" + product.Images?.First().Path)"
-                                     alt="@product.Type?.Value" />
+                                     alt="@product.Name" />
                             </div>
                             <div class="card-content">
                                 <h3 class="product-name">@product.Name</h3>
@@ -42,36 +46,6 @@
                     }
                 </div>
             }
-            @*else
-            {
-                @foreach (var type in @Model.ProductTypes)
-                {
-                    <h2 class="catalog-recommendation">recommendation</h2>
-                    <a href="" class="products-cards-title">@type.Value</a>
-                    <div class="products-cards">
-                        @foreach (var product in type.Products.Take(5))
-                        {
-                            @if (product.Images?.Count < 1) continue;
-                            <a class="card-container" sp-area="" asp-controller="Product" asp-route-id="@product.Id">
-                                <div class="card-img">
-                                    <img class="hero-image"
-                                         src="@Url.Content("~/productFiles/img/" + product.Images?.First().Path)"
-                                         alt="@product.Type?.Value" />
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="product-name">@product.Name</h3>
-                                    <p class="product-description">
-                                        @product.Description
-                                    </p>
-                                    <div class="card-tags">
-                                        <span class="product-price">Price: @product.Price</span>
-                                    </div>
-                                </div>
-                            </a>
-                        }
-                    </div>
-                }
-            }*@
         </div>
     </div>
 </section>

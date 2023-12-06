@@ -78,8 +78,8 @@ builder.Services.AddTransient<IFeatureService, FeatureManager>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeManager>();
 builder.Services.AddTransient<IProductService, ProductManager>();
 builder.Services.AddTransient<IProductCommentService, ProductCommentManager>();
-builder.Services.AddTransient<ICartService, CartService>();
-builder.Services.AddTransient<IOrdersService, OrdersService>();
+builder.Services.AddTransient<ICartService, CartManager>();
+builder.Services.AddTransient<IOrdersService, OrdersManager>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

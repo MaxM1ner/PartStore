@@ -23,6 +23,7 @@ namespace ServiceContracts.DTO.ProductType
         {
             return new Entities.Models.ProductType()
             {
+                Id = Id,
                 Value = Value,
                 TypeImagepath = TypeImagepath,
                 Visible = Visible

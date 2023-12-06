@@ -42,6 +42,12 @@ namespace Services
             return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.ProductId == productId).Select(x => x.ToCommentResponse()).ToListAsync();
         }
 
+        public async Task<List<CommentResponse>> GetAllCommentsAsync()
+        {
+
+            return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Select(x => x.ToCommentResponse()).ToListAsync();
+        }
+
         public async Task<CommentResponse> GetCommentAsync(int commentId)
         {
 
@@ -49,6 +55,11 @@ namespace Services
             if (comment == null) throw new ArgumentException(nameof(commentId));
 
             return comment.ToCommentResponse();
+        }
+
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await _context.ProductComments.AnyAsync(e => e.Id == id);
         }
 
         public async Task<bool> RemoveCommentAsync(CommentResponse productComment)
@@ -67,10 +78,10 @@ namespace Services
         {
             if (productCommentId < 0) throw new ArgumentException(nameof(productCommentId));
 
-            var dbProductComment = await _context.CustomerOrders.Where(x => x.Id == productCommentId).FirstOrDefaultAsync();
+            var dbProductComment = await _context.ProductComments.Where(x => x.Id == productCommentId).FirstOrDefaultAsync();
             if (dbProductComment == null) return false;
 
-            _context.CustomerOrders.Remove(dbProductComment);
+            _context.ProductComments.Remove(dbProductComment);
             await _context.SaveChangesAsync();
             return true;
         }

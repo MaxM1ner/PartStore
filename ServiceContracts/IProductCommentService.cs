@@ -24,6 +24,13 @@ namespace ServiceContracts
         /// <param name="productId">Product Id</param>
         /// <returns>Added product comment response</returns>
         public Task<List<CommentResponse>> GetAllCommentsAsync(int productId);
+
+        /// <summary>
+        /// Get all comments by product Id
+        /// </summary>
+        /// <returns>All comment responses</returns>
+        public Task<List<CommentResponse>> GetAllCommentsAsync();
+
         /// <summary>
         /// Get comment by Id
         /// </summary>
@@ -48,6 +55,13 @@ namespace ServiceContracts
         /// <param name="commentUpdateRequest">Comment Update Request</param>
         /// <returns>Updated comment responce</returns>
         public Task<CommentResponse> UpdateCommentAsync(CommentUpdateRequest commentUpdateRequest);
+
+        /// <summary>
+        /// Check if comment by id is exists
+        /// </summary>
+        /// <param name="id">Comment Id</param>
+        /// <returns>True if found, otherwise false</returns>
+        public Task<bool> IsExistAsync(int id);
 
     }
 }

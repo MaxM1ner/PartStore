@@ -26,9 +26,8 @@ namespace ServiceContracts.DTO.Feature
             ProductTypeId = productTypeId;
             if (productIds is null) throw new ArgumentNullException(nameof(productIds));
             ProductIds = productIds;
-
-
         }
+
         public string Name { get; set; } = null!;
         public string Value { get; set; } = null!;
         public int ProductTypeId { get; set; }

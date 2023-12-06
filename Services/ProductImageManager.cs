@@ -2,6 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts.DTO;
+using ServiceContracts.DTO.Image;
 using ServiceContracts.DTO.Order;
 using System;
 using System.Collections.Generic;

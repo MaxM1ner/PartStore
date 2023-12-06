@@ -29,7 +29,7 @@ namespace ServicesUnitTests
             _mockContext.Setup(x => x.Products).ReturnsDbSet(DbContextData.GetProducts());
             _mockContext.Setup(x => x.CartProducts).ReturnsDbSet(_cartProducts);
             _context = _mockContext.Object;
-            _cartService = new CartService(_context);
+            _cartService = new CartManager(_context);
         }
 
         #region AddProduct

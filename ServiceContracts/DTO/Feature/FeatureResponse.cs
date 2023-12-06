@@ -22,7 +22,8 @@ namespace ServiceContracts.DTO.Feature
         public string Name { get; set; } = null!;
         public string Value { get; set; } = null!;
         public int ProductTypeId { get; set; }
-        public List<int> ProductIds { get; set; }
+        public string? ProductTypeValue { get; set; }
+        public IEnumerable<int> ProductIds { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -48,20 +49,25 @@ namespace ServiceContracts.DTO.Feature
         {
             return JsonSerializer.Serialize(this);
         }
+
+        public FeatureAddRequest ToAddRequest()
+        {
+            return new FeatureAddRequest(Name, Value, ProductTypeId, ProductIds);
+        }
     }
 
     public static class FeatureExtensions
     {
         public static FeatureResponse ToFeatureResponse(this Entities.Models.Feature feature)
         {
-            var productIds = feature.Products.Select(x => x.Id);
             return new FeatureResponse
             {
                 FeatureId = feature.Id,
                 Name = feature.Name,
                 Value = feature.Value,
                 ProductTypeId = feature.ProductTypeId,
-                ProductIds = (List<int>)productIds
+                ProductTypeValue = feature.Type?.Value,
+                ProductIds = feature.Products.Select(x => x.Id).ToList()
             };
         }
     }

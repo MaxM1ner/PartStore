@@ -1,0 +1,80 @@
+﻿@using ServiceContracts.DTO.Order;
+
+@model IEnumerable<OrderResponse>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders</h1>
+
+<p>
+    <a class="add-btn" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedTimestamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                <div class="admin-search-block">
+                    <div class="input-icons-admin">
+                        <span class="input-span-icon">
+                            <svg width="25" height="25">
+                                <use href=@Url.Content("~/img/icons.svg#icon-search")></use>
+                            </svg>
+                        </span>
+                        <input class="input-field form-input"
+                               type="text"
+                               placeholder="Username">
+                    </div>
+                    <button type="button" class="add-btn back">Search</button>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @item.OrderId
+                </td>
+                <td>
+                    @item.Address
+                </td>
+                <td>
+                    @item.CreatedTimestamp
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    @item.TotalPrice
+                </td>
+                <td>
+                    @item.CustomerId
+                </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderId"><div class="admin-editor-btn">Edit</div></a>
+                    <a asp-action="Details" asp-route-id="@item.OrderId"><div class="admin-editor-btn">Details</div></a>
+                    <a asp-action="Delete" asp-route-id="@item.OrderId"><div class="admin-editor-btn btn-danger">Delete</div></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
