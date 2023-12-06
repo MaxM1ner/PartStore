@@ -36,6 +36,12 @@ namespace ServiceContracts
         Task<List<OrderResponse>> GetAllOrdersAsync(string? CustomerId);
 
         /// <summary>
+        /// Get all orders of the specified customer
+        /// </summary>
+        /// <returns>List of all orders</returns>
+        Task<List<OrderResponse>> GetAllOrdersAsync();
+
+        /// <summary>
         /// Update order properties
         /// </summary>
         /// <param name="UpdateOrder">Order update request</param>

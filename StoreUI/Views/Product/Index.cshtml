@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ProductResponse
 @{
     ViewData["Title"] = " Catalog - Part Store";
 }
@@ -66,7 +66,7 @@
                     @foreach (var comment in Model.Comments)
                     {
                         <li class="comment">
-                            @comment.Customer?.UserName <span>@comment.Value</span>
+                            @comment.CustomerName <span>@comment.Value</span>
                         </li>
                     }
                 </ul>

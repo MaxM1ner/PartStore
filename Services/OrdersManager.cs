@@ -64,6 +64,11 @@ namespace Services
             return (await _context.CustomerOrders.Include(x => x.OrderProducts).Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToOrderResponse()).ToList();
         }
 
+        public async Task<List<OrderResponse>> GetAllOrdersAsync()
+        {
+            return await _context.CustomerOrders.Select(x => x.ToOrderResponse()).ToListAsync();
+        }
+
         public async Task<OrderResponse>? GetOrderAsync(int OrderId)
         {
             if (OrderId < 0) throw new ArgumentException($"CartProductId {OrderId} can't be lower than 0");

@@ -13,6 +13,7 @@ using StoreUI.Areas.Admin.ViewModels;
 using ServiceContracts.DTO.Product;
 using DataAccess.Migrations;
 using ServiceContracts.DTO.ProductType;
+using Microsoft.AspNetCore.Identity;
 
 namespace StoreUI.Areas.Admin.Controllers
 {
@@ -20,14 +21,14 @@ namespace StoreUI.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public sealed class ProductCommentsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserManager<Customer> _userManager;
         private readonly IProductService _productService;
         private readonly IProductCommentService _productCommentService;
-        public ProductCommentsController(ApplicationDbContext context, IProductService productService, IProductCommentService productCommentService)
+        public ProductCommentsController(IProductService productService, IProductCommentService productCommentService, UserManager<Customer> userManager)
         {
-            _context = context;
             _productService = productService;
             _productCommentService = productCommentService;
+            _userManager = userManager;
         }
 
         // GET: Admin/ProductComments
@@ -50,7 +51,7 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, nameof(Customer.Id), nameof(Customer.UserName));
+            ViewData["CustomerId"] = new SelectList(_userManager.Users, nameof(Customer.Id), nameof(Customer.UserName));
             ViewData["ProductId"] = new SelectList(await _productService.GetProductsAsync(), nameof(ProductResponse.Id), nameof(ProductResponse.Name));
             return View(comment.ToCommentViewModel());
         }
@@ -58,7 +59,7 @@ namespace StoreUI.Areas.Admin.Controllers
         // GET: Admin/ProductComments/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, nameof(Customer.Id), nameof(Customer.UserName));
+            ViewData["CustomerId"] = new SelectList(_userManager.Users, nameof(Customer.Id), nameof(Customer.UserName));
             ViewData["ProductId"] = new SelectList(await _productService.GetProductsAsync(), nameof(ProductResponse.Id), nameof(ProductResponse.Name));
             return View();
         }
@@ -74,7 +75,7 @@ namespace StoreUI.Areas.Admin.Controllers
                 await _productCommentService.AddCommentAsync(dbcomment);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, nameof(Customer.Id), nameof(Customer.UserName));
+            ViewData["CustomerId"] = new SelectList(_userManager.Users, nameof(Customer.Id), nameof(Customer.UserName));
             ViewData["ProductId"] = new SelectList(await _productService.GetProductsAsync(), nameof(ProductResponse.Id), nameof(ProductResponse.Name));
             return View(productComment);
         }
@@ -92,7 +93,7 @@ namespace StoreUI.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, nameof(Customer.Id), nameof(Customer.UserName));
+            ViewData["CustomerId"] = new SelectList(_userManager.Users, nameof(Customer.Id), nameof(Customer.UserName));
             ViewData["ProductId"] = new SelectList(await _productService.GetProductsAsync(), nameof(ProductResponse.Id), nameof(ProductResponse.Name));
             return View(comment.ToCommentViewModel());
         }
@@ -126,7 +127,7 @@ namespace StoreUI.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, nameof(Customer.Id), nameof(Customer.UserName));
+            ViewData["CustomerId"] = new SelectList(_userManager.Users, nameof(Customer.Id), nameof(Customer.UserName));
             ViewData["ProductId"] = new SelectList(await _productService.GetProductsAsync(), nameof(ProductResponse.Id), nameof(ProductResponse.Name));
             return View(productComment);
         }
