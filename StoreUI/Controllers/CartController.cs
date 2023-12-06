@@ -23,22 +23,19 @@ namespace StoreUI.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //if (userId == null) return View();
             var result = await _cartService.GetAllProductsAsync(userId);
             return View(result);
         }
         public async Task<IActionResult> RemoveProduct(int cartProductId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //if (userId == null) return View();
             var request = new CartProductResponse() { CustomerId = Guid.Parse(userId), CartProductId = cartProductId};
             await _cartService.RemoveProductAsync(request);
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> AddProduct(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //if (userId == null) return RedirectToAction(nameof(Index)); 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             var request = new CartAddRequest(Guid.Parse(userId), id);
             await _cartService.AddProductAsync(request);
             return RedirectToAction(nameof(Index));

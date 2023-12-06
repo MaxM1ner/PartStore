@@ -15,12 +15,10 @@ namespace StoreUI.Controllers
 {
     public sealed class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IProductTypeService _productTypeManager;
 
-        public HomeController(ILogger<HomeController> logger, IProductTypeService productTypeManager)
+        public HomeController(IProductTypeService productTypeManager)
         {
-            _logger = logger;
             _productTypeManager = productTypeManager;
         }
 
