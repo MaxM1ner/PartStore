@@ -22,6 +22,7 @@ namespace ServiceContracts.DTO.Feature
         public string Name { get; set; } = null!;
         public string Value { get; set; } = null!;
         public int ProductTypeId { get; set; }
+        public string? ProductTypeValue { get; set; }
         public IEnumerable<int> ProductIds { get; set; }
 
         public override bool Equals(object? obj)
@@ -65,6 +66,7 @@ namespace ServiceContracts.DTO.Feature
                 Name = feature.Name,
                 Value = feature.Value,
                 ProductTypeId = feature.ProductTypeId,
+                ProductTypeValue = feature.Type?.Value,
                 ProductIds = feature.Products.Select(x => x.Id).ToList()
             };
         }

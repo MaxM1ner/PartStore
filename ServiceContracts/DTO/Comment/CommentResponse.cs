@@ -23,7 +23,9 @@ namespace ServiceContracts.DTO.Comment
         public int CommentId { get; set; }
         public string Value { get; set; } = null!;
         public int ProductId { get; set; }
+        public string? ProductName { get; set; }
         public string CustomerId { get; set; } = null!;
+        public string? CustomerName { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -57,7 +59,9 @@ namespace ServiceContracts.DTO.Comment
                 CommentId = comment.Id,
                 Value = comment.Value,
                 ProductId = comment.ProductId,
-                CustomerId = comment.CustomerId
+                CustomerId = comment.CustomerId,
+                ProductName = comment.Product?.Name,
+                CustomerName = comment.Customer?.UserName
             };
         }
     }

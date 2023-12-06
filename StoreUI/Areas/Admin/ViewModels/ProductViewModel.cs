@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreUI.Areas.Admin.ViewModels
 {
-    public class ProductViewModel
+    public sealed class ProductViewModel
     {
         public ProductViewModel()
         {

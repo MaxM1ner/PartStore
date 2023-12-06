@@ -49,5 +49,12 @@ namespace ServiceContracts
         /// <returns>Updated comment responce</returns>
         public Task<CommentResponse> UpdateCommentAsync(CommentUpdateRequest commentUpdateRequest);
 
+        /// <summary>
+        /// Check if comment by id is exists
+        /// </summary>
+        /// <param name="id">Comment Id</param>
+        /// <returns>True if found, otherwise false</returns>
+        public Task<bool> IsExistAsync(int id);
+
     }
 }
