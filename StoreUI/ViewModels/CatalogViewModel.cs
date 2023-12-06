@@ -1,10 +1,14 @@
 ﻿using Entities.Models;
+using Humanizer;
+using ServiceContracts.DTO.Product;
+using ServiceContracts.DTO.ProductType;
 
 namespace StoreUI.ViewModels
 {
     public sealed class CatalogViewModel
     {
-        public IEnumerable<ProductType>? ProductTypes { get; set; }
-        public IEnumerable<Product>? Products { get; set; }
+        public bool IsRecommended { get; set; } = true;
+        public IEnumerable<ProductTypeResponse>? ProductTypes { get; set; }
+        public IEnumerable<ProductResponse>? Products { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Comment
 {
     /// <summary>
     /// DTO class used as return type of OrdersService methods
@@ -23,7 +23,9 @@ namespace ServiceContracts.DTO.Order
         public int CommentId { get; set; }
         public string Value { get; set; } = null!;
         public int ProductId { get; set; }
+        public string? ProductName { get; set; }
         public string CustomerId { get; set; } = null!;
+        public string? CustomerName { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -57,7 +59,9 @@ namespace ServiceContracts.DTO.Order
                 CommentId = comment.Id,
                 Value = comment.Value,
                 ProductId = comment.ProductId,
-                CustomerId = comment.CustomerId
+                CustomerId = comment.CustomerId,
+                ProductName = comment.Product?.Name,
+                CustomerName = comment.Customer?.UserName
             };
         }
     }

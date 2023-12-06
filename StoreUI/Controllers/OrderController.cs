@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ServiceContracts;
 using ServiceContracts.DTO.Order;
 using Services;
+using StoreUI.ViewModels;
 using System.Security.Claims;
 
 namespace StoreUI.Controllers
@@ -21,10 +22,10 @@ namespace StoreUI.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Create(string address)
+        public async Task<IActionResult> Create(DeliveryInformationViewModel deliveryInformation)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            OrderAddRequest orderAddRequest = new(Guid.Parse(userId), address);
+            OrderAddRequest orderAddRequest = new(Guid.Parse(userId), deliveryInformation.Address);
             await _orderService.AddOrderAsync(orderAddRequest);
             return View();
         }

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceContracts.DTO.Order
+namespace ServiceContracts.DTO.Comment
 {
     /// <summary>
     /// DTO class to add a new customer order

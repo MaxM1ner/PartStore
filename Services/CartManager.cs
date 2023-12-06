@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class CartService : ICartService
+    public class CartManager : ICartService
     {
         private readonly ApplicationDbContext _context;
 
-        public CartService(ApplicationDbContext context)
+        public CartManager(ApplicationDbContext context)
         {
             _context = context;
         }

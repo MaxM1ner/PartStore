@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entities.Models.ProductComment>
+﻿@model IEnumerable<StoreUI.Areas.Admin.ViewModels.CommentViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,10 +16,10 @@
                 @Html.DisplayNameFor(model => model.Value)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.CustomerId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product)
+                @Html.DisplayNameFor(model => model.ProductId)
             </th>
             <th>
                 <div class="admin-search-block">
@@ -45,15 +45,15 @@
                 @Html.DisplayFor(modelItem => item.Value)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.Id)
+                @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Id)
+                @Html.DisplayFor(modelItem => item.ProductName)
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id"><div class="admin-editor-btn">Edit</div></a> 
-                    <a asp-action="Details" asp-route-id="@item.Id"><div class="admin-editor-btn">Details</div></a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id"><div class="admin-editor-btn btn-danger">Delete</div></a>
+                    <a asp-action="Edit" asp-route-id="@item.CommentId"><div class="admin-editor-btn">Edit</div></a>
+                    <a asp-action="Details" asp-route-id="@item.CommentId"><div class="admin-editor-btn">Details</div></a>
+                    <a asp-action="Delete" asp-route-id="@item.CommentId"><div class="admin-editor-btn btn-danger">Delete</div></a>
             </td>
         </tr>
 }

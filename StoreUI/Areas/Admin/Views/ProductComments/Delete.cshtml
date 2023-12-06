@@ -1,4 +1,4 @@
-﻿@model Entities.Models.ProductComment
+﻿@model StoreUI.Areas.Admin.ViewModels.CommentViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -18,22 +18,22 @@
             @Html.DisplayFor(model => model.Value)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
+            @Html.DisplayNameFor(model => model.CustomerId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Id)
+            @Html.DisplayFor(model => model.CustomerName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Product)
+            @Html.DisplayNameFor(model => model.ProductId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product.Id)
+            @Html.DisplayFor(model => model.ProductName)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="add-btn red" /> |
+        <input type="hidden" asp-for="CommentId" />
+        <input type="submit" value="Delete" class="add-btn red" />
         <a class="add-btn back" asp-action="Index">Back to List</a>
     </form>
 </div>

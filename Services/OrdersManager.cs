@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class OrdersService : IOrdersService
+    public class OrdersManager : IOrdersService
     {
         private readonly ApplicationDbContext _context;
         private readonly ICartService _cartService;
 
-        public OrdersService(ApplicationDbContext context, ICartService cartService)
+        public OrdersManager(ApplicationDbContext context, ICartService cartService)
         {
             _context = context;
             _cartService = cartService;
@@ -42,7 +42,6 @@ namespace Services
             });
             foreach (var orderedProduct in CustomerOrder.OrderProducts)
             {
-
                 Product? dbProduct = await _context.Products.FindAsync(orderedProduct.ProductId);
                 if (dbProduct == null) continue;
                 if (dbProduct.Quantity < 1) continue;
@@ -63,6 +62,11 @@ namespace Services
             if ((await _context.Customers.FindAsync(CustomerId.ToString())) == null) throw new ArgumentException(nameof(CustomerId));
 
             return (await _context.CustomerOrders.Include(x => x.OrderProducts).Where(x => x.CustomerId == CustomerId.ToString()).ToListAsync()).Select(x => x.ToOrderResponse()).ToList();
+        }
+
+        public async Task<List<OrderResponse>> GetAllOrdersAsync()
+        {
+            return await _context.CustomerOrders.Select(x => x.ToOrderResponse()).ToListAsync();
         }
 
         public async Task<OrderResponse>? GetOrderAsync(int OrderId)

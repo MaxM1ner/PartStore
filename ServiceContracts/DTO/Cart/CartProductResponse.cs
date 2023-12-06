@@ -1,4 +1,6 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.Image;
+using ServiceContracts.DTO.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +63,14 @@ namespace ServiceContracts.DTO.Cart
             };
         }
 
-        public Product ToProduct()
+        public ProductResponse ToProductResponse()
         {
-            return new Product()
+            return new ProductResponse()
             {
-                Id = ProductId
+                Id = ProductId,
+                Price = ProductPrice,
+                Name = ProductName,
+                Quantity = ProductQuantity
             };
         }
     }

@@ -9,10 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Comment;
 
 namespace Services
 {
-    public sealed class ProductCommentManager
+    public sealed class ProductCommentManager : IProductCommentService
     {
         private readonly ApplicationDbContext _context;
 
@@ -40,6 +42,12 @@ namespace Services
             return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Where(x => x.ProductId == productId).Select(x => x.ToCommentResponse()).ToListAsync();
         }
 
+        public async Task<List<CommentResponse>> GetAllCommentsAsync()
+        {
+
+            return await _context.ProductComments.Include(x => x.Product).Include(x => x.Customer).Select(x => x.ToCommentResponse()).ToListAsync();
+        }
+
         public async Task<CommentResponse> GetCommentAsync(int commentId)
         {
 
@@ -49,15 +57,31 @@ namespace Services
             return comment.ToCommentResponse();
         }
 
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await _context.ProductComments.AnyAsync(e => e.Id == id);
+        }
+
         public async Task<bool> RemoveCommentAsync(CommentResponse productComment)
         {
             if (productComment == null) throw new ArgumentNullException(nameof(productComment));
-
 
             var dbProductComment = await _context.CustomerOrders.Where(x => x.Id == productComment.CommentId).FirstOrDefaultAsync();
             if (dbProductComment == null) return false;
 
             _context.CustomerOrders.Remove(dbProductComment);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveCommentByIdAsync(int productCommentId)
+        {
+            if (productCommentId < 0) throw new ArgumentException(nameof(productCommentId));
+
+            var dbProductComment = await _context.ProductComments.Where(x => x.Id == productCommentId).FirstOrDefaultAsync();
+            if (dbProductComment == null) return false;
+
+            _context.ProductComments.Remove(dbProductComment);
             await _context.SaveChangesAsync();
             return true;
         }

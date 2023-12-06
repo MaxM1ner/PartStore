@@ -9,23 +9,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceContracts.DTO.Order;
 using System.Security.Claims;
 using Services;
+using ServiceContracts;
 
 namespace StoreUI.Controllers
 {
     public sealed class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ProductTypeManager _productTypeManager;
-        public HomeController(ILogger<HomeController> logger, ProductTypeManager productTypeManager)
+        private readonly IProductTypeService _productTypeManager;
+
+        public HomeController(IProductTypeService productTypeManager)
         {
-            _logger = logger;
             _productTypeManager = productTypeManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            var types = await _productTypeManager.GetProductTypesAsync(false, false);
-            return View(types);
+            return View(await _productTypeManager.GetProductTypesAsync());
         }
 
         public IActionResult Privacy()

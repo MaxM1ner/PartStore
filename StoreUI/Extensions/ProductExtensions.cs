@@ -1,5 +1,8 @@
 ﻿using Entities.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ServiceContracts.DTO.Comment;
+using ServiceContracts.DTO.Feature;
+using ServiceContracts.DTO.Image;
 using StoreUI.Areas.Admin.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -23,9 +26,9 @@ namespace StoreUI.Extensions
                 ProductTypeId = product.ProductTypeId,
                 Quantity = product.Quantity,
                 TypeValue = product.Type?.Value,
-                Features = product.Features,
-                Comments = product.Comments,
-                Images = product.Images
+                Features = product.Features.Select(x => x.ToFeatureResponse()).ToHashSet(),
+                Comments = product.Comments.Select(x => x.ToCommentResponse()).ToHashSet(),
+                Images = product.Images.Select(x => x.ToImageResponse()).ToHashSet()
             };
         }
 

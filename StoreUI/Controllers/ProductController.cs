@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceContracts;
+using ServiceContracts.DTO.Comment;
 using ServiceContracts.DTO.Order;
 using Services;
 using System.Security.Claims;
@@ -7,9 +9,9 @@ namespace StoreUI.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProductCommentManager _productCommentManager;
-        private readonly ProductManager _productManager;
-        public ProductController(ProductManager productManager, ProductCommentManager productCommentManager)
+        private readonly IProductCommentService _productCommentManager;
+        private readonly IProductService _productManager;
+        public ProductController(IProductService productManager, IProductCommentService productCommentManager)
         {
             _productManager = productManager;
             _productCommentManager = productCommentManager;
@@ -27,7 +29,7 @@ namespace StoreUI.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var newAddRequest = new CommentAddRequest(userId, productId, commentValue);
             await _productCommentManager.AddCommentAsync(newAddRequest);
-            return RedirectToAction("Details", new { id = productId });
+            return RedirectToAction("Index", new { id = productId });
         }
     }
 }
